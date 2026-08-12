@@ -18,7 +18,9 @@
   --muted:#667085;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -64,6 +66,7 @@ nav button{
   border-radius:13px;
   font-weight:800;
   white-space:nowrap;
+  cursor:pointer;
 }
 
 nav button.active{
@@ -113,7 +116,9 @@ section{
   flex-wrap:wrap;
 }
 
-input,select,textarea{
+input,
+select,
+textarea{
   width:100%;
   padding:12px;
   border:1px solid #d0d5dd;
@@ -132,40 +137,35 @@ label{
   margin:9px 0 5px;
 }
 
+button.primary,
+button.success,
+button.danger,
+button.secondary{
+  border:0;
+  border-radius:11px;
+  padding:11px 15px;
+  font-weight:800;
+  cursor:pointer;
+}
+
 button.primary{
   background:var(--blue);
   color:white;
-  border:0;
-  border-radius:11px;
-  padding:12px 16px;
-  font-weight:800;
 }
 
 button.success{
   background:var(--green);
   color:white;
-  border:0;
-  border-radius:11px;
-  padding:12px 16px;
-  font-weight:800;
 }
 
 button.danger{
   background:#ffe8e8;
   color:#b42318;
-  border:0;
-  border-radius:11px;
-  padding:10px 13px;
-  font-weight:800;
 }
 
 button.secondary{
   background:#eef2f6;
   color:#222;
-  border:0;
-  border-radius:11px;
-  padding:10px 13px;
-  font-weight:800;
 }
 
 table{
@@ -176,11 +176,13 @@ table{
   overflow:hidden;
 }
 
-th,td{
+th,
+td{
   padding:10px;
   border-bottom:1px solid #eee;
   text-align:left;
   font-size:14px;
+  vertical-align:middle;
 }
 
 th{
@@ -262,7 +264,42 @@ th{
   color:#667085;
 }
 
+.proof-img{
+  max-width:90px;
+  max-height:90px;
+  border-radius:10px;
+  object-fit:cover;
+  border:1px solid #ddd;
+}
+
+.status-pending{
+  background:#fff7d6;
+  color:#946200;
+}
+
+.status-approved{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.status-rejected{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.admin-badge{
+  display:inline-block;
+  margin-top:5px;
+  padding:4px 8px;
+  border-radius:99px;
+  background:#dcfce7;
+  color:#166534;
+  font-size:12px;
+  font-weight:800;
+}
+
 @media(max-width:800px){
+
   .grid{
     grid-template-columns:repeat(2,1fr);
   }
@@ -271,12 +308,15 @@ th{
     font-size:12px;
   }
 
-  th,td{
+  th,
+  td{
     padding:8px;
   }
+
 }
 
 @media(max-width:500px){
+
   .grid{
     grid-template-columns:1fr 1fr;
   }
@@ -284,6 +324,11 @@ th{
   .metric b{
     font-size:20px;
   }
+
+  header h1{
+    font-size:22px;
+  }
+
 }
 </style>
 </head>
@@ -291,9 +336,19 @@ th{
 <body>
 
 <header>
+
   <h1>💰 KAS SOS</h1>
-  <small id="rt">🟢 Realtime aktif</small>
+
+  <small id="rt">
+    🟢 Realtime aktif
+  </small>
+
+  <div id="adminBadge" class="admin-badge hidden">
+    ADMIN LOGIN
+  </div>
+
 </header>
+
 
 <nav id="nav">
 
@@ -327,9 +382,13 @@ th{
 
 </nav>
 
+
 <main class="wrap">
 
-<!-- ================= DASHBOARD ================= -->
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
 
 <section id="dash" class="show">
 
@@ -357,7 +416,10 @@ th{
 
   </div>
 
-  <div class="grid" style="margin-top:12px">
+
+  <div
+    class="grid"
+    style="margin-top:12px">
 
     <div class="card metric">
       Total Tunggakan
@@ -371,7 +433,10 @@ th{
 
   </div>
 
-  <div class="card" style="margin-top:14px">
+
+  <div
+    class="card"
+    style="margin-top:14px">
 
     <h2>📊 Rekap Kas</h2>
 
@@ -384,7 +449,10 @@ th{
 </section>
 
 
-<!-- ================= ANGGOTA ================= -->
+
+<!-- =====================================================
+     ANGGOTA
+===================================================== -->
 
 <section id="members">
 
@@ -392,11 +460,16 @@ th{
 
     <h2>👥 Anggota</h2>
 
-    <button class="primary" id="addBtn">
+    <button
+      class="primary"
+      id="addBtn">
+
       + Anggota
+
     </button>
 
   </div>
+
 
   <div class="card">
 
@@ -412,7 +485,7 @@ th{
             <th>NextPay</th>
             <th>Tunggakan</th>
             <th>ADM</th>
-            <th></th>
+            <th>Aksi</th>
           </tr>
 
         </thead>
@@ -428,7 +501,10 @@ th{
 </section>
 
 
-<!-- ================= PEMASUKAN ================= -->
+
+<!-- =====================================================
+     PEMASUKAN
+===================================================== -->
 
 <section id="income">
 
@@ -439,16 +515,22 @@ th{
     <button
       class="success"
       onclick="openTransactionModal('income')">
+
       + Pemasukan
+
     </button>
 
   </div>
 
+
   <div class="card">
 
     <div class="notice">
+
       Semua uang yang masuk ke kas dicatat di sini.
+
     </div>
+
 
     <div style="overflow:auto">
 
@@ -476,7 +558,10 @@ th{
 </section>
 
 
-<!-- ================= PENGELUARAN ================= -->
+
+<!-- =====================================================
+     PENGELUARAN
+===================================================== -->
 
 <section id="expense">
 
@@ -487,16 +572,22 @@ th{
     <button
       class="primary"
       onclick="openTransactionModal('expense')">
+
       + Pengeluaran
+
     </button>
 
   </div>
 
+
   <div class="card">
 
     <div class="notice">
+
       Semua uang yang keluar dari kas dicatat di sini.
+
     </div>
+
 
     <div style="overflow:auto">
 
@@ -524,7 +615,10 @@ th{
 </section>
 
 
-<!-- ================= PENGAJUAN ================= -->
+
+<!-- =====================================================
+     PENGAJUAN
+===================================================== -->
 
 <section id="requests">
 
@@ -534,54 +628,91 @@ th{
 
   </div>
 
-  <div id="memberSubmit" class="card hidden">
+
+  <div
+    id="memberSubmit"
+    class="card hidden">
 
     <h3>Ajukan Pembayaran</h3>
 
-    <label>Nama karakter</label>
+
+    <label>
+      Nama karakter
+    </label>
 
     <input
       id="mname"
       placeholder="Nama karakter">
 
-    <label>Jenis</label>
+
+    <label>
+      Jenis
+    </label>
 
     <select id="ptype">
 
-      <option>KAS</option>
-      <option>ADM</option>
+      <option value="KAS">
+        KAS
+      </option>
+
+      <option value="ADM">
+        ADM
+      </option>
 
     </select>
 
-    <label>Jumlah (Rp)</label>
+
+    <label>
+      Jumlah (Rp)
+    </label>
 
     <input
       id="pamount"
       type="number"
-      min="1">
+      min="1"
+      placeholder="Contoh: 50000">
 
-    <label>Screenshot bukti</label>
+
+    <label>
+      Screenshot bukti
+    </label>
 
     <input
       id="proof"
       type="file"
-      accept="image/*">
+      accept="image/jpeg,image/png,image/webp,image/gif">
 
-    <label>Catatan</label>
 
-    <textarea id="pnote"></textarea>
+    <small>
+      Format: JPG, PNG, WEBP, atau GIF.
+    </small>
+
+
+    <label>
+      Catatan
+    </label>
+
+    <textarea
+      id="pnote"
+      placeholder="Catatan tambahan (opsional)">
+    </textarea>
+
 
     <button
       class="primary"
       onclick="submitPayment()">
+
       Kirim Pengajuan
+
     </button>
 
   </div>
 
+
   <div class="card">
 
     <h3>Daftar Pengajuan</h3>
+
 
     <div style="overflow:auto">
 
@@ -612,7 +743,10 @@ th{
 </section>
 
 
-<!-- ================= PENGATURAN ================= -->
+
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
 
 <section id="settings">
 
@@ -620,55 +754,82 @@ th{
 
     <h2>⚙️ Pengaturan Admin</h2>
 
+
     <p>
+
       Login admin diperlukan untuk mengubah data anggota,
       pengaturan dan transaksi.
+
     </p>
+
 
     <div id="adminLogin">
 
-      <label>Password Admin</label>
+      <label>
+        Password Admin
+      </label>
 
       <input
         id="adminpass"
         type="password"
         placeholder="Password admin">
 
+
       <button
         class="primary"
         onclick="adminLogin()">
+
         Masuk Admin
+
       </button>
 
     </div>
 
-    <div id="adminPanel" class="hidden">
 
-      <label>Tanggal Rekap</label>
+    <div
+      id="adminPanel"
+      class="hidden">
+
+      <label>
+        Tanggal Rekap
+      </label>
 
       <input
         id="rdate"
         type="date">
 
-      <label>Iuran KAS / hari</label>
+
+      <label>
+        Iuran KAS / hari
+      </label>
 
       <input
         id="kasdaily"
-        type="number">
+        type="number"
+        min="0">
 
-      <label>ADM standar anggota baru</label>
+
+      <label>
+        ADM standar anggota baru
+      </label>
 
       <input
         id="admdefault"
-        type="number">
+        type="number"
+        min="0">
+
 
       <br><br>
+
 
       <button
         class="primary"
         onclick="saveSettings()">
+
         Simpan Pengaturan
+
       </button>
+
 
       <p id="adminmsg"></p>
 
@@ -681,13 +842,19 @@ th{
 </main>
 
 
-<!-- ================= MODAL ================= -->
 
-<div id="modal" class="modal">
+<!-- =====================================================
+     MODAL
+===================================================== -->
+
+<div
+  id="modal"
+  class="modal">
 
   <div id="modalBody"></div>
 
 </div>
+
 
 
 <script>
@@ -697,16 +864,26 @@ th{
 ===================================================== */
 
 const SUPABASE_URL =
-"https://jjnmaylxjzgixnrqopro.supabase.co";
+  "https://jjnmaylxjzgixnrqopro.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_lkURZKFsysGqqerO53RP_Q_h8COOyLr";
+  "sb_publishable_lkURZKFsysGqqerO53RP_Q_h8COOyLr";
 
 const sb =
-supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =====================================================
+   STORAGE
+   PENTING:
+   Nama bucket harus SAMA persis dengan Supabase.
+===================================================== */
+
+const PROOF_BUCKET =
+  "payment-proofs";
 
 
 /* =====================================================
@@ -714,10 +891,10 @@ supabase.createClient(
 ===================================================== */
 
 let adminPass =
-sessionStorage.getItem("kas_admin") || "";
+  sessionStorage.getItem("kas_admin") || "";
 
 let isAdmin =
-!!adminPass;
+  !!adminPass;
 
 let members = [];
 
@@ -733,8 +910,8 @@ let expenses = [];
 ===================================================== */
 
 const money = n =>
-"Rp " +
-Number(n || 0).toLocaleString("id-ID");
+  "Rp " +
+  Number(n || 0).toLocaleString("id-ID");
 
 
 function escapeHTML(value){
@@ -745,6 +922,31 @@ function escapeHTML(value){
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+
+}
+
+
+function formatDate(date){
+
+  if(!date)
+    return "-";
+
+  try{
+
+    return new Date(date)
+      .toLocaleString(
+        "id-ID",
+        {
+          dateStyle:"medium",
+          timeStyle:"short"
+        }
+      );
+
+  }catch{
+
+    return "-";
+
+  }
 
 }
 
@@ -761,12 +963,19 @@ function tab(id){
       x.classList.remove("show")
     );
 
-  document
-    .getElementById(id)
-    .classList.add("show");
+
+  const section =
+    document.getElementById(id);
+
+
+  if(section)
+    section.classList.add("show");
+
 
   document
-    .querySelectorAll("nav button[data-tab]")
+    .querySelectorAll(
+      "nav button[data-tab]"
+    )
     .forEach(x =>
       x.classList.toggle(
         "active",
@@ -774,20 +983,24 @@ function tab(id){
       )
     );
 
+
   if(id === "requests")
     loadRequests();
 
-  if(id === "income")
-    loadTransactions();
 
-  if(id === "expense")
+  if(
+    id === "income" ||
+    id === "expense"
+  )
     loadTransactions();
 
 }
 
 
 document
-  .querySelectorAll("nav button[data-tab]")
+  .querySelectorAll(
+    "nav button[data-tab]"
+  )
   .forEach(b => {
 
     b.onclick = () =>
@@ -797,14 +1010,60 @@ document
 
 
 /* =====================================================
-   AUTH
+   AUTH UI
 ===================================================== */
+
+function renderAuth(){
+
+  document
+    .getElementById("logout")
+    .classList.toggle(
+      "hidden",
+      !isAdmin
+    );
+
+
+  document
+    .getElementById("adminBadge")
+    .classList.toggle(
+      "hidden",
+      !isAdmin
+    );
+
+
+  document
+    .getElementById("memberSubmit")
+    .classList.toggle(
+      "hidden",
+      isAdmin
+    );
+
+
+  document
+    .getElementById("adminLogin")
+    .classList.toggle(
+      "hidden",
+      isAdmin
+    );
+
+
+  document
+    .getElementById("adminPanel")
+    .classList.toggle(
+      "hidden",
+      !isAdmin
+    );
+
+}
+
 
 document
   .getElementById("logout")
   .onclick = () => {
 
-    sessionStorage.removeItem("kas_admin");
+    sessionStorage.removeItem(
+      "kas_admin"
+    );
 
     adminPass = "";
 
@@ -817,39 +1076,6 @@ document
     load();
 
   };
-
-
-function renderAuth(){
-
-  document
-    .getElementById("logout")
-    .classList.toggle(
-      "hidden",
-      !isAdmin
-    );
-
-  document
-    .getElementById("memberSubmit")
-    .classList.toggle(
-      "hidden",
-      isAdmin
-    );
-
-  document
-    .getElementById("adminLogin")
-    .classList.toggle(
-      "hidden",
-      isAdmin
-    );
-
-  document
-    .getElementById("adminPanel")
-    .classList.toggle(
-      "hidden",
-      !isAdmin
-    );
-
-}
 
 
 /* =====================================================
@@ -867,23 +1093,57 @@ async function load(){
       .eq("id",1)
       .single();
 
-    if(a.data)
-      settings = a.data;
+
+    if(a.data){
+
+      settings =
+        a.data;
+
+      if(isAdmin){
+
+        document
+          .getElementById("rdate")
+          .value =
+          settings.report_date || "";
+
+        document
+          .getElementById("kasdaily")
+          .value =
+          settings.kas_daily ?? "";
+
+        document
+          .getElementById("admdefault")
+          .value =
+          settings.adm_default ?? "";
+
+      }
+
+    }
 
 
     const m =
       await sb
       .from("members")
       .select("*")
-      .order("name");
+      .order(
+        "name",
+        {
+          ascending:true
+        }
+      );
+
 
     if(m.error){
 
-      console.error(m.error);
+      console.error(
+        "members:",
+        m.error
+      );
 
     }else{
 
-      members = m.data || [];
+      members =
+        m.data || [];
 
     }
 
@@ -894,7 +1154,10 @@ async function load(){
 
   }catch(err){
 
-    console.error(err);
+    console.error(
+      "LOAD ERROR:",
+      err
+    );
 
   }
 
@@ -902,7 +1165,7 @@ async function load(){
 
 
 /* =====================================================
-   RENDER DASHBOARD
+   DASHBOARD
 ===================================================== */
 
 function render(){
@@ -916,7 +1179,13 @@ function render(){
   const tung =
     members.reduce(
       (s,m) =>
-        s + Math.max(0,Number(m.arrears || 0)),
+        s +
+        Math.max(
+          0,
+          Number(
+            m.arrears || 0
+          )
+        ),
       0
     );
 
@@ -924,7 +1193,10 @@ function render(){
   const adm =
     members.reduce(
       (s,m) =>
-        s + Number(m.adm_due || 0),
+        s +
+        Number(
+          m.adm_due || 0
+        ),
       0
     );
 
@@ -932,7 +1204,10 @@ function render(){
   const totalIncome =
     incomes.reduce(
       (s,x) =>
-        s + Number(x.amount || 0),
+        s +
+        Number(
+          x.amount || 0
+        ),
       0
     );
 
@@ -940,43 +1215,53 @@ function render(){
   const totalExpense =
     expenses.reduce(
       (s,x) =>
-        s + Number(x.amount || 0),
+        s +
+        Number(
+          x.amount || 0
+        ),
       0
     );
 
 
   const saldo =
-    totalIncome - totalExpense;
+    totalIncome -
+    totalExpense;
 
 
   document
     .getElementById("saldo")
-    .textContent = money(saldo);
+    .textContent =
+    money(saldo);
 
 
   document
     .getElementById("wajib")
-    .textContent = wajib;
+    .textContent =
+    wajib;
 
 
   document
     .getElementById("tunggakan")
-    .textContent = money(tung);
+    .textContent =
+    money(tung);
 
 
   document
     .getElementById("adm")
-    .textContent = money(adm);
+    .textContent =
+    money(adm);
 
 
   document
     .getElementById("totalIncome")
-    .textContent = money(totalIncome);
+    .textContent =
+    money(totalIncome);
 
 
   document
     .getElementById("totalExpense")
-    .textContent = money(totalExpense);
+    .textContent =
+    money(totalExpense);
 
 
   document
@@ -984,32 +1269,46 @@ function render(){
     .innerHTML = `
 
       Tanggal rekap:
-      <b>${escapeHTML(settings.report_date || "-")}</b>
+      <b>
+        ${escapeHTML(
+          settings.report_date || "-"
+        )}
+      </b>
 
       <br>
 
       Iuran harian:
-      <b>${money(settings.kas_daily)}</b>
+      <b>
+        ${money(settings.kas_daily)}
+      </b>
 
       <br>
 
       ADM standar:
-      <b>${money(settings.adm_default)}</b>
+      <b>
+        ${money(settings.adm_default)}
+      </b>
 
       <br><br>
 
       Total pemasukan:
-      <b class="green">${money(totalIncome)}</b>
+      <b class="green">
+        ${money(totalIncome)}
+      </b>
 
       <br>
 
       Total pengeluaran:
-      <b class="red">${money(totalExpense)}</b>
+      <b class="red">
+        ${money(totalExpense)}
+      </b>
 
       <br>
 
       Saldo kas:
-      <b>${money(saldo)}</b>
+      <b>
+        ${money(saldo)}
+      </b>
 
     `;
 
@@ -1022,23 +1321,30 @@ function render(){
 
 
 /* =====================================================
-   MEMBER
+   MEMBERS
 ===================================================== */
 
 function renderMembers(){
 
   const body =
-    document.getElementById("memberRows");
+    document.getElementById(
+      "memberRows"
+    );
 
 
   if(!members.length){
 
-    body.innerHTML =
-      `<tr>
-        <td colspan="6" class="empty">
+    body.innerHTML = `
+      <tr>
+        <td
+          colspan="6"
+          class="empty">
+
           Belum ada anggota.
+
         </td>
-      </tr>`;
+      </tr>
+    `;
 
     return;
 
@@ -1054,16 +1360,32 @@ function renderMembers(){
           ${escapeHTML(m.name)}
         </td>
 
-        <td class="${Number(m.balance) < 0 ? "bad" : "ok"}">
+        <td
+          class="${
+            Number(m.balance) < 0
+            ? "bad"
+            : "ok"
+          }">
+
           ${money(m.balance)}
+
         </td>
 
         <td>
-          ${escapeHTML(m.next_pay || "-")}
+          ${escapeHTML(
+            m.next_pay || "-"
+          )}
         </td>
 
-        <td class="${Number(m.arrears) > 0 ? "bad" : "ok"}">
+        <td
+          class="${
+            Number(m.arrears) > 0
+            ? "bad"
+            : "ok"
+          }">
+
           ${money(m.arrears)}
+
         </td>
 
         <td>
@@ -1075,11 +1397,15 @@ function renderMembers(){
           ${
             isAdmin
             ?
-            `<button
+            `
+            <button
               class="secondary"
               onclick="editMember('${m.id}')">
+
               Edit
-            </button>`
+
+            </button>
+            `
             :
             "-"
           }
@@ -1103,28 +1429,58 @@ async function loadTransactions(){
     await sb
     .from("cash_income")
     .select("*")
-    .order("created_at", {
-      ascending:false
-    });
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
 
 
-  if(!incomeResult.error)
+  if(
+    !incomeResult.error
+  ){
+
     incomes =
       incomeResult.data || [];
+
+  }else{
+
+    console.error(
+      "cash_income:",
+      incomeResult.error
+    );
+
+  }
 
 
   const expenseResult =
     await sb
     .from("cash_expense")
     .select("*")
-    .order("created_at", {
-      ascending:false
-    });
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
 
 
-  if(!expenseResult.error)
+  if(
+    !expenseResult.error
+  ){
+
     expenses =
       expenseResult.data || [];
+
+  }else{
+
+    console.error(
+      "cash_expense:",
+      expenseResult.error
+    );
+
+  }
 
 
   renderTransactions();
@@ -1134,27 +1490,32 @@ async function loadTransactions(){
 }
 
 
-/* =====================================================
-   RENDER TRANSAKSI
-===================================================== */
-
 function renderTransactions(){
 
   const incomeBody =
-    document.getElementById("incomeRows");
+    document.getElementById(
+      "incomeRows"
+    );
 
   const expenseBody =
-    document.getElementById("expenseRows");
+    document.getElementById(
+      "expenseRows"
+    );
 
 
   if(!incomes.length){
 
-    incomeBody.innerHTML =
-      `<tr>
-        <td colspan="4" class="empty">
+    incomeBody.innerHTML = `
+      <tr>
+        <td
+          colspan="4"
+          class="empty">
+
           Belum ada pemasukan.
+
         </td>
-      </tr>`;
+      </tr>
+    `;
 
   }else{
 
@@ -1164,7 +1525,9 @@ function renderTransactions(){
         <tr>
 
           <td>
-            ${formatDate(x.created_at)}
+            ${formatDate(
+              x.created_at
+            )}
           </td>
 
           <td class="green">
@@ -1172,7 +1535,9 @@ function renderTransactions(){
           </td>
 
           <td>
-            ${escapeHTML(x.description)}
+            ${escapeHTML(
+              x.description
+            )}
           </td>
 
           <td>
@@ -1180,11 +1545,18 @@ function renderTransactions(){
             ${
               isAdmin
               ?
-              `<button
+              `
+              <button
                 class="danger"
-                onclick="deleteTransaction('income','${x.id}')">
+                onclick="deleteTransaction(
+                  'income',
+                  '${x.id}'
+                )">
+
                 Hapus
-              </button>`
+
+              </button>
+              `
               :
               "-"
             }
@@ -1200,12 +1572,17 @@ function renderTransactions(){
 
   if(!expenses.length){
 
-    expenseBody.innerHTML =
-      `<tr>
-        <td colspan="4" class="empty">
+    expenseBody.innerHTML = `
+      <tr>
+        <td
+          colspan="4"
+          class="empty">
+
           Belum ada pengeluaran.
+
         </td>
-      </tr>`;
+      </tr>
+    `;
 
   }else{
 
@@ -1215,7 +1592,9 @@ function renderTransactions(){
         <tr>
 
           <td>
-            ${formatDate(x.created_at)}
+            ${formatDate(
+              x.created_at
+            )}
           </td>
 
           <td class="red">
@@ -1223,7 +1602,9 @@ function renderTransactions(){
           </td>
 
           <td>
-            ${escapeHTML(x.description)}
+            ${escapeHTML(
+              x.description
+            )}
           </td>
 
           <td>
@@ -1231,11 +1612,18 @@ function renderTransactions(){
             ${
               isAdmin
               ?
-              `<button
+              `
+              <button
                 class="danger"
-                onclick="deleteTransaction('expense','${x.id}')">
+                onclick="deleteTransaction(
+                  'expense',
+                  '${x.id}'
+                )">
+
                 Hapus
-              </button>`
+
+              </button>
+              `
               :
               "-"
             }
@@ -1256,7 +1644,10 @@ function updateDashboardTotals(){
   const totalIncome =
     incomes.reduce(
       (s,x) =>
-        s + Number(x.amount || 0),
+        s +
+        Number(
+          x.amount || 0
+        ),
       0
     );
 
@@ -1264,7 +1655,10 @@ function updateDashboardTotals(){
   const totalExpense =
     expenses.reduce(
       (s,x) =>
-        s + Number(x.amount || 0),
+        s +
+        Number(
+          x.amount || 0
+        ),
       0
     );
 
@@ -1284,31 +1678,25 @@ function updateDashboardTotals(){
   document
     .getElementById("saldo")
     .textContent =
-    money(totalIncome - totalExpense);
-
-}
-
-
-function formatDate(date){
-
-  if(!date)
-    return "-";
-
-  return new Date(date)
-    .toLocaleString("id-ID");
+    money(
+      totalIncome -
+      totalExpense
+    );
 
 }
 
 
 /* =====================================================
-   MODAL TRANSAKSI
+   TRANSACTION MODAL
 ===================================================== */
 
 function openTransactionModal(type){
 
   if(!isAdmin){
 
-    alert("Login admin dulu.");
+    alert(
+      "Login admin dulu."
+    );
 
     return;
 
@@ -1321,7 +1709,8 @@ function openTransactionModal(type){
 
   document
     .getElementById("modal")
-    .style.display = "flex";
+    .style.display =
+    "flex";
 
 
   document
@@ -1329,10 +1718,15 @@ function openTransactionModal(type){
     .innerHTML = `
 
       <h2>
-        ${isIncome
+
+        ${
+          isIncome
           ? "📥 Tambah Pemasukan"
-          : "📤 Tambah Pengeluaran"}
+          : "📤 Tambah Pengeluaran"
+        }
+
       </h2>
+
 
       <label>
         Jumlah (Rp)
@@ -1343,6 +1737,7 @@ function openTransactionModal(type){
         type="number"
         min="1"
         placeholder="Contoh: 50000">
+
 
       <label>
         Keterangan
@@ -1356,18 +1751,25 @@ function openTransactionModal(type){
           : "Contoh: Beli perlengkapan"
         }"></textarea>
 
+
       <br>
+
 
       <button
         class="primary"
         onclick="saveTransaction('${type}')">
+
         Simpan
+
       </button>
+
 
       <button
         class="secondary"
         onclick="closeModal()">
+
         Batal
+
       </button>
 
     `;
@@ -1379,7 +1781,9 @@ async function saveTransaction(type){
 
   if(!isAdmin){
 
-    alert("Login admin dulu.");
+    alert(
+      "Login admin dulu."
+    );
 
     return;
 
@@ -1389,21 +1793,28 @@ async function saveTransaction(type){
   const amount =
     Number(
       document
-        .getElementById("t_amount")
-        .value
+      .getElementById("t_amount")
+      .value
     );
 
 
   const description =
     document
-      .getElementById("t_description")
-      .value
-      .trim();
+    .getElementById(
+      "t_description"
+    )
+    .value
+    .trim();
 
 
-  if(!amount || amount <= 0){
+  if(
+    !amount ||
+    amount <= 0
+  ){
 
-    alert("Jumlah harus lebih dari 0.");
+    alert(
+      "Jumlah harus lebih dari 0."
+    );
 
     return;
 
@@ -1412,7 +1823,9 @@ async function saveTransaction(type){
 
   if(!description){
 
-    alert("Keterangan wajib diisi.");
+    alert(
+      "Keterangan wajib diisi."
+    );
 
     return;
 
@@ -1429,11 +1842,8 @@ async function saveTransaction(type){
     await sb
     .from(table)
     .insert({
-
       amount:amount,
-
       description:description
-
     });
 
 
@@ -1444,7 +1854,9 @@ async function saveTransaction(type){
       result.error.message
     );
 
-    console.error(result.error);
+    console.error(
+      result.error
+    );
 
     return;
 
@@ -1452,6 +1864,7 @@ async function saveTransaction(type){
 
 
   closeModal();
+
 
   alert(
     type === "income"
@@ -1468,23 +1881,31 @@ async function saveTransaction(type){
 
 
 /* =====================================================
-   HAPUS TRANSAKSI
+   DELETE TRANSACTION
 ===================================================== */
 
-async function deleteTransaction(type,id){
+async function deleteTransaction(
+  type,
+  id
+){
 
   if(!isAdmin){
 
-    alert("Login admin dulu.");
+    alert(
+      "Login admin dulu."
+    );
 
     return;
 
   }
 
 
-  if(!confirm(
-    "Yakin ingin menghapus transaksi ini?"
-  )) return;
+  if(
+    !confirm(
+      "Yakin ingin menghapus transaksi ini?"
+    )
+  )
+    return;
 
 
   const table =
@@ -1527,14 +1948,18 @@ async function adminLogin(){
 
   const p =
     document
-      .getElementById("adminpass")
-      .value
-      .trim();
+    .getElementById(
+      "adminpass"
+    )
+    .value
+    .trim();
 
 
   if(!p){
 
-    alert("Masukkan password admin.");
+    alert(
+      "Masukkan password admin."
+    );
 
     return;
 
@@ -1553,9 +1978,18 @@ async function adminLogin(){
     );
 
 
-  if(error || !data){
+  if(
+    error ||
+    !data
+  ){
 
-    alert("Password admin salah.");
+    console.error(
+      error
+    );
+
+    alert(
+      "Password admin salah."
+    );
 
     return;
 
@@ -1571,13 +2005,18 @@ async function adminLogin(){
 
   isAdmin = true;
 
+
   renderAuth();
 
-  alert("Login admin berhasil.");
 
-  load();
+  alert(
+    "Login admin berhasil."
+  );
 
-  loadRequests();
+
+  await load();
+
+  await loadRequests();
 
 }
 
@@ -1588,28 +2027,46 @@ async function adminLogin(){
 
 async function saveSettings(){
 
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+
   const result =
     await sb.rpc(
       "admin_set_settings",
       {
-        p_password:adminPass,
+        p_password:
+          adminPass,
 
         p_report_date:
           document
-          .getElementById("rdate")
+          .getElementById(
+            "rdate"
+          )
           .value,
 
         p_kas_daily:
           Number(
             document
-            .getElementById("kasdaily")
+            .getElementById(
+              "kasdaily"
+            )
             .value
           ),
 
         p_adm_default:
           Number(
             document
-            .getElementById("admdefault")
+            .getElementById(
+              "admdefault"
+            )
             .value
           )
       }
@@ -1618,25 +2075,41 @@ async function saveSettings(){
 
   if(result.error){
 
-    alert(result.error.message);
+    alert(
+      result.error.message
+    );
 
     return;
 
   }
 
 
-  alert("Pengaturan tersimpan.");
+  alert(
+    "Pengaturan tersimpan."
+  );
 
-  load();
+
+  await load();
 
 }
 
 
 /* =====================================================
-   PENGAJUAN PEMBAYARAN
+   LOAD REQUESTS
 ===================================================== */
 
 async function loadRequests(){
+
+  const body =
+    document
+    .getElementById(
+      "reqRows"
+    );
+
+
+  if(!body)
+    return;
+
 
   const q =
     await sb
@@ -1650,23 +2123,54 @@ async function loadRequests(){
     );
 
 
+  if(q.error){
+
+    console.error(
+      "payment_requests:",
+      q.error
+    );
+
+
+    body.innerHTML = `
+      <tr>
+        <td
+          colspan="7"
+          class="empty">
+
+          Gagal memuat pengajuan.
+
+          <br>
+
+          ${escapeHTML(
+            q.error.message
+          )}
+
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
+
   const rows =
     q.data || [];
 
 
-  const body =
-    document
-      .getElementById("reqRows");
-
-
   if(!rows.length){
 
-    body.innerHTML =
-      `<tr>
-        <td colspan="7" class="empty">
+    body.innerHTML = `
+      <tr>
+        <td
+          colspan="7"
+          class="empty">
+
           Belum ada pengajuan.
+
         </td>
-      </tr>`;
+      </tr>
+    `;
 
     return;
 
@@ -1674,109 +2178,217 @@ async function loadRequests(){
 
 
   body.innerHTML =
-    rows.map(r => `
+    rows.map(r => {
 
-      <tr>
+      const status =
+        String(
+          r.status || ""
+        ).toUpperCase();
 
-        <td>
-          ${formatDate(r.created_at)}
-        </td>
 
-        <td>
-          ${escapeHTML(r.member_name)}
-        </td>
+      let statusClass =
+        "";
 
-        <td>
-          ${escapeHTML(r.payment_type)}
-        </td>
 
-        <td>
-          ${money(r.amount)}
-        </td>
+      if(status === "PENDING")
+        statusClass =
+          "status-pending";
 
-        <td>
-          <span class="pill">
-            ${escapeHTML(r.status)}
-          </span>
-        </td>
+      if(status === "APPROVED")
+        statusClass =
+          "status-approved";
 
-        <td>
+      if(status === "REJECTED")
+        statusClass =
+          "status-rejected";
 
-          ${
-            r.screenshot_url
-            ?
-            `<a
-              target="_blank"
-              href="${r.screenshot_url}">
-              Lihat
-            </a>`
-            :
-            "-"
-          }
 
-        </td>
+      return `
 
-        <td>
+        <tr>
 
-          ${
-            isAdmin &&
-            r.status === "PENDING"
+          <td>
+            ${formatDate(
+              r.created_at
+            )}
+          </td>
 
-            ?
 
-            `<button
-              class="success"
-              onclick="review('${r.id}','APPROVED')">
-              Terima
-            </button>
+          <td>
+            ${escapeHTML(
+              r.member_name
+            )}
+          </td>
 
-            <button
-              class="danger"
-              onclick="review('${r.id}','REJECTED')">
-              Tolak
-            </button>`
 
-            :
+          <td>
+            ${escapeHTML(
+              r.payment_type
+            )}
+          </td>
 
-            "-"
-          }
 
-        </td>
+          <td>
+            ${money(r.amount)}
+          </td>
 
-      </tr>
 
-    `).join("");
+          <td>
+
+            <span
+              class="pill ${statusClass}">
+
+              ${escapeHTML(
+                status || "-"
+              )}
+
+            </span>
+
+          </td>
+
+
+          <td>
+
+            ${
+              r.screenshot_url
+              ?
+
+              `
+              <a
+                href="${escapeHTML(
+                  r.screenshot_url
+                )}"
+                target="_blank"
+                rel="noopener noreferrer">
+
+                <img
+                  class="proof-img"
+                  src="${escapeHTML(
+                    r.screenshot_url
+                  )}"
+                  alt="Bukti pembayaran"
+                  loading="lazy"
+                  onerror="this.style.display='none'">
+
+                <br>
+
+                Lihat bukti
+
+              </a>
+              `
+
+              :
+
+              "Tidak ada bukti"
+
+            }
+
+          </td>
+
+
+          <td>
+
+            ${
+              isAdmin &&
+              status === "PENDING"
+
+              ?
+
+              `
+
+              <button
+                class="success"
+                onclick="review(
+                  '${r.id}',
+                  'APPROVED'
+                )">
+
+                Terima
+
+              </button>
+
+
+              <button
+                class="danger"
+                onclick="review(
+                  '${r.id}',
+                  'REJECTED'
+                )">
+
+                Tolak
+
+              </button>
+
+              `
+
+              :
+
+              "-"
+
+            }
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }).join("");
 
 }
 
 
 /* =====================================================
-   REVIEW PEMBAYARAN
+   REVIEW PAYMENT
 ===================================================== */
 
-async function review(id,action){
+async function review(
+  id,
+  action
+){
 
-  if(!confirm(
-    action === "APPROVED"
-    ? "Terima pengajuan ini?"
-    : "Tolak pengajuan ini?"
-  )) return;
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !confirm(
+      action === "APPROVED"
+      ? "Terima pengajuan ini?"
+      : "Tolak pengajuan ini?"
+    )
+  )
+    return;
 
 
   const result =
     await sb.rpc(
       "admin_review_payment",
       {
-        p_password:adminPass,
-        p_request_id:id,
-        p_action:action
+        p_password:
+          adminPass,
+
+        p_request_id:
+          id,
+
+        p_action:
+          action
       }
     );
 
 
   if(result.error){
 
-    alert(result.error.message);
+    alert(
+      result.error.message
+    );
 
     return;
 
@@ -1790,9 +2402,9 @@ async function review(id,action){
   );
 
 
-  load();
+  await load();
 
-  loadRequests();
+  await loadRequests();
 
 }
 
@@ -1805,38 +2417,53 @@ async function submitPayment(){
 
   const name =
     document
-      .getElementById("mname")
-      .value
-      .trim();
+    .getElementById(
+      "mname"
+    )
+    .value
+    .trim();
 
 
   const type =
     document
-      .getElementById("ptype")
-      .value;
+    .getElementById(
+      "ptype"
+    )
+    .value;
 
 
   const amount =
     Number(
       document
-      .getElementById("pamount")
+      .getElementById(
+        "pamount"
+      )
       .value
     );
 
 
   const file =
     document
-      .getElementById("proof")
-      .files[0];
+    .getElementById(
+      "proof"
+    )
+    .files[0];
 
 
   const note =
     document
-      .getElementById("pnote")
-      .value;
+    .getElementById(
+      "pnote"
+    )
+    .value
+    .trim();
 
 
-  if(!name || !amount){
+  if(
+    !name ||
+    !amount ||
+    amount <= 0
+  ){
 
     alert(
       "Nama dan jumlah wajib diisi."
@@ -1850,67 +2477,169 @@ async function submitPayment(){
   let url = null;
 
 
+  /* =================================================
+     UPLOAD BUKTI
+     BUCKET: payment-proofs
+  ================================================= */
+
   if(file){
 
-    const path =
-      `${Date.now()}-${Math.random()
-      .toString(36)
-      .slice(2)}-${file.name
-      .replace(
-        /[^a-zA-Z0-9._-]/g,
-        "_"
-      )}`;
+    const allowed =
+      [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/gif"
+      ];
 
 
-    const up =
-      await sb
-      .storage
-      .from("payment-proof")
-      .upload(
-        path,
-        file,
-        {
-          upsert:false
-        }
+    if(
+      !allowed.includes(
+        file.type
+      )
+    ){
+
+      alert(
+        "File harus berupa gambar JPG, PNG, WEBP, atau GIF."
       );
-
-
-    if(up.error){
-
-      alert(up.error.message);
 
       return;
 
     }
 
 
-    url =
+    /* Batasi 5 MB */
+
+    if(
+      file.size >
+      5 * 1024 * 1024
+    ){
+
+      alert(
+        "Ukuran gambar maksimal 5 MB."
+      );
+
+      return;
+
+    }
+
+
+    const safeName =
+      file.name
+      .replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_"
+      );
+
+
+    const path =
+      `${Date.now()}-${Math.random()
+      .toString(36)
+      .slice(2)}-${safeName}`;
+
+
+    const up =
+      await sb
+      .storage
+      .from(PROOF_BUCKET)
+      .upload(
+        path,
+        file,
+        {
+          upsert:false,
+          contentType:file.type,
+          cacheControl:"3600"
+        }
+      );
+
+
+    if(up.error){
+
+      console.error(
+        "UPLOAD ERROR:",
+        up.error
+      );
+
+
+      alert(
+        "Upload bukti gagal: " +
+        up.error.message
+      );
+
+      return;
+
+    }
+
+
+    /*
+      Bucket harus PUBLIC agar getPublicUrl
+      dapat dibuka langsung oleh admin.
+    */
+
+    const publicResult =
       sb
       .storage
-      .from("payment-proof")
-      .getPublicUrl(path)
+      .from(PROOF_BUCKET)
+      .getPublicUrl(path);
+
+
+    url =
+      publicResult
       .data
       .publicUrl;
 
+
+    if(!url){
+
+      alert(
+        "URL bukti gagal dibuat."
+      );
+
+      return;
+
+    }
+
   }
 
+
+  /* =================================================
+     SIMPAN PENGAJUAN
+  ================================================= */
 
   const result =
     await sb.rpc(
       "submit_payment",
       {
-        p_member_name:name,
-        p_type:type,
-        p_amount:amount,
-        p_screenshot_url:url,
-        p_note:note
+        p_member_name:
+          name,
+
+        p_type:
+          type,
+
+        p_amount:
+          amount,
+
+        p_screenshot_url:
+          url,
+
+        p_note:
+          note
       }
     );
 
 
   if(result.error){
 
-    alert(result.error.message);
+    console.error(
+      "SUBMIT ERROR:",
+      result.error
+    );
+
+
+    alert(
+      "Pengajuan gagal: " +
+      result.error.message
+    );
 
     return;
 
@@ -1923,15 +2652,27 @@ async function submitPayment(){
 
 
   document
-    .getElementById("pamount")
+    .getElementById(
+      "pamount"
+    )
     .value = "";
+
 
   document
-    .getElementById("proof")
+    .getElementById(
+      "proof"
+    )
     .value = "";
 
 
-  loadRequests();
+  document
+    .getElementById(
+      "pnote"
+    )
+    .value = "";
+
+
+  await loadRequests();
 
 }
 
@@ -1942,90 +2683,151 @@ async function submitPayment(){
 
 async function editMember(id){
 
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+
   const m =
     members.find(
       x => x.id === id
     );
 
 
-  if(!m) return;
+  if(!m)
+    return;
 
 
   document
-    .getElementById("modal")
-    .style.display = "flex";
+    .getElementById(
+      "modal"
+    )
+    .style.display =
+    "flex";
 
 
   document
-    .getElementById("modalBody")
+    .getElementById(
+      "modalBody"
+    )
     .innerHTML = `
 
-      <h2>Edit Anggota</h2>
+      <h2>
+        Edit Anggota
+      </h2>
 
-      <label>Nama</label>
+
+      <label>
+        Nama
+      </label>
 
       <input
         id="e_name"
-        value="${escapeHTML(m.name)}">
+        value="${escapeHTML(
+          m.name
+        )}">
 
-      <label>Saldo</label>
+
+      <label>
+        Saldo
+      </label>
 
       <input
         id="e_bal"
         type="number"
-        value="${m.balance || 0}">
+        value="${Number(
+          m.balance || 0
+        )}">
 
-      <label>NextPay</label>
+
+      <label>
+        NextPay
+      </label>
 
       <input
         id="e_next"
         type="date"
-        value="${m.next_pay || ""}">
+        value="${escapeHTML(
+          m.next_pay || ""
+        )}">
 
-      <label>Tunggakan</label>
+
+      <label>
+        Tunggakan
+      </label>
 
       <input
         id="e_arr"
         type="number"
-        value="${m.arrears || 0}">
+        value="${Number(
+          m.arrears || 0
+        )}">
 
-      <label>Belum bayar dari</label>
+
+      <label>
+        Belum bayar dari
+      </label>
 
       <input
         id="e_from"
         type="date"
-        value="${m.unpaid_from || ""}">
+        value="${escapeHTML(
+          m.unpaid_from || ""
+        )}">
 
-      <label>ADM belum lunas</label>
+
+      <label>
+        ADM belum lunas
+      </label>
 
       <input
         id="e_adm"
         type="number"
-        value="${m.adm_due || 0}">
+        value="${Number(
+          m.adm_due || 0
+        )}">
+
 
       <label>
 
         <input
           id="e_ex"
           type="checkbox"
-          ${m.exempt_kas ? "checked" : ""}>
+          ${
+            m.exempt_kas
+            ? "checked"
+            : ""
+          }>
 
         Bebas KAS
 
       </label>
 
+
       <br>
+
 
       <button
         class="primary"
         onclick="saveMember('${id}')">
+
         Simpan
+
       </button>
+
 
       <button
         class="secondary"
         onclick="closeModal()">
+
         Batal
+
       </button>
 
     `;
@@ -2033,13 +2835,41 @@ async function editMember(id){
 }
 
 
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
+
 function closeModal(){
 
   document
-    .getElementById("modal")
-    .style.display = "none";
+    .getElementById(
+      "modal"
+    )
+    .style.display =
+    "none";
 
 }
+
+
+document
+  .getElementById(
+    "modal"
+  )
+  .addEventListener(
+    "click",
+    e => {
+
+      if(
+        e.target.id ===
+        "modal"
+      ){
+
+        closeModal();
+
+      }
+
+    }
+  );
 
 
 /* =====================================================
@@ -2048,53 +2878,83 @@ function closeModal(){
 
 async function saveMember(id){
 
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+
   const result =
     await sb.rpc(
       "admin_update_member",
       {
-        p_password:adminPass,
+        p_password:
+          adminPass,
 
-        p_id:id,
+        p_id:
+          id,
 
         p_name:
           document
-          .getElementById("e_name")
-          .value,
+          .getElementById(
+            "e_name"
+          )
+          .value
+          .trim(),
 
         p_balance:
           Number(
             document
-            .getElementById("e_bal")
+            .getElementById(
+              "e_bal"
+            )
             .value
           ),
 
         p_next_pay:
           document
-          .getElementById("e_next")
-          .value || null,
+          .getElementById(
+            "e_next"
+          )
+          .value ||
+          null,
 
         p_arrears:
           Number(
             document
-            .getElementById("e_arr")
+            .getElementById(
+              "e_arr"
+            )
             .value
           ),
 
         p_unpaid_from:
           document
-          .getElementById("e_from")
-          .value || null,
+          .getElementById(
+            "e_from"
+          )
+          .value ||
+          null,
 
         p_adm_due:
           Number(
             document
-            .getElementById("e_adm")
+            .getElementById(
+              "e_adm"
+            )
             .value
           ),
 
         p_exempt:
           document
-          .getElementById("e_ex")
+          .getElementById(
+            "e_ex"
+          )
           .checked
       }
     );
@@ -2102,7 +2962,9 @@ async function saveMember(id){
 
   if(result.error){
 
-    alert(result.error.message);
+    alert(
+      result.error.message
+    );
 
     return;
 
@@ -2111,7 +2973,7 @@ async function saveMember(id){
 
   closeModal();
 
-  load();
+  await load();
 
 }
 
@@ -2121,7 +2983,9 @@ async function saveMember(id){
 ===================================================== */
 
 document
-  .getElementById("addBtn")
+  .getElementById(
+    "addBtn"
+  )
   .onclick = () => {
 
     if(!isAdmin){
@@ -2136,54 +3000,83 @@ document
 
 
     document
-      .getElementById("modal")
-      .style.display = "flex";
+      .getElementById(
+        "modal"
+      )
+      .style.display =
+      "flex";
 
 
     document
-      .getElementById("modalBody")
+      .getElementById(
+        "modalBody"
+      )
       .innerHTML = `
 
-        <h2>Tambah Anggota</h2>
+        <h2>
+          Tambah Anggota
+        </h2>
 
-        <label>Nama</label>
+
+        <label>
+          Nama
+        </label>
 
         <input
           id="a_name"
           placeholder="Nama anggota">
 
-        <label>Saldo awal</label>
+
+        <label>
+          Saldo awal
+        </label>
 
         <input
           id="a_bal"
           type="number"
           value="0">
 
-        <label>NextPay</label>
+
+        <label>
+          NextPay
+        </label>
 
         <input
           id="a_next"
           type="date">
 
-        <label>ADM belum lunas</label>
+
+        <label>
+          ADM belum lunas
+        </label>
 
         <input
           id="a_adm"
           type="number"
-          value="${settings.adm_default || 10000}">
+          value="${Number(
+            settings.adm_default ||
+            10000
+          )}">
+
 
         <br>
+
 
         <button
           class="primary"
           onclick="addMember()">
+
           Tambah
+
         </button>
+
 
         <button
           class="secondary"
           onclick="closeModal()">
+
           Batal
+
         </button>
 
       `;
@@ -2197,11 +3090,24 @@ document
 
 async function addMember(){
 
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+
   const name =
     document
-      .getElementById("a_name")
-      .value
-      .trim();
+    .getElementById(
+      "a_name"
+    )
+    .value
+    .trim();
 
 
   if(!name){
@@ -2219,37 +3125,49 @@ async function addMember(){
     await sb.rpc(
       "admin_add_member",
       {
-        p_password:adminPass,
+        p_password:
+          adminPass,
 
-        p_name:name,
+        p_name:
+          name,
 
         p_balance:
           Number(
             document
-            .getElementById("a_bal")
+            .getElementById(
+              "a_bal"
+            )
             .value
           ),
 
         p_next_pay:
           document
-          .getElementById("a_next")
-          .value || null,
+          .getElementById(
+            "a_next"
+          )
+          .value ||
+          null,
 
         p_adm_due:
           Number(
             document
-            .getElementById("a_adm")
+            .getElementById(
+              "a_adm"
+            )
             .value
           ),
 
-        p_exempt:false
+        p_exempt:
+          false
       }
     );
 
 
   if(result.error){
 
-    alert(result.error.message);
+    alert(
+      result.error.message
+    );
 
     return;
 
@@ -2258,11 +3176,13 @@ async function addMember(){
 
   closeModal();
 
+
   alert(
     "Anggota berhasil ditambahkan."
   );
 
-  load();
+
+  await load();
 
 }
 
@@ -2292,7 +3212,11 @@ sb
     schema:"public",
     table:"members"
   },
-  () => load()
+  () => {
+
+    load();
+
+  }
 )
 
 .on(
@@ -2302,7 +3226,11 @@ sb
     schema:"public",
     table:"payment_requests"
   },
-  () => loadRequests()
+  () => {
+
+    loadRequests();
+
+  }
 )
 
 .on(
@@ -2312,7 +3240,11 @@ sb
     schema:"public",
     table:"app_settings"
   },
-  () => load()
+  () => {
+
+    load();
+
+  }
 )
 
 .on(
@@ -2322,7 +3254,11 @@ sb
     schema:"public",
     table:"cash_income"
   },
-  () => loadTransactions()
+  () => {
+
+    loadTransactions();
+
+  }
 )
 
 .on(
@@ -2332,10 +3268,38 @@ sb
     schema:"public",
     table:"cash_expense"
   },
-  () => loadTransactions()
+  () => {
+
+    loadTransactions();
+
+  }
 )
 
-.subscribe();
+.subscribe(
+  status => {
+
+    const el =
+      document.getElementById(
+        "rt"
+      );
+
+
+    if(
+      status === "SUBSCRIBED"
+    ){
+
+      el.textContent =
+        "🟢 Realtime aktif";
+
+    }else{
+
+      el.textContent =
+        "🟡 Realtime menghubungkan...";
+
+    }
+
+  }
+);
 
 </script>
 
