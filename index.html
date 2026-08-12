@@ -49,11 +49,6 @@ body{
   min-height:100vh;
 }
 
-
-/* =====================================================
-   GRAFFITI DECORATION
-===================================================== */
-
 body:before{
   content:"";
   position:fixed;
@@ -69,20 +64,10 @@ body:before{
   z-index:-1;
 }
 
-
-/* =====================================================
-   APP LAYOUT
-===================================================== */
-
 .app{
   min-height:100vh;
   display:flex;
 }
-
-
-/* =====================================================
-   SIDEBAR
-===================================================== */
 
 .sidebar{
   width:270px;
@@ -145,11 +130,6 @@ body:before{
   margin:18px 7px 8px;
   text-transform:uppercase;
 }
-
-
-/* =====================================================
-   SIDEBAR BUTTON
-===================================================== */
 
 .side-btn{
   width:100%;
@@ -225,11 +205,6 @@ body:before{
   background:#292929;
 }
 
-
-/* =====================================================
-   MAIN
-===================================================== */
-
 .main{
   margin-left:270px;
   width:calc(100% - 270px);
@@ -275,11 +250,6 @@ body:before{
   padding:20px;
 }
 
-
-/* =====================================================
-   MOBILE SIDEBAR
-===================================================== */
-
 .mobile-menu{
   display:none;
   border:0;
@@ -305,11 +275,6 @@ body:before{
   display:block;
 }
 
-
-/* =====================================================
-   SECTION
-===================================================== */
-
 section{
   display:none;
 }
@@ -317,11 +282,6 @@ section{
 section.show{
   display:block;
 }
-
-
-/* =====================================================
-   CARDS
-===================================================== */
 
 .card{
   background:
@@ -393,11 +353,6 @@ section.show{
   border-left:5px solid var(--blue);
 }
 
-
-/* =====================================================
-   GRAFFITI HEADINGS
-===================================================== */
-
 h2{
   margin-top:0;
   font-size:25px;
@@ -419,11 +374,6 @@ h3{
   transform:rotate(-1deg);
 }
 
-
-/* =====================================================
-   TOOLBAR
-===================================================== */
-
 .toolbar{
   display:flex;
   align-items:center;
@@ -432,11 +382,6 @@ h3{
   flex-wrap:wrap;
   margin-bottom:14px;
 }
-
-
-/* =====================================================
-   BUTTON
-===================================================== */
 
 button{
   font:inherit;
@@ -481,11 +426,6 @@ button{
   transform:translateY(-2px);
   filter:brightness(1.1);
 }
-
-
-/* =====================================================
-   TABLE
-===================================================== */
 
 .table-wrap{
   overflow:auto;
@@ -540,11 +480,6 @@ tr:hover td{
   font-weight:900;
 }
 
-
-/* =====================================================
-   FORM
-===================================================== */
-
 label{
   display:block;
   margin:10px 0 5px;
@@ -582,11 +517,6 @@ input[type="file"]{
   padding:9px;
 }
 
-
-/* =====================================================
-   NOTICE
-===================================================== */
-
 .notice{
   padding:12px;
   background:#202a10;
@@ -601,11 +531,6 @@ input[type="file"]{
   padding:28px;
   color:#777;
 }
-
-
-/* =====================================================
-   PAYMENT SEARCH
-===================================================== */
 
 .member-search-results{
   display:flex;
@@ -647,11 +572,6 @@ input[type="file"]{
   margin-top:6px;
 }
 
-
-/* =====================================================
-   PILL
-===================================================== */
-
 .pill{
   display:inline-block;
   padding:5px 9px;
@@ -661,11 +581,6 @@ input[type="file"]{
   font-size:11px;
   font-weight:900;
 }
-
-
-/* =====================================================
-   MODAL
-===================================================== */
 
 .modal{
   position:fixed;
@@ -692,11 +607,6 @@ input[type="file"]{
     0 20px 50px #000;
 }
 
-
-/* =====================================================
-   SHARE BOX
-===================================================== */
-
 .share-box{
   background:#0e0e0e;
   border:1px dashed #555;
@@ -709,11 +619,6 @@ input[type="file"]{
   max-height:500px;
   overflow:auto;
 }
-
-
-/* =====================================================
-   UTIL
-===================================================== */
 
 .hidden{
   display:none!important;
@@ -729,11 +634,6 @@ input[type="file"]{
 .mt{
   margin-top:14px;
 }
-
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
 
 @media(max-width:900px){
 
@@ -814,10 +714,6 @@ input[type="file"]{
 
 <div class="app">
 
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
-
 <aside class="sidebar" id="sidebar">
 
   <div class="brand">
@@ -829,121 +725,74 @@ input[type="file"]{
     MENU UTAMA
   </div>
 
-  <button
-    class="side-btn active"
-    data-tab="dash">
-
+  <button class="side-btn active" data-tab="dash">
     <span class="side-left">
       <span>🏠</span>
       <span>Dashboard</span>
     </span>
-
     <span class="arrow">›</span>
-
   </button>
 
-
-  <button
-    class="side-btn"
-    data-tab="members">
-
+  <button class="side-btn" data-tab="members">
     <span class="side-left">
       <span>👥</span>
       <span>Anggota</span>
     </span>
-
     <span class="arrow">›</span>
-
   </button>
 
-
-  <button
-    class="side-btn"
-    data-tab="income">
-
+  <button class="side-btn" data-tab="income">
     <span class="side-left">
       <span>📥</span>
       <span>Pemasukan</span>
     </span>
-
     <span class="arrow">›</span>
-
   </button>
 
-
-  <button
-    class="side-btn"
-    data-tab="expense">
-
+  <button class="side-btn" data-tab="expense">
     <span class="side-left">
       <span>📤</span>
       <span>Pengeluaran</span>
     </span>
-
     <span class="arrow">›</span>
-
   </button>
 
-
-  <button
-    class="side-btn"
-    data-tab="requests">
-
+  <button class="side-btn" data-tab="requests">
     <span class="side-left">
       <span>💳</span>
       <span>Pembayaran</span>
     </span>
-
     <span class="arrow">›</span>
-
   </button>
 
-
-  <!-- ACCORDION PENGATURAN -->
-
-  <button
-    class="side-btn"
-    id="settingAccordion">
-
+  <button class="side-btn" id="settingAccordion">
     <span class="side-left">
       <span>⚙️</span>
       <span>Pengaturan</span>
     </span>
 
-    <span
-      class="arrow"
-      id="settingArrow">
+    <span class="arrow" id="settingArrow">
       ›
     </span>
-
   </button>
 
-  <div
-    class="submenu"
-    id="settingSubmenu">
+  <div class="submenu" id="settingSubmenu">
 
-    <button
-      class="sub-btn"
-      data-tab="settings">
+    <button class="sub-btn" data-tab="settings">
       🔐 Admin
     </button>
 
-    <button
-      class="sub-btn"
-      onclick="openShareModal()">
+    <button class="sub-btn" onclick="openShareModal()">
       📤 Share Rekap
     </button>
 
   </div>
 
-
   <div class="sidebar-title">
     AKSI
   </div>
 
-  <button
-    class="side-btn hidden"
-    id="logout">
+  <button class="side-btn hidden" id="logout">
 
     <span class="side-left">
       <span>🚪</span>
@@ -956,47 +805,35 @@ input[type="file"]{
 
 </aside>
 
-
 <div
   class="overlay"
   id="overlay"
   onclick="closeSidebar()">
 </div>
 
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
 <main class="main">
 
-  <header class="topbar">
+<header class="topbar">
 
-    <button
-      class="mobile-menu"
-      onclick="toggleSidebar()">
-      ☰
-    </button>
+  <button
+    class="mobile-menu"
+    onclick="toggleSidebar()">
+    ☰
+  </button>
 
-    <div class="page-title">
-      <span>STREET OF STYLE</span> KAS
-    </div>
+  <div class="page-title">
+    <span>STREET OF STYLE</span> KAS
+  </div>
 
-    <div
-      class="realtime"
-      id="rt">
-      🟢 REALTIME AKTIF
-    </div>
+  <div
+    class="realtime"
+    id="rt">
+    🟢 REALTIME AKTIF
+  </div>
 
-  </header>
+</header>
 
-
-  <div class="content">
-
-
-<!-- =====================================================
-     DASHBOARD
-===================================================== -->
+<div class="content">
 
 <section id="dash" class="show">
 
@@ -1014,7 +851,6 @@ input[type="file"]{
 
   </div>
 
-
   <div class="grid">
 
     <div class="card metric lime">
@@ -1029,7 +865,6 @@ input[type="file"]{
 
     </div>
 
-
     <div class="card metric blue">
 
       <div class="metric-label">
@@ -1042,7 +877,6 @@ input[type="file"]{
 
     </div>
 
-
     <div class="card metric green">
 
       <div class="metric-label">
@@ -1054,7 +888,6 @@ input[type="file"]{
       </b>
 
     </div>
-
 
     <div class="card metric red">
 
@@ -1070,7 +903,6 @@ input[type="file"]{
 
   </div>
 
-
   <div class="grid2">
 
     <div class="card metric red">
@@ -1084,7 +916,6 @@ input[type="file"]{
       </b>
 
     </div>
-
 
     <div class="card metric">
 
@@ -1100,7 +931,6 @@ input[type="file"]{
 
   </div>
 
-
   <div class="card mt">
 
     <h2 class="graffiti-title">
@@ -1114,11 +944,6 @@ input[type="file"]{
   </div>
 
 </section>
-
-
-<!-- =====================================================
-     ANGGOTA
-===================================================== -->
 
 <section id="members">
 
@@ -1145,7 +970,6 @@ input[type="file"]{
     </div>
 
   </div>
-
 
   <div class="card">
 
@@ -1176,11 +1000,6 @@ input[type="file"]{
 
 </section>
 
-
-<!-- =====================================================
-     PEMASUKAN
-===================================================== -->
-
 <section id="income">
 
   <div class="toolbar">
@@ -1196,7 +1015,6 @@ input[type="file"]{
     </button>
 
   </div>
-
 
   <div class="card">
 
@@ -1229,11 +1047,6 @@ input[type="file"]{
 
 </section>
 
-
-<!-- =====================================================
-     PENGELUARAN
-===================================================== -->
-
 <section id="expense">
 
   <div class="toolbar">
@@ -1249,7 +1062,6 @@ input[type="file"]{
     </button>
 
   </div>
-
 
   <div class="card">
 
@@ -1282,11 +1094,6 @@ input[type="file"]{
 
 </section>
 
-
-<!-- =====================================================
-     PEMBAYARAN
-===================================================== -->
-
 <section id="requests">
 
   <div class="toolbar">
@@ -1296,9 +1103,6 @@ input[type="file"]{
     </h2>
 
   </div>
-
-
-  <!-- FORM MEMBER -->
 
   <div
     id="memberSubmit"
@@ -1313,7 +1117,6 @@ input[type="file"]{
       lalu pilih nama yang sesuai.
     </div>
 
-
     <label>
       🔎 Cari nama karakter
     </label>
@@ -1325,29 +1128,24 @@ input[type="file"]{
       autocomplete="off"
       oninput="searchRequestMember()">
 
-
     <div
       id="memberSearchCount"
       class="search-count">
     </div>
-
 
     <div
       id="memberSearchResults"
       class="member-search-results">
     </div>
 
-
     <input
       id="mname"
       type="hidden">
-
 
     <div
       id="selectedMember"
       class="selected-member hidden">
     </div>
-
 
     <label>
       Jenis pembayaran
@@ -1365,7 +1163,6 @@ input[type="file"]{
 
     </select>
 
-
     <label>
       Jumlah (Rp)
     </label>
@@ -1376,7 +1173,6 @@ input[type="file"]{
       min="1"
       placeholder="Contoh: 7000">
 
-
     <label>
       Screenshot bukti
     </label>
@@ -1385,7 +1181,6 @@ input[type="file"]{
       id="proof"
       type="file"
       accept="image/*">
-
 
     <label>
       Catatan
@@ -1404,9 +1199,6 @@ input[type="file"]{
     </button>
 
   </div>
-
-
-  <!-- DAFTAR PEMBAYARAN -->
 
   <div class="card mt">
 
@@ -1442,11 +1234,6 @@ input[type="file"]{
 
 </section>
 
-
-<!-- =====================================================
-     SETTINGS
-===================================================== -->
-
 <section id="settings">
 
   <div class="card">
@@ -1459,7 +1246,6 @@ input[type="file"]{
       Login admin diperlukan untuk mengubah
       data anggota, pengaturan dan transaksi.
     </p>
-
 
     <div id="adminLogin">
 
@@ -1482,7 +1268,6 @@ input[type="file"]{
 
     </div>
 
-
     <div
       id="adminPanel"
       class="hidden">
@@ -1495,7 +1280,6 @@ input[type="file"]{
         id="rdate"
         type="date">
 
-
       <label>
         Iuran KAS / hari
       </label>
@@ -1503,7 +1287,6 @@ input[type="file"]{
       <input
         id="kasdaily"
         type="number">
-
 
       <label>
         ADM standar anggota baru
@@ -1529,16 +1312,10 @@ input[type="file"]{
 
 </section>
 
-
-  </div>
+</div>
 </main>
 
 </div>
-
-
-<!-- =====================================================
-     MODAL
-===================================================== -->
 
 <div
   id="modal"
@@ -1547,7 +1324,6 @@ input[type="file"]{
   <div id="modalBody"></div>
 
 </div>
-
 
 <script>
 
@@ -1568,6 +1344,2622 @@ supabase.createClient(
 );
 
 
+/* =====================================================
+   DATA
+===================================================== */
+
+let adminPass =
+sessionStorage.getItem("kas_admin") || "";
+
+let isAdmin =
+!!adminPass;
+
+let members = [];
+let settings = {};
+let incomes = [];
+let expenses = [];
+
+
+/* =====================================================
+   HELPER
+===================================================== */
+
+const money = n =>
+"Rp " +
+Number(n || 0).toLocaleString("id-ID");
+
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function escapeJS(value){
+
+  return String(value ?? "")
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'")
+    .replace(/"/g,'\\"')
+    .replace(/\r/g,"\\r")
+    .replace(/\n/g,"\\n");
+
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+function toggleSidebar(){
+
+  document
+    .getElementById("sidebar")
+    .classList.toggle("open");
+
+  document
+    .getElementById("overlay")
+    .classList.toggle("show");
+
+}
+
+
+function closeSidebar(){
+
+  document
+    .getElementById("sidebar")
+    .classList.remove("open");
+
+  document
+    .getElementById("overlay")
+    .classList.remove("show");
+
+}
+
+
+/* =====================================================
+   TAB
+===================================================== */
+
+function tab(id){
+
+  document
+    .querySelectorAll("section")
+    .forEach(x =>
+      x.classList.remove("show")
+    );
+
+  const target =
+    document.getElementById(id);
+
+  if(target)
+    target.classList.add("show");
+
+  document
+    .querySelectorAll(".side-btn[data-tab]")
+    .forEach(x =>
+      x.classList.toggle(
+        "active",
+        x.dataset.tab === id
+      )
+    );
+
+  const titles = {
+
+    dash:"DASHBOARD",
+    members:"ANGGOTA",
+    income:"PEMASUKAN",
+    expense:"PENGELUARAN",
+    requests:"PEMBAYARAN",
+    settings:"PENGATURAN"
+
+  };
+
+  document
+    .querySelector(".page-title")
+    .innerHTML =
+    `<span>STREET OF STYLE</span> ${
+      titles[id] || "KAS"
+    }`;
+
+  if(id === "requests")
+    loadRequests();
+
+  if(id === "income" || id === "expense")
+    loadTransactions();
+
+  closeSidebar();
+
+}
+
+
+document
+  .querySelectorAll(".side-btn[data-tab]")
+  .forEach(btn => {
+
+    btn.onclick = () =>
+      tab(btn.dataset.tab);
+
+  });
+
+
+document
+  .querySelectorAll(".sub-btn[data-tab]")
+  .forEach(btn => {
+
+    btn.onclick = () =>
+      tab(btn.dataset.tab);
+
+  });
+
+
+/* =====================================================
+   ACCORDION SETTINGS
+===================================================== */
+
+document
+  .getElementById("settingAccordion")
+  .onclick = () => {
+
+    const submenu =
+      document.getElementById(
+        "settingSubmenu"
+      );
+
+    const arrow =
+      document.getElementById(
+        "settingArrow"
+      );
+
+    submenu.classList.toggle("open");
+
+    arrow.textContent =
+      submenu.classList.contains("open")
+      ? "⌄"
+      : "›";
+
+  };
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+document
+  .getElementById("logout")
+  .onclick = () => {
+
+    sessionStorage.removeItem(
+      "kas_admin"
+    );
+
+    adminPass = "";
+
+    isAdmin = false;
+
+    renderAuth();
+
+    tab("dash");
+
+    load();
+
+  };
+
+
+function renderAuth(){
+
+  document
+    .getElementById("logout")
+    .classList.toggle(
+      "hidden",
+      !isAdmin
+    );
+
+  document
+    .getElementById("memberSubmit")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("adminLogin")
+    .classList.toggle(
+      "hidden",
+      isAdmin
+    );
+
+  document
+    .getElementById("adminPanel")
+    .classList.toggle(
+      "hidden",
+      !isAdmin
+    );
+
+}
+
+
+/* =====================================================
+   LOAD UTAMA
+===================================================== */
+
+async function load(){
+
+  try{
+
+    const a =
+      await sb
+      .from("app_settings")
+      .select("*")
+      .eq("id",1)
+      .single();
+
+    if(a.data)
+      settings = a.data;
+
+    const m =
+      await sb
+      .from("members")
+      .select("*")
+      .order("name");
+
+    if(m.error){
+
+      console.error(
+        "Gagal mengambil members:",
+        m.error
+      );
+
+    }else{
+
+      members =
+        m.data || [];
+
+    }
+
+    searchRequestMember();
+
+    await loadTransactions();
+
+    render();
+
+    if(settings.report_date){
+
+      document
+        .getElementById("rdate")
+        .value =
+        settings.report_date;
+
+    }
+
+    document
+      .getElementById("kasdaily")
+      .value =
+      settings.kas_daily || 0;
+
+    document
+      .getElementById("admdefault")
+      .value =
+      settings.adm_default || 0;
+
+  }catch(err){
+
+    console.error(err);
+
+  }
+
+}
+
+
+/* =====================================================
+   RENDER DASHBOARD
+===================================================== */
+
+function render(){
+
+  const wajib =
+    members.filter(
+      m => !m.exempt_kas
+    ).length;
+
+  const tung =
+    members.reduce(
+      (s,m) =>
+        s +
+        Math.max(
+          0,
+          Number(m.arrears || 0)
+        ),
+      0
+    );
+
+  const adm =
+    members.reduce(
+      (s,m) =>
+        s +
+        Number(m.adm_due || 0),
+      0
+    );
+
+  const totalIncome =
+    incomes.reduce(
+      (s,x) =>
+        s +
+        Number(x.amount || 0),
+      0
+    );
+
+  const totalExpense =
+    expenses.reduce(
+      (s,x) =>
+        s +
+        Number(x.amount || 0),
+      0
+    );
+
+  const saldo =
+    totalIncome -
+    totalExpense;
+
+  document
+    .getElementById("saldo")
+    .textContent =
+    money(saldo);
+
+  document
+    .getElementById("wajib")
+    .textContent =
+    wajib;
+
+  document
+    .getElementById("tunggakan")
+    .textContent =
+    money(tung);
+
+  document
+    .getElementById("adm")
+    .textContent =
+    money(adm);
+
+  document
+    .getElementById("totalIncome")
+    .textContent =
+    money(totalIncome);
+
+  document
+    .getElementById("totalExpense")
+    .textContent =
+    money(totalExpense);
+
+  document
+    .getElementById("summary")
+    .innerHTML = `
+
+      Tanggal rekap:
+      <b>
+        ${escapeHTML(
+          settings.report_date || "-"
+        )}
+      </b>
+
+      <br><br>
+
+      Iuran harian:
+      <b>
+        ${money(settings.kas_daily)}
+      </b>
+
+      <br>
+
+      ADM standar:
+      <b>
+        ${money(settings.adm_default)}
+      </b>
+
+      <br><br>
+
+      Total anggota:
+      <b>
+        ${members.length}
+      </b>
+
+      <br>
+
+      Total pemasukan:
+      <b class="green-text">
+        ${money(totalIncome)}
+      </b>
+
+      <br>
+
+      Total pengeluaran:
+      <b class="red-text">
+        ${money(totalExpense)}
+      </b>
+
+      <br>
+
+      Saldo kas:
+      <b>
+        ${money(saldo)}
+      </b>
+
+    `;
+
+  renderMembers();
+
+  renderTransactions();
+
+}
+
+
+/* =====================================================
+   RENDER MEMBERS
+===================================================== */
+
+function renderMembers(){
+
+  const body =
+    document.getElementById(
+      "memberRows"
+    );
+
+  if(!members.length){
+
+    body.innerHTML =
+      `<tr>
+        <td colspan="6" class="empty">
+          Belum ada anggota.
+        </td>
+      </tr>`;
+
+    return;
+
+  }
+
+  body.innerHTML =
+    members.map(m => `
+
+      <tr>
+
+        <td>
+          ${escapeHTML(m.name)}
+        </td>
+
+        <td
+          class="${
+            Number(m.balance) < 0
+            ? "bad"
+            : "ok"
+          }">
+
+          ${money(m.balance)}
+
+        </td>
+
+        <td>
+          ${escapeHTML(
+            m.next_pay || "-"
+          )}
+        </td>
+
+        <td
+          class="${
+            Number(m.arrears) > 0
+            ? "bad"
+            : "ok"
+          }">
+
+          ${money(m.arrears)}
+
+        </td>
+
+        <td>
+          ${money(m.adm_due)}
+        </td>
+
+        <td>
+
+          ${
+            isAdmin
+            ?
+            `
+            <div class="flex">
+
+              <button
+                class="secondary"
+                onclick="editMember('${escapeJS(m.id)}')">
+                Edit
+              </button>
+
+              <button
+                class="danger"
+                onclick="deleteMember(
+                  '${escapeJS(m.id)}',
+                  '${escapeJS(m.name)}'
+                )">
+                Hapus
+              </button>
+
+            </div>
+            `
+            :
+            "-"
+          }
+
+        </td>
+
+      </tr>
+
+    `).join("");
+
+}
+
+
+/* =====================================================
+   DELETE MEMBER
+===================================================== */
+
+async function deleteMember(id,name){
+
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+  const yakin =
+    confirm(
+      `Yakin ingin menghapus anggota "${name}"?\n\n` +
+      `Anggota ini akan dihapus dari daftar anggota.`
+    );
+
+  if(!yakin)
+    return;
+
+  const result =
+    await sb.rpc(
+      "admin_delete_member",
+      {
+
+        p_password:
+          adminPass,
+
+        p_id:
+          id
+
+      }
+    );
+
+  if(result.error){
+
+    alert(
+      "Gagal menghapus anggota:\n" +
+      result.error.message
+    );
+
+    return;
+
+  }
+
+  alert(
+    `Anggota "${name}" berhasil dihapus.`
+  );
+
+  await load();
+
+}
+
+
+/* =====================================================
+   TRANSACTIONS
+===================================================== */
+
+async function loadTransactions(){
+
+  const incomeResult =
+    await sb
+    .from("cash_income")
+    .select("*")
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
+
+  if(!incomeResult.error)
+    incomes =
+      incomeResult.data || [];
+
+  const expenseResult =
+    await sb
+    .from("cash_expense")
+    .select("*")
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
+
+  if(!expenseResult.error)
+    expenses =
+      expenseResult.data || [];
+
+  renderTransactions();
+
+  updateDashboardTotals();
+
+}
+
+
+/* =====================================================
+   RENDER TRANSACTIONS
+===================================================== */
+
+function renderTransactions(){
+
+  const incomeBody =
+    document.getElementById(
+      "incomeRows"
+    );
+
+  const expenseBody =
+    document.getElementById(
+      "expenseRows"
+    );
+
+  if(!incomeBody || !expenseBody)
+    return;
+
+  if(!incomes.length){
+
+    incomeBody.innerHTML =
+      `<tr>
+        <td colspan="4" class="empty">
+          Belum ada pemasukan.
+        </td>
+      </tr>`;
+
+  }else{
+
+    incomeBody.innerHTML =
+      incomes.map(x => `
+
+        <tr>
+
+          <td>
+            ${formatDate(x.created_at)}
+          </td>
+
+          <td class="green-text">
+            + ${money(x.amount)}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              x.description
+            )}
+          </td>
+
+          <td>
+
+            ${
+              isAdmin
+              ?
+              `<button
+                class="danger"
+                onclick="deleteTransaction(
+                  'income',
+                  '${escapeJS(x.id)}'
+                )">
+                Hapus
+              </button>`
+              :
+              "-"
+            }
+
+          </td>
+
+        </tr>
+
+      `).join("");
+
+  }
+
+  if(!expenses.length){
+
+    expenseBody.innerHTML =
+      `<tr>
+        <td colspan="4" class="empty">
+          Belum ada pengeluaran.
+        </td>
+      </tr>`;
+
+  }else{
+
+    expenseBody.innerHTML =
+      expenses.map(x => `
+
+        <tr>
+
+          <td>
+            ${formatDate(x.created_at)}
+          </td>
+
+          <td class="red-text">
+            - ${money(x.amount)}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              x.description
+            )}
+          </td>
+
+          <td>
+
+            ${
+              isAdmin
+              ?
+              `<button
+                class="danger"
+                onclick="deleteTransaction(
+                  'expense',
+                  '${escapeJS(x.id)}'
+                )">
+                Hapus
+              </button>`
+              :
+              "-"
+            }
+
+          </td>
+
+        </tr>
+
+      `).join("");
+
+  }
+
+}
+
+
+/* =====================================================
+   DASHBOARD TOTAL
+===================================================== */
+
+function updateDashboardTotals(){
+
+  const totalIncome =
+    incomes.reduce(
+      (s,x) =>
+        s +
+        Number(x.amount || 0),
+      0
+    );
+
+  const totalExpense =
+    expenses.reduce(
+      (s,x) =>
+        s +
+        Number(x.amount || 0),
+      0
+    );
+
+  const income =
+    document.getElementById(
+      "totalIncome"
+    );
+
+  const expense =
+    document.getElementById(
+      "totalExpense"
+    );
+
+  const saldo =
+    document.getElementById(
+      "saldo"
+    );
+
+  if(income)
+    income.textContent =
+      money(totalIncome);
+
+  if(expense)
+    expense.textContent =
+      money(totalExpense);
+
+  if(saldo)
+    saldo.textContent =
+      money(
+        totalIncome -
+        totalExpense
+      );
+
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+function formatDate(date){
+
+  if(!date)
+    return "-";
+
+  return new Date(date)
+    .toLocaleString("id-ID");
+
+}
+
+
+/* =====================================================
+   TRANSACTION MODAL
+===================================================== */
+
+function openTransactionModal(type){
+
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+  const isIncome =
+    type === "income";
+
+  document
+    .getElementById("modal")
+    .style.display =
+    "flex";
+
+  document
+    .getElementById("modalBody")
+    .innerHTML = `
+
+      <h2 class="graffiti-title">
+
+        ${
+          isIncome
+          ? "📥 TAMBAH PEMASUKAN"
+          : "📤 TAMBAH PENGELUARAN"
+        }
+
+      </h2>
+
+      <label>
+        Jumlah (Rp)
+      </label>
+
+      <input
+        id="t_amount"
+        type="number"
+        min="1"
+        placeholder="Contoh: 50000">
+
+      <label>
+        Keterangan
+      </label>
+
+      <textarea
+        id="t_description"
+        placeholder="${
+          isIncome
+          ? "Contoh: Iuran kas anggota"
+          : "Contoh: Beli perlengkapan"
+        }"></textarea>
+
+      <br>
+
+      <button
+        class="primary"
+        onclick="saveTransaction('${type}')">
+        Simpan
+      </button>
+
+      <button
+        class="secondary"
+        onclick="closeModal()">
+        Batal
+      </button>
+
+    `;
+
+}
+
+
+/* =====================================================
+   SAVE TRANSACTION
+===================================================== */
+
+async function saveTransaction(type){
+
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+  const amount =
+    Number(
+      document
+      .getElementById("t_amount")
+      .value
+    );
+
+  const description =
+    document
+      .getElementById(
+        "t_description"
+      )
+      .value
+      .trim();
+
+  if(!amount || amount <= 0){
+
+    alert(
+      "Jumlah harus lebih dari 0."
+    );
+
+    return;
+
+  }
+
+  if(!description){
+
+    alert(
+      "Keterangan wajib diisi."
+    );
+
+    return;
+
+  }
+
+  const table =
+    type === "income"
+    ? "cash_income"
+    : "cash_expense";
+
+  const result =
+    await sb
+    .from(table)
+    .insert({
+
+      amount:amount,
+      description:description
+
+    });
+
+  if(result.error){
+
+    alert(
+      "Gagal menyimpan transaksi: " +
+      result.error.message
+    );
+
+    return;
+
+  }
+
+  closeModal();
+
+  alert(
+    type === "income"
+    ? "Pemasukan berhasil disimpan."
+    : "Pengeluaran berhasil disimpan."
+  );
+
+  await loadTransactions();
+
+  render();
+
+}
+
+
+/* =====================================================
+   DELETE TRANSACTION
+===================================================== */
+
+async function deleteTransaction(
+  type,
+  id
+){
+
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+  if(!confirm(
+    "Yakin ingin menghapus transaksi ini?"
+  )) return;
+
+  const table =
+    type === "income"
+    ? "cash_income"
+    : "cash_expense";
+
+  const result =
+    await sb
+    .from(table)
+    .delete()
+    .eq("id",id);
+
+  if(result.error){
+
+    alert(
+      "Gagal menghapus: " +
+      result.error.message
+    );
+
+    return;
+
+  }
+
+  await loadTransactions();
+
+  render();
+
+}
+
+
+/* =====================================================
+   ADMIN LOGIN
+===================================================== */
+
+async function adminLogin(){
+
+  const p =
+    document
+      .getElementById(
+        "adminpass"
+      )
+      .value
+      .trim();
+
+  if(!p){
+
+    alert(
+      "Masukkan password admin."
+    );
+
+    return;
+
+  }
+
+  const {
+    data,
+    error
+  } =
+    await sb.rpc(
+      "admin_check",
+      {
+        p_password:p
+      }
+    );
+
+  if(error || !data){
+
+    alert(
+      "Password admin salah."
+    );
+
+    return;
+
+  }
+
+  adminPass = p;
+
+  sessionStorage.setItem(
+    "kas_admin",
+    p
+  );
+
+  isAdmin = true;
+
+  renderAuth();
+
+  alert(
+    "Login admin berhasil."
+  );
+
+  load();
+
+  loadRequests();
+
+}
+
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+async function saveSettings(){
+
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+  const result =
+    await sb.rpc(
+      "admin_set_settings",
+      {
+
+        p_password:
+          adminPass,
+
+        p_report_date:
+          document
+          .getElementById("rdate")
+          .value,
+
+        p_kas_daily:
+          Number(
+            document
+            .getElementById("kasdaily")
+            .value
+          ),
+
+        p_adm_default:
+          Number(
+            document
+            .getElementById("admdefault")
+            .value
+          )
+
+      }
+    );
+
+  if(result.error){
+
+    alert(
+      result.error.message
+    );
+
+    return;
+
+  }
+
+  alert(
+    "Pengaturan tersimpan."
+  );
+
+  load();
+
+}
+
+
+/* =====================================================
+   SEARCH MEMBER
+===================================================== */
+
+function searchRequestMember(){
+
+  const input =
+    document.getElementById(
+      "memberSearchRequest"
+    );
+
+  const results =
+    document.getElementById(
+      "memberSearchResults"
+    );
+
+  const count =
+    document.getElementById(
+      "memberSearchCount"
+    );
+
+  if(!input || !results)
+    return;
+
+  const keyword =
+    input.value
+      .trim()
+      .toLowerCase();
+
+  if(!keyword){
+
+    results.innerHTML = "";
+
+    if(count)
+      count.textContent = "";
+
+    return;
+
+  }
+
+  const found =
+    members.filter(m =>
+      String(m.name || "")
+        .toLowerCase()
+        .includes(keyword)
+    );
+
+  if(count){
+
+    count.textContent =
+      `${found.length} anggota ditemukan`;
+
+  }
+
+  if(!found.length){
+
+    results.innerHTML = `
+      <div class="notice">
+        ❌ Nama anggota tidak ditemukan.
+      </div>
+    `;
+
+    return;
+
+  }
+
+  results.innerHTML =
+    found
+      .slice(0,20)
+      .map(m => `
+
+        <button
+          type="button"
+          class="member-result"
+          onclick="selectRequestMember(
+            '${escapeJS(m.name)}'
+          )">
+
+          👤 ${escapeHTML(m.name)}
+
+        </button>
+
+      `)
+      .join("");
+
+}
+
+
+/* =====================================================
+   SELECT MEMBER
+===================================================== */
+
+function selectRequestMember(name){
+
+  document
+    .getElementById("mname")
+    .value =
+    name;
+
+  document
+    .getElementById(
+      "memberSearchRequest"
+    )
+    .value =
+    name;
+
+  document
+    .getElementById(
+      "memberSearchResults"
+    )
+    .innerHTML =
+    "";
+
+  document
+    .getElementById(
+      "memberSearchCount"
+    )
+    .textContent =
+    "";
+
+  const selected =
+    document.getElementById(
+      "selectedMember"
+    );
+
+  selected.classList.remove(
+    "hidden"
+  );
+
+  selected.innerHTML =
+    `✅ Anggota dipilih:
+     <b>${escapeHTML(name)}</b>`;
+
+}
+
+
+/* =====================================================
+   LOAD REQUESTS
+===================================================== */
+
+async function loadRequests(){
+
+  const q =
+    await sb
+    .from("payment_requests")
+    .select("*")
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
+
+  if(q.error){
+
+    console.error(
+      "Gagal mengambil pembayaran:",
+      q.error
+    );
+
+  }
+
+  const rows =
+    q.data || [];
+
+  const body =
+    document.getElementById(
+      "reqRows"
+    );
+
+  if(!body)
+    return;
+
+  if(!rows.length){
+
+    body.innerHTML =
+      `<tr>
+        <td
+          colspan="7"
+          class="empty">
+          Belum ada pembayaran.
+        </td>
+      </tr>`;
+
+    return;
+
+  }
+
+  body.innerHTML =
+    rows.map(r => `
+
+      <tr>
+
+        <td>
+          ${formatDate(
+            r.created_at
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            r.member_name
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            r.payment_type
+          )}
+        </td>
+
+        <td>
+          ${money(
+            r.amount
+          )}
+        </td>
+
+        <td>
+
+          <span class="pill">
+            ${escapeHTML(
+              r.status
+            )}
+          </span>
+
+        </td>
+
+        <td>
+
+          ${
+            r.screenshot_url
+            ?
+            `<a
+              target="_blank"
+              rel="noopener"
+              href="${escapeHTML(
+                r.screenshot_url
+              )}"
+              style="color:#b7ff00">
+              📷 Lihat
+            </a>`
+            :
+            "-"
+          }
+
+        </td>
+
+        <td>
+
+          ${
+            isAdmin &&
+            r.status === "PENDING"
+
+            ?
+
+            `<button
+              class="success"
+              onclick="review(
+                '${escapeJS(r.id)}',
+                'APPROVED'
+              )">
+              Terima
+            </button>
+
+            <button
+              class="danger"
+              onclick="review(
+                '${escapeJS(r.id)}',
+                'REJECTED'
+              )">
+              Tolak
+            </button>`
+
+            :
+
+            "-"
+
+          }
+
+        </td>
+
+      </tr>
+
+    `).join("");
+
+}
+
+
+/* =====================================================
+   REVIEW PAYMENT
+===================================================== */
+
+async function review(
+  id,
+  action
+){
+
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+  if(!confirm(
+    action === "APPROVED"
+    ? "Terima pembayaran ini?"
+    : "Tolak pembayaran ini?"
+  )) return;
+
+  const result =
+    await sb.rpc(
+      "admin_review_payment",
+      {
+
+        p_password:
+          adminPass,
+
+        p_request_id:
+          id,
+
+        p_action:
+          action
+
+      }
+    );
+
+  if(result.error){
+
+    alert(
+      result.error.message
+    );
+
+    return;
+
+  }
+
+  alert(
+    action === "APPROVED"
+    ? "Pembayaran diterima."
+    : "Pembayaran ditolak."
+  );
+
+  await load();
+
+  await loadRequests();
+
+}
+
+
+/* =====================================================
+   SUBMIT PAYMENT
+===================================================== */
+
+async function submitPayment(){
+
+  const name =
+    document
+      .getElementById("mname")
+      .value
+      .trim();
+
+  const type =
+    document
+      .getElementById("ptype")
+      .value;
+
+  const amount =
+    Number(
+      document
+        .getElementById("pamount")
+        .value
+    );
+
+  const file =
+    document
+      .getElementById("proof")
+      .files[0];
+
+  const note =
+    document
+      .getElementById("pnote")
+      .value
+      .trim();
+
+  if(!name){
+
+    alert(
+      "Silakan cari dan pilih nama karakter terlebih dahulu."
+    );
+
+    return;
+
+  }
+
+  const memberExists =
+    members.some(
+      m =>
+        String(m.name)
+          .toLowerCase() ===
+        name.toLowerCase()
+    );
+
+  if(!memberExists){
+
+    alert(
+      "Nama anggota tidak ditemukan di database."
+    );
+
+    return;
+
+  }
+
+  if(!amount || amount <= 0){
+
+    alert(
+      "Jumlah pembayaran harus lebih dari 0."
+    );
+
+    return;
+
+  }
+
+  let url = null;
+
+  if(file){
+
+    if(file.size > 5 * 1024 * 1024){
+
+      alert(
+        "Ukuran gambar maksimal 5 MB."
+      );
+
+      return;
+
+    }
+
+    const safeName =
+      file.name
+        .replace(
+          /[^a-zA-Z0-9._-]/g,
+          "_"
+        );
+
+    const path =
+      `${Date.now()}-${
+        Math.random()
+          .toString(36)
+          .slice(2)
+      }-${safeName}`;
+
+    const up =
+      await sb
+      .storage
+      .from("payment-proofs")
+      .upload(
+        path,
+        file,
+        {
+          upsert:false
+        }
+      );
+
+    if(up.error){
+
+      alert(
+        "Upload bukti gagal: " +
+        up.error.message
+      );
+
+      return;
+
+    }
+
+    url =
+      sb
+      .storage
+      .from("payment-proofs")
+      .getPublicUrl(path)
+      .data
+      .publicUrl;
+
+  }
+
+  const result =
+    await sb.rpc(
+      "submit_payment",
+      {
+
+        p_member_name:
+          name,
+
+        p_type:
+          type,
+
+        p_amount:
+          amount,
+
+        p_screenshot_url:
+          url,
+
+        p_note:
+          note
+
+      }
+    );
+
+  if(result.error){
+
+    alert(
+      "Gagal mengirim pembayaran: " +
+      result.error.message
+    );
+
+    return;
+
+  }
+
+  alert(
+    "✅ Pembayaran berhasil dikirim. Tunggu admin memeriksa."
+  );
+
+  document
+    .getElementById(
+      "memberSearchRequest"
+    )
+    .value =
+    "";
+
+  document
+    .getElementById("mname")
+    .value =
+    "";
+
+  document
+    .getElementById("pamount")
+    .value =
+    "";
+
+  document
+    .getElementById("proof")
+    .value =
+    "";
+
+  document
+    .getElementById("pnote")
+    .value =
+    "";
+
+  document
+    .getElementById(
+      "memberSearchResults"
+    )
+    .innerHTML =
+    "";
+
+  document
+    .getElementById(
+      "memberSearchCount"
+    )
+    .textContent =
+    "";
+
+  document
+    .getElementById(
+      "selectedMember"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+  await loadRequests();
+
+}
+
+
+/* =====================================================
+   EDIT MEMBER
+===================================================== */
+
+async function editMember(id){
+
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+  const m =
+    members.find(
+      x => x.id === id
+    );
+
+  if(!m)
+    return;
+
+  document
+    .getElementById("modal")
+    .style.display =
+    "flex";
+
+  document
+    .getElementById("modalBody")
+    .innerHTML = `
+
+      <h2 class="graffiti-title">
+        EDIT ANGGOTA
+      </h2>
+
+      <label>
+        Nama
+      </label>
+
+      <input
+        id="e_name"
+        value="${escapeHTML(m.name)}">
+
+      <label>
+        Saldo
+      </label>
+
+      <input
+        id="e_bal"
+        type="number"
+        value="${m.balance || 0}">
+
+      <label>
+        NextPay
+      </label>
+
+      <input
+        id="e_next"
+        type="date"
+        value="${m.next_pay || ""}">
+
+      <label>
+        Tunggakan
+      </label>
+
+      <input
+        id="e_arr"
+        type="number"
+        value="${m.arrears || 0}">
+
+      <label>
+        Belum bayar dari
+      </label>
+
+      <input
+        id="e_from"
+        type="date"
+        value="${m.unpaid_from || ""}">
+
+      <label>
+        ADM belum lunas
+      </label>
+
+      <input
+        id="e_adm"
+        type="number"
+        value="${m.adm_due || 0}">
+
+      <label>
+
+        <input
+          id="e_ex"
+          type="checkbox"
+          ${
+            m.exempt_kas
+            ? "checked"
+            : ""
+          }>
+
+        Bebas KAS
+
+      </label>
+
+      <br>
+
+      <button
+        class="primary"
+        onclick="saveMember('${escapeJS(id)}')">
+        Simpan
+      </button>
+
+      <button
+        class="secondary"
+        onclick="closeModal()">
+        Batal
+      </button>
+
+    `;
+
+}
+
+
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
+
+function closeModal(){
+
+  document
+    .getElementById("modal")
+    .style.display =
+    "none";
+
+}
+
+
+/* =====================================================
+   SAVE MEMBER
+===================================================== */
+
+async function saveMember(id){
+
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+  const result =
+    await sb.rpc(
+      "admin_update_member",
+      {
+
+        p_password:
+          adminPass,
+
+        p_id:
+          id,
+
+        p_name:
+          document
+          .getElementById("e_name")
+          .value,
+
+        p_balance:
+          Number(
+            document
+            .getElementById("e_bal")
+            .value
+          ),
+
+        p_next_pay:
+          document
+          .getElementById("e_next")
+          .value ||
+          null,
+
+        p_arrears:
+          Number(
+            document
+            .getElementById("e_arr")
+            .value
+          ),
+
+        p_unpaid_from:
+          document
+          .getElementById("e_from")
+          .value ||
+          null,
+
+        p_adm_due:
+          Number(
+            document
+            .getElementById("e_adm")
+            .value
+          ),
+
+        p_exempt:
+          document
+          .getElementById("e_ex")
+          .checked
+
+      }
+    );
+
+  if(result.error){
+
+    alert(
+      result.error.message
+    );
+
+    return;
+
+  }
+
+  closeModal();
+
+  await load();
+
+}
+
+
+/* =====================================================
+   ADD MEMBER
+===================================================== */
+
+document
+  .getElementById("addBtn")
+  .onclick = () => {
+
+    if(!isAdmin){
+
+      alert(
+        "Login admin dulu."
+      );
+
+      return;
+
+    }
+
+    document
+      .getElementById("modal")
+      .style.display =
+      "flex";
+
+    document
+      .getElementById("modalBody")
+      .innerHTML = `
+
+        <h2 class="graffiti-title">
+          TAMBAH ANGGOTA
+        </h2>
+
+        <label>
+          Nama
+        </label>
+
+        <input
+          id="a_name"
+          placeholder="Nama anggota">
+
+        <label>
+          Saldo awal
+        </label>
+
+        <input
+          id="a_bal"
+          type="number"
+          value="0">
+
+        <label>
+          NextPay
+        </label>
+
+        <input
+          id="a_next"
+          type="date">
+
+        <label>
+          ADM belum lunas
+        </label>
+
+        <input
+          id="a_adm"
+          type="number"
+          value="${
+            settings.adm_default ||
+            10000
+          }">
+
+        <br>
+
+        <button
+          class="primary"
+          onclick="addMember()">
+          Tambah
+        </button>
+
+        <button
+          class="secondary"
+          onclick="closeModal()">
+          Batal
+        </button>
+
+      `;
+
+  };
+
+
+/* =====================================================
+   ADD MEMBER SAVE
+===================================================== */
+
+async function addMember(){
+
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+  const name =
+    document
+      .getElementById("a_name")
+      .value
+      .trim();
+
+  if(!name){
+
+    alert(
+      "Nama anggota wajib diisi."
+    );
+
+    return;
+
+  }
+
+  const result =
+    await sb.rpc(
+      "admin_add_member",
+      {
+
+        p_password:
+          adminPass,
+
+        p_name:
+          name,
+
+        p_balance:
+          Number(
+            document
+            .getElementById("a_bal")
+            .value
+          ),
+
+        p_next_pay:
+          document
+          .getElementById("a_next")
+          .value ||
+          null,
+
+        p_adm_due:
+          Number(
+            document
+            .getElementById("a_adm")
+            .value
+          ),
+
+        p_exempt:
+          false
+
+      }
+    );
+
+  if(result.error){
+
+    alert(
+      result.error.message
+    );
+
+    return;
+
+  }
+
+  closeModal();
+
+  alert(
+    "Anggota berhasil ditambahkan."
+  );
+
+  await load();
+
+}
+
+
+/* =====================================================
+   SHARE REKAP SEMUA ANGGOTA
+===================================================== */
+
+function buildShareText(){
+
+  const reportDate =
+    settings.report_date ||
+    new Date()
+      .toLocaleDateString("id-ID");
+
+  let text =
+`━━━━━━━━━━━━━━━━━━━━
+📒 KAS
+${reportDate}
+━━━━━━━━━━━━━━━━━━━━
+
+⚠️ TUNGGAKAN KAS
+`;
+
+  const overdue =
+    members.filter(
+      m =>
+        Number(m.arrears || 0) > 0
+    );
+
+  if(!overdue.length){
+
+    text +=
+`Tidak ada tunggakan.
+`;
+
+  }else{
+
+    overdue.forEach(
+      (m,index) => {
+
+        text +=
+`${String(index+1).padStart(2,"0")}. 🔴 ${m.name} [-${Number(m.arrears || 0).toLocaleString("id-ID")}K]`;
+
+        if(m.unpaid_from){
+
+          text +=
+          ` - Belum bayar dari ${m.unpaid_from}`;
+
+        }
+
+        text += "\n";
+
+      }
+    );
+
+  }
+
+  const totalTunggakan =
+    members.reduce(
+      (sum,m) =>
+        sum +
+        Math.max(
+          0,
+          Number(m.arrears || 0)
+        ),
+      0
+    );
+
+  text +=
+`
+📊 Total Tunggakan Kas
+• ${Math.round(
+    totalTunggakan / 1000
+  )}K
+
+━━━━━━━━━━━━━━━━━━━━
+📋 DAFTAR ANGGOTA
+━━━━━━━━━━━━━━━━━━━━
+`;
+
+  members.forEach(
+    (m,index) => {
+
+      const balance =
+        Number(m.balance || 0);
+
+      const symbol =
+        balance >= 0
+        ? "🟢"
+        : "🔴";
+
+      const amount =
+        Math.abs(
+          balance
+        );
+
+      const sign =
+        balance >= 0
+        ? "+"
+        : "-";
+
+      text +=
+`${String(index+1).padStart(2,"0")}. ${symbol} ${m.name} [${sign}${Math.round(amount/1000)}K]`;
+
+      if(
+        balance >= 0 &&
+        m.next_pay
+      ){
+
+        text +=
+        ` - NextPay ${m.next_pay}`;
+
+      }else if(
+        balance < 0 &&
+        m.unpaid_from
+      ){
+
+        text +=
+        ` - Belum bayar dari ${m.unpaid_from}`;
+
+      }
+
+      text += "\n";
+
+    }
+  );
+
+  const admMembers =
+    members.filter(
+      m =>
+        Number(m.adm_due || 0) > 0
+    );
+
+  text +=
+`
+━━━━━━━━━━━━━━━━━━━━
+❌ ADM BELUM LUNAS
+
+`;
+
+  if(!admMembers.length){
+
+    text +=
+    "Tidak ada ADM tertunggak.\n";
+
+  }else{
+
+    admMembers.forEach(
+      (m,index) => {
+
+        text +=
+`${String(index+1).padStart(2,"0")}. ${m.name} [-${Math.round(Number(m.adm_due || 0)/1000)}K]
+`;
+
+      }
+    );
+
+  }
+
+  text +=
+`━━━━━━━━━━━━━━━━━━━━`;
+
+  return text;
+
+}
+
+
+/* =====================================================
+   SHARE MODAL
+===================================================== */
+
+function openShareModal(){
+
+  const text =
+    buildShareText();
+
+  document
+    .getElementById("modal")
+    .style.display =
+    "flex";
+
+  document
+    .getElementById("modalBody")
+    .innerHTML = `
+
+      <h2 class="graffiti-title">
+        📤 SHARE REKAP ANGGOTA
+      </h2>
+
+      <p style="color:#aaa">
+        Rekap seluruh anggota akan dibagikan.
+      </p>
+
+      <div
+        id="sharePreview"
+        class="share-box">${escapeHTML(text)}</div>
+
+      <br>
+
+      <div class="flex">
+
+        <button
+          class="success"
+          onclick="shareRekap()">
+          📤 Bagikan
+        </button>
+
+        <button
+          class="primary"
+          onclick="copyRekap()">
+          📋 Salin
+        </button>
+
+        <button
+          class="secondary"
+          onclick="closeModal()">
+          Tutup
+        </button>
+
+      </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   SHARE
+===================================================== */
+
+async function shareRekap(){
+
+  const text =
+    buildShareText();
+
+  if(
+    navigator.share
+  ){
+
+    try{
+
+      await navigator.share({
+
+        title:
+          "Rekap KAS Street Of Style",
+
+        text:
+          text
+
+      });
+
+    }catch(err){
+
+      if(
+        err.name !==
+        "AbortError"
+      ){
+
+        console.error(err);
+
+      }
+
+    }
+
+  }else{
+
+    await copyRekap();
+
+    alert(
+      "Fitur share tidak tersedia di browser ini. Rekap sudah disalin."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   COPY
+===================================================== */
+
+async function copyRekap(){
+
+  const text =
+    buildShareText();
+
+  try{
+
+    await navigator.clipboard.writeText(
+      text
+    );
+
+    alert(
+      "✅ Rekap berhasil disalin."
+    );
+
+  }catch(err){
+
+    const temp =
+      document.createElement("textarea");
+
+    temp.value = text;
+
+    document
+      .body
+      .appendChild(temp);
+
+    temp.select();
+
+    document
+      .execCommand("copy");
+
+    temp.remove();
+
+    alert(
+      "✅ Rekap berhasil disalin."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+renderAuth();
+
+load();
+
+loadRequests();
+
+
+/* =====================================================
+   REALTIME
+===================================================== */
+
+sb
+.channel("kas-live")
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"members"
+  },
+  () => {
+
+    load();
+
+  }
+)
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"payment_requests"
+  },
+  () => {
+
+    loadRequests();
+
+  }
+)
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"app_settings"
+  },
+  () => {
+
+    load();
+
+  }
+)
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"cash_income"
+  },
+  () => {
+
+    loadTransactions();
+
+    render();
+
+  }
+)
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"cash_expense"
+  },
+  () => {
+
+    loadTransactions();
+
+    render();
+
+  }
+)
+
+.subscribe();
+
+</script>
+
+</body>
+</html>
 /* =====================================================
    DATA
 ===================================================== */
@@ -2072,7 +4464,7 @@ function renderMembers(){
 
     body.innerHTML =
       `<tr>
-        <td colspan="6" class="empty">
+        <td colspan="7" class="empty">
           Belum ada anggota.
         </td>
       </tr>`;
@@ -2128,11 +4520,21 @@ function renderMembers(){
           ${
             isAdmin
             ?
-            `<button
-              class="secondary"
-              onclick="editMember('${escapeJS(m.id)}')">
-              Edit
-            </button>`
+            `<div class="flex">
+
+              <button
+                class="secondary"
+                onclick="editMember('${escapeJS(m.id)}')">
+                Edit
+              </button>
+
+              <button
+                class="danger"
+                onclick="deleteMember('${escapeJS(m.id)}')">
+                Hapus
+              </button>
+
+            </div>`
             :
             "-"
           }
@@ -2142,6 +4544,92 @@ function renderMembers(){
       </tr>
 
     `).join("");
+
+}
+
+
+/* =====================================================
+   DELETE MEMBER
+   HAPUS 1 ANGGOTA SAJA
+===================================================== */
+
+async function deleteMember(id){
+
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+
+  const member =
+    members.find(
+      m => m.id === id
+    );
+
+
+  if(!member){
+
+    alert(
+      "Data anggota tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  const confirmDelete =
+    confirm(
+      "Yakin ingin menghapus anggota:\n\n" +
+      member.name +
+      "\n\nData anggota ini akan dihapus."
+    );
+
+
+  if(!confirmDelete)
+    return;
+
+
+  const result =
+    await sb.rpc(
+      "admin_delete_member",
+      {
+
+        p_password:
+          adminPass,
+
+        p_id:
+          id
+
+      }
+    );
+
+
+  if(result.error){
+
+    alert(
+      "Gagal menghapus anggota: " +
+      result.error.message
+    );
+
+    return;
+
+  }
+
+
+  alert(
+    "Anggota " +
+    member.name +
+    " berhasil dihapus."
+  );
+
+
+  await load();
 
 }
 
@@ -2639,1640 +5127,3 @@ async function deleteTransaction(
   render();
 
 }
-
-
-/* =====================================================
-   ADMIN LOGIN
-===================================================== */
-
-async function adminLogin(){
-
-  const p =
-    document
-      .getElementById(
-        "adminpass"
-      )
-      .value
-      .trim();
-
-
-  if(!p){
-
-    alert(
-      "Masukkan password admin."
-    );
-
-    return;
-
-  }
-
-
-  const {
-    data,
-    error
-  } =
-    await sb.rpc(
-      "admin_check",
-      {
-        p_password:p
-      }
-    );
-
-
-  if(error || !data){
-
-    alert(
-      "Password admin salah."
-    );
-
-    return;
-
-  }
-
-
-  adminPass = p;
-
-  sessionStorage.setItem(
-    "kas_admin",
-    p
-  );
-
-  isAdmin = true;
-
-  renderAuth();
-
-  alert(
-    "Login admin berhasil."
-  );
-
-  load();
-
-  loadRequests();
-
-}
-
-
-/* =====================================================
-   SETTINGS
-===================================================== */
-
-async function saveSettings(){
-
-  if(!isAdmin){
-
-    alert(
-      "Login admin dulu."
-    );
-
-    return;
-
-  }
-
-
-  const result =
-    await sb.rpc(
-      "admin_set_settings",
-      {
-
-        p_password:
-          adminPass,
-
-        p_report_date:
-          document
-          .getElementById("rdate")
-          .value,
-
-        p_kas_daily:
-          Number(
-            document
-            .getElementById("kasdaily")
-            .value
-          ),
-
-        p_adm_default:
-          Number(
-            document
-            .getElementById("admdefault")
-            .value
-          )
-
-      }
-    );
-
-
-  if(result.error){
-
-    alert(
-      result.error.message
-    );
-
-    return;
-
-  }
-
-
-  alert(
-    "Pengaturan tersimpan."
-  );
-
-  load();
-
-}
-
-
-/* =====================================================
-   SEARCH MEMBER
-===================================================== */
-
-function searchRequestMember(){
-
-  const input =
-    document.getElementById(
-      "memberSearchRequest"
-    );
-
-  const results =
-    document.getElementById(
-      "memberSearchResults"
-    );
-
-  const count =
-    document.getElementById(
-      "memberSearchCount"
-    );
-
-
-  if(!input || !results)
-    return;
-
-
-  const keyword =
-    input.value
-      .trim()
-      .toLowerCase();
-
-
-  if(!keyword){
-
-    results.innerHTML = "";
-
-    if(count)
-      count.textContent = "";
-
-    return;
-
-  }
-
-
-  const found =
-    members.filter(m =>
-      String(m.name || "")
-        .toLowerCase()
-        .includes(keyword)
-    );
-
-
-  if(count){
-
-    count.textContent =
-      `${found.length} anggota ditemukan`;
-
-  }
-
-
-  if(!found.length){
-
-    results.innerHTML = `
-      <div class="notice">
-        ❌ Nama anggota tidak ditemukan.
-      </div>
-    `;
-
-    return;
-
-  }
-
-
-  results.innerHTML =
-    found
-      .slice(0,20)
-      .map(m => `
-
-        <button
-          type="button"
-          class="member-result"
-          onclick="selectRequestMember(
-            '${escapeJS(m.name)}'
-          )">
-
-          👤 ${escapeHTML(m.name)}
-
-        </button>
-
-      `)
-      .join("");
-
-}
-
-
-/* =====================================================
-   SELECT MEMBER
-===================================================== */
-
-function selectRequestMember(name){
-
-  document
-    .getElementById("mname")
-    .value =
-    name;
-
-
-  document
-    .getElementById(
-      "memberSearchRequest"
-    )
-    .value =
-    name;
-
-
-  document
-    .getElementById(
-      "memberSearchResults"
-    )
-    .innerHTML =
-    "";
-
-
-  document
-    .getElementById(
-      "memberSearchCount"
-    )
-    .textContent =
-    "";
-
-
-  const selected =
-    document.getElementById(
-      "selectedMember"
-    );
-
-
-  selected.classList.remove(
-    "hidden"
-  );
-
-
-  selected.innerHTML =
-    `✅ Anggota dipilih:
-     <b>${escapeHTML(name)}</b>`;
-
-}
-
-
-/* =====================================================
-   LOAD REQUESTS
-===================================================== */
-
-async function loadRequests(){
-
-  const q =
-    await sb
-    .from("payment_requests")
-    .select("*")
-    .order(
-      "created_at",
-      {
-        ascending:false
-      }
-    );
-
-
-  if(q.error){
-
-    console.error(
-      "Gagal mengambil pembayaran:",
-      q.error
-    );
-
-  }
-
-
-  const rows =
-    q.data || [];
-
-
-  const body =
-    document.getElementById(
-      "reqRows"
-    );
-
-
-  if(!body)
-    return;
-
-
-  if(!rows.length){
-
-    body.innerHTML =
-      `<tr>
-        <td
-          colspan="7"
-          class="empty">
-          Belum ada pembayaran.
-        </td>
-      </tr>`;
-
-    return;
-
-  }
-
-
-  body.innerHTML =
-    rows.map(r => `
-
-      <tr>
-
-        <td>
-          ${formatDate(
-            r.created_at
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(
-            r.member_name
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(
-            r.payment_type
-          )}
-        </td>
-
-        <td>
-          ${money(
-            r.amount
-          )}
-        </td>
-
-        <td>
-
-          <span class="pill">
-            ${escapeHTML(
-              r.status
-            )}
-          </span>
-
-        </td>
-
-        <td>
-
-          ${
-            r.screenshot_url
-            ?
-            `<a
-              target="_blank"
-              rel="noopener"
-              href="${escapeHTML(
-                r.screenshot_url
-              )}"
-              style="color:#b7ff00">
-              📷 Lihat
-            </a>`
-            :
-            "-"
-          }
-
-        </td>
-
-        <td>
-
-          ${
-            isAdmin &&
-            r.status === "PENDING"
-
-            ?
-
-            `<button
-              class="success"
-              onclick="review(
-                '${escapeJS(r.id)}',
-                'APPROVED'
-              )">
-              Terima
-            </button>
-
-            <button
-              class="danger"
-              onclick="review(
-                '${escapeJS(r.id)}',
-                'REJECTED'
-              )">
-              Tolak
-            </button>`
-
-            :
-
-            "-"
-
-          }
-
-        </td>
-
-      </tr>
-
-    `).join("");
-
-}
-
-
-/* =====================================================
-   REVIEW PAYMENT
-===================================================== */
-
-async function review(
-  id,
-  action
-){
-
-  if(!isAdmin){
-
-    alert(
-      "Login admin dulu."
-    );
-
-    return;
-
-  }
-
-
-  if(!confirm(
-    action === "APPROVED"
-    ? "Terima pembayaran ini?"
-    : "Tolak pembayaran ini?"
-  )) return;
-
-
-  const result =
-    await sb.rpc(
-      "admin_review_payment",
-      {
-
-        p_password:
-          adminPass,
-
-        p_request_id:
-          id,
-
-        p_action:
-          action
-
-      }
-    );
-
-
-  if(result.error){
-
-    alert(
-      result.error.message
-    );
-
-    return;
-
-  }
-
-
-  alert(
-    action === "APPROVED"
-    ? "Pembayaran diterima."
-    : "Pembayaran ditolak."
-  );
-
-
-  await load();
-
-  await loadRequests();
-
-}
-
-
-/* =====================================================
-   SUBMIT PAYMENT
-===================================================== */
-
-async function submitPayment(){
-
-  const name =
-    document
-      .getElementById("mname")
-      .value
-      .trim();
-
-
-  const type =
-    document
-      .getElementById("ptype")
-      .value;
-
-
-  const amount =
-    Number(
-      document
-        .getElementById("pamount")
-        .value
-    );
-
-
-  const file =
-    document
-      .getElementById("proof")
-      .files[0];
-
-
-  const note =
-    document
-      .getElementById("pnote")
-      .value
-      .trim();
-
-
-  if(!name){
-
-    alert(
-      "Silakan cari dan pilih nama karakter terlebih dahulu."
-    );
-
-    return;
-
-  }
-
-
-  const memberExists =
-    members.some(
-      m =>
-        String(m.name)
-          .toLowerCase() ===
-        name.toLowerCase()
-    );
-
-
-  if(!memberExists){
-
-    alert(
-      "Nama anggota tidak ditemukan di database."
-    );
-
-    return;
-
-  }
-
-
-  if(!amount || amount <= 0){
-
-    alert(
-      "Jumlah pembayaran harus lebih dari 0."
-    );
-
-    return;
-
-  }
-
-
-  let url = null;
-
-
-  if(file){
-
-    if(file.size > 5 * 1024 * 1024){
-
-      alert(
-        "Ukuran gambar maksimal 5 MB."
-      );
-
-      return;
-
-    }
-
-
-    const safeName =
-      file.name
-        .replace(
-          /[^a-zA-Z0-9._-]/g,
-          "_"
-        );
-
-
-    const path =
-      `${Date.now()}-${
-        Math.random()
-          .toString(36)
-          .slice(2)
-      }-${safeName}`;
-
-
-    const up =
-      await sb
-      .storage
-      .from("payment-proofs")
-      .upload(
-        path,
-        file,
-        {
-          upsert:false
-        }
-      );
-
-
-    if(up.error){
-
-      alert(
-        "Upload bukti gagal: " +
-        up.error.message
-      );
-
-      return;
-
-    }
-
-
-    url =
-      sb
-      .storage
-      .from("payment-proofs")
-      .getPublicUrl(path)
-      .data
-      .publicUrl;
-
-  }
-
-
-  const result =
-    await sb.rpc(
-      "submit_payment",
-      {
-
-        p_member_name:
-          name,
-
-        p_type:
-          type,
-
-        p_amount:
-          amount,
-
-        p_screenshot_url:
-          url,
-
-        p_note:
-          note
-
-      }
-    );
-
-
-  if(result.error){
-
-    alert(
-      "Gagal mengirim pembayaran: " +
-      result.error.message
-    );
-
-    return;
-
-  }
-
-
-  alert(
-    "✅ Pembayaran berhasil dikirim. Tunggu admin memeriksa."
-  );
-
-
-  document
-    .getElementById(
-      "memberSearchRequest"
-    )
-    .value =
-    "";
-
-
-  document
-    .getElementById("mname")
-    .value =
-    "";
-
-
-  document
-    .getElementById("pamount")
-    .value =
-    "";
-
-
-  document
-    .getElementById("proof")
-    .value =
-    "";
-
-
-  document
-    .getElementById("pnote")
-    .value =
-    "";
-
-
-  document
-    .getElementById(
-      "memberSearchResults"
-    )
-    .innerHTML =
-    "";
-
-
-  document
-    .getElementById(
-      "memberSearchCount"
-    )
-    .textContent =
-    "";
-
-
-  document
-    .getElementById(
-      "selectedMember"
-    )
-    .classList.add(
-      "hidden"
-    );
-
-
-  await loadRequests();
-
-}
-
-
-/* =====================================================
-   EDIT MEMBER
-===================================================== */
-
-async function editMember(id){
-
-  if(!isAdmin){
-
-    alert(
-      "Login admin dulu."
-    );
-
-    return;
-
-  }
-
-
-  const m =
-    members.find(
-      x => x.id === id
-    );
-
-
-  if(!m)
-    return;
-
-
-  document
-    .getElementById("modal")
-    .style.display =
-    "flex";
-
-
-  document
-    .getElementById("modalBody")
-    .innerHTML = `
-
-      <h2 class="graffiti-title">
-        EDIT ANGGOTA
-      </h2>
-
-      <label>
-        Nama
-      </label>
-
-      <input
-        id="e_name"
-        value="${escapeHTML(m.name)}">
-
-
-      <label>
-        Saldo
-      </label>
-
-      <input
-        id="e_bal"
-        type="number"
-        value="${m.balance || 0}">
-
-
-      <label>
-        NextPay
-      </label>
-
-      <input
-        id="e_next"
-        type="date"
-        value="${m.next_pay || ""}">
-
-
-      <label>
-        Tunggakan
-      </label>
-
-      <input
-        id="e_arr"
-        type="number"
-        value="${m.arrears || 0}">
-
-
-      <label>
-        Belum bayar dari
-      </label>
-
-      <input
-        id="e_from"
-        type="date"
-        value="${m.unpaid_from || ""}">
-
-
-      <label>
-        ADM belum lunas
-      </label>
-
-      <input
-        id="e_adm"
-        type="number"
-        value="${m.adm_due || 0}">
-
-
-      <label>
-
-        <input
-          id="e_ex"
-          type="checkbox"
-          ${
-            m.exempt_kas
-            ? "checked"
-            : ""
-          }>
-
-        Bebas KAS
-
-      </label>
-
-      <br>
-
-      <button
-        class="primary"
-        onclick="saveMember('${escapeJS(id)}')">
-        Simpan
-      </button>
-
-      <button
-        class="secondary"
-        onclick="closeModal()">
-        Batal
-      </button>
-
-    `;
-
-}
-
-
-/* =====================================================
-   CLOSE MODAL
-===================================================== */
-
-function closeModal(){
-
-  document
-    .getElementById("modal")
-    .style.display =
-    "none";
-
-}
-
-
-/* =====================================================
-   SAVE MEMBER
-===================================================== */
-
-async function saveMember(id){
-
-  if(!isAdmin){
-
-    alert(
-      "Login admin dulu."
-    );
-
-    return;
-
-  }
-
-
-  const result =
-    await sb.rpc(
-      "admin_update_member",
-      {
-
-        p_password:
-          adminPass,
-
-        p_id:
-          id,
-
-        p_name:
-          document
-          .getElementById("e_name")
-          .value,
-
-        p_balance:
-          Number(
-            document
-            .getElementById("e_bal")
-            .value
-          ),
-
-        p_next_pay:
-          document
-          .getElementById("e_next")
-          .value ||
-          null,
-
-        p_arrears:
-          Number(
-            document
-            .getElementById("e_arr")
-            .value
-          ),
-
-        p_unpaid_from:
-          document
-          .getElementById("e_from")
-          .value ||
-          null,
-
-        p_adm_due:
-          Number(
-            document
-            .getElementById("e_adm")
-            .value
-          ),
-
-        p_exempt:
-          document
-          .getElementById("e_ex")
-          .checked
-
-      }
-    );
-
-
-  if(result.error){
-
-    alert(
-      result.error.message
-    );
-
-    return;
-
-  }
-
-
-  closeModal();
-
-  await load();
-
-}
-
-
-/* =====================================================
-   ADD MEMBER
-===================================================== */
-
-document
-  .getElementById("addBtn")
-  .onclick = () => {
-
-    if(!isAdmin){
-
-      alert(
-        "Login admin dulu."
-      );
-
-      return;
-
-    }
-
-
-    document
-      .getElementById("modal")
-      .style.display =
-      "flex";
-
-
-    document
-      .getElementById("modalBody")
-      .innerHTML = `
-
-        <h2 class="graffiti-title">
-          TAMBAH ANGGOTA
-        </h2>
-
-        <label>
-          Nama
-        </label>
-
-        <input
-          id="a_name"
-          placeholder="Nama anggota">
-
-
-        <label>
-          Saldo awal
-        </label>
-
-        <input
-          id="a_bal"
-          type="number"
-          value="0">
-
-
-        <label>
-          NextPay
-        </label>
-
-        <input
-          id="a_next"
-          type="date">
-
-
-        <label>
-          ADM belum lunas
-        </label>
-
-        <input
-          id="a_adm"
-          type="number"
-          value="${
-            settings.adm_default ||
-            10000
-          }">
-
-
-        <br>
-
-        <button
-          class="primary"
-          onclick="addMember()">
-          Tambah
-        </button>
-
-        <button
-          class="secondary"
-          onclick="closeModal()">
-          Batal
-        </button>
-
-      `;
-
-  };
-
-
-/* =====================================================
-   ADD MEMBER SAVE
-===================================================== */
-
-async function addMember(){
-
-  if(!isAdmin){
-
-    alert(
-      "Login admin dulu."
-    );
-
-    return;
-
-  }
-
-
-  const name =
-    document
-      .getElementById("a_name")
-      .value
-      .trim();
-
-
-  if(!name){
-
-    alert(
-      "Nama anggota wajib diisi."
-    );
-
-    return;
-
-  }
-
-
-  const result =
-    await sb.rpc(
-      "admin_add_member",
-      {
-
-        p_password:
-          adminPass,
-
-        p_name:
-          name,
-
-        p_balance:
-          Number(
-            document
-            .getElementById("a_bal")
-            .value
-          ),
-
-        p_next_pay:
-          document
-          .getElementById("a_next")
-          .value ||
-          null,
-
-        p_adm_due:
-          Number(
-            document
-            .getElementById("a_adm")
-            .value
-          ),
-
-        p_exempt:
-          false
-
-      }
-    );
-
-
-  if(result.error){
-
-    alert(
-      result.error.message
-    );
-
-    return;
-
-  }
-
-
-  closeModal();
-
-  alert(
-    "Anggota berhasil ditambahkan."
-  );
-
-  await load();
-
-}
-
-
-/* =====================================================
-   SHARE REKAP SEMUA ANGGOTA
-===================================================== */
-
-function buildShareText(){
-
-  const reportDate =
-    settings.report_date ||
-    new Date()
-      .toLocaleDateString("id-ID");
-
-
-  let text =
-`━━━━━━━━━━━━━━━━━━━━
-📒 KAS
-${reportDate}
-━━━━━━━━━━━━━━━━━━━━
-
-⚠️ TUNGGAKAN KAS
-`;
-
-  const overdue =
-    members.filter(
-      m =>
-        Number(m.arrears || 0) > 0
-    );
-
-
-  if(!overdue.length){
-
-    text +=
-`Tidak ada tunggakan.
-`;
-
-  }else{
-
-    overdue.forEach(
-      (m,index) => {
-
-        text +=
-`${String(index+1).padStart(2,"0")}. 🔴 ${m.name} [-${Number(m.arrears || 0).toLocaleString("id-ID")}K]`;
-
-        if(m.unpaid_from){
-
-          text +=
-          ` - Belum bayar dari ${m.unpaid_from}`;
-
-        }
-
-        text += "\n";
-
-      }
-    );
-
-  }
-
-
-  const totalTunggakan =
-    members.reduce(
-      (sum,m) =>
-        sum +
-        Math.max(
-          0,
-          Number(m.arrears || 0)
-        ),
-      0
-    );
-
-
-  text +=
-`
-📊 Total Tunggakan Kas
-• ${Math.round(
-    totalTunggakan / 1000
-  )}K
-
-━━━━━━━━━━━━━━━━━━━━
-📋 DAFTAR ANGGOTA
-━━━━━━━━━━━━━━━━━━━━
-`;
-
-
-  members.forEach(
-    (m,index) => {
-
-      const balance =
-        Number(m.balance || 0);
-
-      const symbol =
-        balance >= 0
-        ? "🟢"
-        : "🔴";
-
-
-      const amount =
-        Math.abs(
-          balance
-        );
-
-
-      const sign =
-        balance >= 0
-        ? "+"
-        : "-";
-
-
-      text +=
-`${String(index+1).padStart(2,"0")}. ${symbol} ${m.name} [${sign}${Math.round(amount/1000)}K]`;
-
-
-      if(
-        balance >= 0 &&
-        m.next_pay
-      ){
-
-        text +=
-        ` - NextPay ${m.next_pay}`;
-
-      }else if(
-        balance < 0 &&
-        m.unpaid_from
-      ){
-
-        text +=
-        ` - Belum bayar dari ${m.unpaid_from}`;
-
-      }
-
-
-      text += "\n";
-
-    }
-  );
-
-
-  const admMembers =
-    members.filter(
-      m =>
-        Number(m.adm_due || 0) > 0
-    );
-
-
-  text +=
-`
-━━━━━━━━━━━━━━━━━━━━
-❌ ADM BELUM LUNAS
-
-`;
-
-
-  if(!admMembers.length){
-
-    text +=
-    "Tidak ada ADM tertunggak.\n";
-
-  }else{
-
-    admMembers.forEach(
-      (m,index) => {
-
-        text +=
-`${String(index+1).padStart(2,"0")}. ${m.name} [-${Math.round(Number(m.adm_due || 0)/1000)}K]
-`;
-
-      }
-    );
-
-  }
-
-
-  text +=
-`━━━━━━━━━━━━━━━━━━━━`;
-
-
-  return text;
-
-}
-
-
-/* =====================================================
-   SHARE MODAL
-===================================================== */
-
-function openShareModal(){
-
-  const text =
-    buildShareText();
-
-
-  document
-    .getElementById("modal")
-    .style.display =
-    "flex";
-
-
-  document
-    .getElementById("modalBody")
-    .innerHTML = `
-
-      <h2 class="graffiti-title">
-        📤 SHARE REKAP ANGGOTA
-      </h2>
-
-      <p style="color:#aaa">
-        Rekap seluruh anggota akan dibagikan.
-      </p>
-
-      <div
-        id="sharePreview"
-        class="share-box">${escapeHTML(text)}</div>
-
-      <br>
-
-      <div class="flex">
-
-        <button
-          class="success"
-          onclick="shareRekap()">
-          📤 Bagikan
-        </button>
-
-        <button
-          class="primary"
-          onclick="copyRekap()">
-          📋 Salin
-        </button>
-
-        <button
-          class="secondary"
-          onclick="closeModal()">
-          Tutup
-        </button>
-
-      </div>
-
-    `;
-
-}
-
-
-/* =====================================================
-   SHARE
-===================================================== */
-
-async function shareRekap(){
-
-  const text =
-    buildShareText();
-
-
-  if(
-    navigator.share
-  ){
-
-    try{
-
-      await navigator.share({
-
-        title:
-          "Rekap KAS Street Of Style",
-
-        text:
-          text
-
-      });
-
-    }catch(err){
-
-      if(
-        err.name !==
-        "AbortError"
-      ){
-
-        console.error(err);
-
-      }
-
-    }
-
-  }else{
-
-    await copyRekap();
-
-    alert(
-      "Fitur share tidak tersedia di browser ini. Rekap sudah disalin."
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   COPY
-===================================================== */
-
-async function copyRekap(){
-
-  const text =
-    buildShareText();
-
-
-  try{
-
-    await navigator.clipboard.writeText(
-      text
-    );
-
-    alert(
-      "✅ Rekap berhasil disalin."
-    );
-
-  }catch(err){
-
-    const temp =
-      document.createElement("textarea");
-
-    temp.value = text;
-
-    document
-      .body
-      .appendChild(temp);
-
-    temp.select();
-
-    document
-      .execCommand("copy");
-
-    temp.remove();
-
-    alert(
-      "✅ Rekap berhasil disalin."
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   START
-===================================================== */
-
-renderAuth();
-
-load();
-
-loadRequests();
-
-
-/* =====================================================
-   REALTIME
-===================================================== */
-
-sb
-.channel("kas-live")
-
-.on(
-  "postgres_changes",
-  {
-    event:"*",
-    schema:"public",
-    table:"members"
-  },
-  () => {
-
-    load();
-
-  }
-)
-
-.on(
-  "postgres_changes",
-  {
-    event:"*",
-    schema:"public",
-    table:"payment_requests"
-  },
-  () => {
-
-    loadRequests();
-
-  }
-)
-
-.on(
-  "postgres_changes",
-  {
-    event:"*",
-    schema:"public",
-    table:"app_settings"
-  },
-  () => {
-
-    load();
-
-  }
-)
-
-.on(
-  "postgres_changes",
-  {
-    event:"*",
-    schema:"public",
-    table:"cash_income"
-  },
-  () => {
-
-    loadTransactions();
-
-    render();
-
-  }
-)
-
-.on(
-  "postgres_changes",
-  {
-    event:"*",
-    schema:"public",
-    table:"cash_expense"
-  },
-  () => {
-
-    loadTransactions();
-
-    render();
-
-  }
-)
-
-.subscribe();
-
-</script>
-
-</body>
-</html>
