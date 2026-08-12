@@ -3,1941 +3,836 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#111111">
-
-<title>Street Of Style KAS</title>
+<title>KAS SOS — Realtime</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
-  --bg:#f3f5f7;
-  --card:#ffffff;
-  --ink:#111111;
-  --muted:#667085;
-  --line:#e5e7eb;
-
-  --green:#16a34a;
-  --red:#e53935;
+  --bg:#b7ff00;
+  --ink:#101a14;
+  --card:#fff;
   --blue:#1976ff;
-  --yellow:#facc15;
-
-  --sidebar:#111111;
-  --sidebar2:#181818;
-
-  --sidebar-width:250px;
-  --sidebar-mini:72px;
-
-  --shadow:0 8px 25px rgba(0,0,0,.08);
+  --red:#e53935;
+  --green:#16a34a;
+  --muted:#667085;
 }
 
 *{
   box-sizing:border-box;
 }
 
-html{
-  scroll-behavior:smooth;
-}
-
 body{
   margin:0;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
-  background:var(--bg);
+  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+  background:#f3f6fb;
   color:var(--ink);
 }
 
-
-/* =====================================================
-   SIDEBAR
-===================================================== */
-
-.sidebar{
-  position:fixed;
-  left:0;
-  top:0;
-  bottom:0;
-
-  width:var(--sidebar-width);
-
-  background:
-    linear-gradient(
-      180deg,
-      var(--sidebar),
-      var(--sidebar2)
-    );
-
-  color:#fff;
-
-  z-index:100;
-
-  display:flex;
-  flex-direction:column;
-
-  transition:
-    width .25s ease,
-    transform .25s ease;
-
-  box-shadow:
-    5px 0 25px rgba(0,0,0,.15);
-
-  overflow:hidden;
-}
-
-
-.sidebar-head{
-  height:78px;
-
-  display:flex;
-  align-items:center;
-
-  gap:10px;
-
-  padding:15px;
-
-  border-bottom:
-    1px solid rgba(255,255,255,.08);
-}
-
-
-.logo{
-  min-width:44px;
-  height:44px;
-
-  border-radius:13px;
-
-  background:#b7ff00;
-
-  color:#111;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:23px;
-  font-weight:900;
-}
-
-
-.brand{
-  white-space:nowrap;
-  overflow:hidden;
-}
-
-
-.brand strong{
-  display:block;
-  font-size:16px;
-}
-
-
-.brand small{
-  display:block;
-  color:#a7f000;
-  font-weight:700;
-  margin-top:2px;
-}
-
-
-.toggle-sidebar{
-  margin-left:auto;
-
-  width:38px;
-  height:38px;
-
-  border:0;
-  border-radius:10px;
-
-  background:#242424;
-  color:#fff;
-
-  font-size:24px;
-
-  cursor:pointer;
-
-  flex-shrink:0;
-}
-
-
-.menu{
-  padding:12px 10px;
-
-  display:flex;
-  flex-direction:column;
-
-  gap:5px;
-
-  overflow-y:auto;
-}
-
-
-.menu button{
-  width:100%;
-
-  border:0;
-
-  background:transparent;
-
-  color:#d7d7d7;
-
-  padding:12px;
-
-  border-radius:12px;
-
-  font:inherit;
-  font-weight:750;
-
-  cursor:pointer;
-
-  display:flex;
-  align-items:center;
-
-  gap:12px;
-
-  text-align:left;
-
-  transition:
-    background .15s ease,
-    color .15s ease;
-}
-
-
-.menu button:hover{
-  background:#242424;
-  color:#fff;
-}
-
-
-.menu button.active{
-  background:#b7ff00;
-  color:#111;
-}
-
-
-.menu-icon{
-  min-width:26px;
-  width:26px;
-
-  text-align:center;
-
-  font-size:20px;
-}
-
-
-.menu-text{
-  white-space:nowrap;
-  overflow:hidden;
-}
-
-
-.sidebar-bottom{
-  margin-top:auto;
-
-  padding:10px;
-
-  border-top:
-    1px solid rgba(255,255,255,.08);
-}
-
-
-.sidebar-bottom button{
-  width:100%;
-
-  border:0;
-
-  background:#252525;
-
-  color:#fff;
-
-  border-radius:12px;
-
-  padding:12px;
-
-  font:inherit;
-  font-weight:800;
-
-  cursor:pointer;
-}
-
-
-/* =====================================================
-   SIDEBAR MINI
-===================================================== */
-
-body.sidebar-mini .sidebar{
-  width:var(--sidebar-mini);
-}
-
-
-body.sidebar-mini .brand,
-body.sidebar-mini .menu-text{
-  display:none;
-}
-
-
-body.sidebar-mini .sidebar-head{
-  justify-content:center;
-  padding:10px;
-}
-
-
-body.sidebar-mini .toggle-sidebar{
-  margin-left:0;
-}
-
-
-body.sidebar-mini .menu button{
-  justify-content:center;
-}
-
-
-body.sidebar-mini .sidebar-bottom button{
-  font-size:0;
-}
-
-
-body.sidebar-mini .sidebar-bottom button::before{
-  content:"↪";
-  font-size:20px;
-}
-
-
-.main{
-  margin-left:var(--sidebar-width);
-
-  min-height:100vh;
-
-  transition:
-    margin-left .25s ease;
-}
-
-
-body.sidebar-mini .main{
-  margin-left:var(--sidebar-mini);
-}
-
-
-/* =====================================================
-   MOBILE OVERLAY
-===================================================== */
-
-.overlay{
-  display:none;
-
-  position:fixed;
-  inset:0;
-
-  background:rgba(0,0,0,.55);
-
-  z-index:90;
-}
-
-
-body.mobile-menu .overlay{
-  display:block;
-}
-
-
-/* =====================================================
-   TOPBAR
-===================================================== */
-
-.topbar{
+header{
+  background:var(--bg);
+  padding:18px 16px;
   position:sticky;
-
   top:0;
-
-  z-index:50;
-
-  background:#b7ff00;
-
-  min-height:76px;
-
-  display:flex;
-
-  align-items:center;
-
-  gap:12px;
-
-  padding:14px 18px;
-
-  border-bottom:
-    1px solid #99d900;
+  z-index:5;
+  border-bottom:1px solid #9bd600;
 }
 
+header h1{
+  margin:0;
+  font-size:25px;
+}
 
-.mobile-toggle{
-  display:none;
+header small{
+  font-weight:700;
+  color:#1d6b00;
+}
 
-  width:42px;
-  height:42px;
+nav{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding:10px 12px;
+  background:#fff;
+  position:sticky;
+  top:75px;
+  z-index:4;
+}
 
+nav button{
   border:0;
-
-  border-radius:11px;
-
-  background:#111;
-
-  color:#fff;
-
-  font-size:22px;
-
+  background:#f0f2f5;
+  padding:11px 16px;
+  border-radius:13px;
+  font-weight:800;
+  white-space:nowrap;
   cursor:pointer;
 }
 
-
-.top-title{
-  flex:1;
+nav button.active{
+  background:var(--blue);
+  color:white;
 }
-
-
-.top-title h1{
-  margin:0;
-
-  font-size:23px;
-
-  line-height:1.1;
-}
-
-
-.top-title small{
-  display:block;
-
-  margin-top:3px;
-
-  font-weight:750;
-
-  color:#276b00;
-}
-
-
-.status{
-  font-weight:850;
-
-  font-size:13px;
-}
-
-
-/* =====================================================
-   CONTENT
-===================================================== */
 
 .wrap{
-  max-width:1200px;
-
+  max-width:1100px;
   margin:auto;
-
-  padding:18px;
+  padding:14px;
 }
 
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:18px;
+  padding:17px;
+  box-shadow:0 2px 10px #00000010;
+}
+
+.metric b{
+  display:block;
+  font-size:25px;
+  margin-top:5px;
+}
 
 section{
   display:none;
 }
 
-
-section.show{
+.show{
   display:block;
 }
-
-
-.grid{
-  display:grid;
-
-  grid-template-columns:
-    repeat(4, minmax(0,1fr));
-
-  gap:14px;
-}
-
-
-.grid-2{
-  display:grid;
-
-  grid-template-columns:
-    repeat(2,minmax(0,1fr));
-
-  gap:14px;
-}
-
-
-.card{
-  background:var(--card);
-
-  border-radius:18px;
-
-  padding:18px;
-
-  box-shadow:var(--shadow);
-
-  border:1px solid rgba(0,0,0,.04);
-}
-
-
-.metric{
-  min-height:125px;
-}
-
-
-.metric span{
-  color:var(--muted);
-
-  font-weight:750;
-
-  font-size:14px;
-}
-
-
-.metric b{
-  display:block;
-
-  font-size:25px;
-
-  margin-top:8px;
-}
-
-
-.stat-income{
-  border-left:
-    5px solid var(--green);
-}
-
-
-.stat-expense{
-  border-left:
-    5px solid var(--red);
-}
-
-
-.stat-balance{
-  border-left:
-    5px solid var(--blue);
-}
-
-
-.stat-arrears{
-  border-left:
-    5px solid var(--red);
-}
-
-
-/* =====================================================
-   TOOLBAR
-===================================================== */
 
 .toolbar{
   display:flex;
-
   justify-content:space-between;
-
+  gap:10px;
   align-items:center;
-
-  gap:12px;
-
-  flex-wrap:wrap;
-
-  margin:4px 0 15px;
-}
-
-
-.toolbar h2{
-  margin:0;
-}
-
-
-.actions{
-  display:flex;
-
-  gap:8px;
-
+  margin:10px 0;
   flex-wrap:wrap;
 }
-
-
-/* =====================================================
-   BUTTON
-===================================================== */
-
-button.primary,
-button.success,
-button.danger,
-button.secondary,
-button.share{
-  border:0;
-
-  border-radius:11px;
-
-  padding:11px 15px;
-
-  font:inherit;
-
-  font-weight:800;
-
-  cursor:pointer;
-}
-
-
-button.primary{
-  background:var(--blue);
-  color:#fff;
-}
-
-
-button.success{
-  background:var(--green);
-  color:#fff;
-}
-
-
-button.danger{
-  background:#ffe8e8;
-  color:#b42318;
-}
-
-
-button.secondary{
-  background:#eef2f6;
-  color:#222;
-}
-
-
-button.share{
-  background:#111;
-  color:#b7ff00;
-}
-
-
-button:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-}
-
-
-/* =====================================================
-   FORM
-===================================================== */
-
-label{
-  display:block;
-
-  margin:
-    10px 0 5px;
-
-  font-weight:750;
-}
-
 
 input,
 select,
 textarea{
   width:100%;
-
   padding:12px;
-
-  border:
-    1px solid #d0d5dd;
-
+  border:1px solid #d0d5dd;
   border-radius:10px;
-
   font:inherit;
-
-  outline:none;
-
-  background:#fff;
 }
-
-
-input:focus,
-select:focus,
-textarea:focus{
-  border-color:var(--blue);
-
-  box-shadow:
-    0 0 0 3px #1976ff15;
-}
-
 
 textarea{
   min-height:90px;
-
   resize:vertical;
 }
 
-
-/* =====================================================
-   TABLE
-===================================================== */
-
-.table-wrap{
-  overflow:auto;
+label{
+  font-weight:700;
+  display:block;
+  margin:9px 0 5px;
 }
 
-
-table{
-  width:100%;
-
-  border-collapse:collapse;
-
-  background:#fff;
-
-  min-width:700px;
+button{
+  cursor:pointer;
 }
 
-
-th,
-td{
-  padding:11px;
-
-  border-bottom:
-    1px solid #eee;
-
-  text-align:left;
-
-  font-size:14px;
-
-  vertical-align:middle;
-}
-
-
-th{
-  background:#f8fafc;
-
-  font-weight:850;
-
-  white-space:nowrap;
-}
-
-
-.ok{
-  color:#075fd6;
-
-  font-weight:850;
-}
-
-
-.bad{
-  color:#d92d20;
-
-  font-weight:850;
-}
-
-
-.green{
-  color:#16803c;
-
-  font-weight:850;
-}
-
-
-.red{
-  color:#d92d20;
-
-  font-weight:850;
-}
-
-
-.empty{
-  text-align:center;
-
-  padding:30px;
-
-  color:#667085;
-}
-
-
-.pill{
-  display:inline-block;
-
-  padding:5px 9px;
-
-  border-radius:99px;
-
-  background:#eef2ff;
-
-  font-size:12px;
-
+button.primary{
+  background:var(--blue);
+  color:white;
+  border:0;
+  border-radius:11px;
+  padding:12px 16px;
   font-weight:800;
 }
 
-
-/* =====================================================
-   NOTICE
-===================================================== */
-
-.notice{
-  padding:13px;
-
-  border-radius:12px;
-
-  background:#f0f7ff;
-
-  margin-bottom:14px;
-
-  line-height:1.5;
+button.success{
+  background:var(--green);
+  color:white;
+  border:0;
+  border-radius:11px;
+  padding:12px 16px;
+  font-weight:800;
 }
 
-
-/* =====================================================
-   REKAP SHARE
-===================================================== */
-
-.share-box{
-  background:#111;
-
-  color:#fff;
-
-  border-radius:16px;
-
-  padding:16px;
-
-  white-space:pre-wrap;
-
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace;
-
-  font-size:13px;
-
-  line-height:1.55;
-
-  overflow:auto;
-
-  max-height:650px;
+button.danger{
+  background:#ffe8e8;
+  color:#b42318;
+  border:0;
+  border-radius:11px;
+  padding:10px 13px;
+  font-weight:800;
 }
 
-
-.share-preview-title{
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-  gap:10px;
-
-  margin-bottom:10px;
+button.secondary{
+  background:#eef2f6;
+  color:#222;
+  border:0;
+  border-radius:11px;
+  padding:10px 13px;
+  font-weight:800;
 }
 
-
-.filter-row{
-  display:grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap:10px;
-}
-
-
-/* =====================================================
-   MODAL
-===================================================== */
-
-.modal{
-  position:fixed;
-
-  inset:0;
-
-  background:#0008;
-
-  display:none;
-
-  align-items:center;
-
-  justify-content:center;
-
-  padding:15px;
-
-  z-index:200;
-}
-
-
-.modal>div{
-  background:#fff;
-
-  border-radius:18px;
-
-  padding:20px;
-
-  max-width:520px;
-
+table{
   width:100%;
-
-  max-height:90vh;
-
-  overflow:auto;
+  border-collapse:collapse;
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
 }
 
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-.login-box{
-  max-width:500px;
-
-  margin:40px auto;
+th,
+td{
+  padding:10px;
+  border-bottom:1px solid #eee;
+  text-align:left;
+  font-size:14px;
 }
 
-
-/* =====================================================
-   SMALL
-===================================================== */
-
-.muted{
-  color:var(--muted);
+th{
+  background:#f8fafc;
 }
 
+.ok{
+  color:#075fd6;
+  font-weight:800;
+}
+
+.bad{
+  color:#d92d20;
+  font-weight:800;
+}
+
+.green{
+  color:#16803c;
+  font-weight:800;
+}
+
+.red{
+  color:#d92d20;
+  font-weight:800;
+}
+
+.pill{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:99px;
+  background:#eef2ff;
+  font-size:12px;
+  font-weight:700;
+}
 
 .hidden{
   display:none!important;
 }
 
-
-hr{
-  border:0;
-
-  border-top:
-    1px solid var(--line);
-
-  margin:18px 0;
+.modal{
+  position:fixed;
+  inset:0;
+  background:#0007;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  z-index:20;
 }
 
+.modal>div{
+  background:white;
+  border-radius:18px;
+  padding:20px;
+  max-width:500px;
+  width:100%;
+  max-height:90vh;
+  overflow:auto;
+}
 
-/* =====================================================
-   MOBILE
-===================================================== */
+.notice{
+  padding:12px;
+  border-radius:12px;
+  background:#f0f7ff;
+  margin-bottom:12px;
+}
 
-@media(max-width:900px){
+.stat-income{
+  border-left:5px solid #16a34a;
+}
+
+.stat-expense{
+  border-left:5px solid #e53935;
+}
+
+.empty{
+  text-align:center;
+  padding:25px;
+  color:#667085;
+}
+
+.member-search-results{
+  margin-top:7px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.member-result{
+  width:100%;
+  text-align:left;
+  background:#f8fafc;
+  border:1px solid #e4e7ec;
+  border-radius:12px;
+  padding:12px;
+  font-weight:800;
+}
+
+.member-result:hover{
+  background:#eef4ff;
+}
+
+.selected-member{
+  margin-top:8px;
+  padding:11px 12px;
+  border-radius:12px;
+  background:#ecfdf3;
+  color:#067647;
+  font-weight:800;
+}
+
+.search-count{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+@media(max-width:800px){
 
   .grid{
-    grid-template-columns:
-      repeat(2,minmax(0,1fr));
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  table{
+    font-size:12px;
+  }
+
+  th,
+  td{
+    padding:8px;
   }
 
 }
 
-
-@media(max-width:700px){
-
-  .sidebar{
-    width:250px;
-
-    transform:
-      translateX(-100%);
-  }
-
-
-  body.mobile-menu .sidebar{
-    transform:
-      translateX(0);
-  }
-
-
-  .main,
-  body.sidebar-mini .main{
-    margin-left:0;
-  }
-
-
-  .mobile-toggle{
-    display:block;
-  }
-
-
-  .topbar{
-    min-height:68px;
-  }
-
-
-  .top-title h1{
-    font-size:19px;
-  }
-
-
-  .status{
-    display:none;
-  }
-
-
-  .grid{
-    grid-template-columns:
-      repeat(2,minmax(0,1fr));
-
-    gap:10px;
-  }
-
-
-  .grid-2{
-    grid-template-columns:1fr;
-  }
-
-
-  .wrap{
-    padding:12px;
-  }
-
-
-  .metric{
-    min-height:105px;
-    padding:14px;
-  }
-
-
-  .metric b{
-    font-size:19px;
-  }
-
-
-  .filter-row{
-    grid-template-columns:1fr;
-  }
-
-}
-
-
-@media(max-width:430px){
+@media(max-width:500px){
 
   .grid{
     grid-template-columns:1fr 1fr;
   }
 
-
   .metric b{
-    font-size:17px;
+    font-size:20px;
   }
 
-
-  .card{
-    padding:14px;
+  .toolbar h2{
+    width:100%;
   }
 
 }
 </style>
 </head>
 
-
 <body>
 
+<header>
+  <h1>💰 KAS SOS</h1>
+  <small id="rt">🟢 Realtime aktif</small>
+</header>
 
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
+<nav id="nav">
 
-<aside class="sidebar" id="sidebar">
+  <button class="active" data-tab="dash">
+    Dashboard
+  </button>
 
-  <div class="sidebar-head">
+  <button data-tab="members">
+    Anggota
+  </button>
 
-    <div class="logo">
-      💰
-    </div>
+  <button data-tab="income">
+    📥 Pemasukan
+  </button>
 
-    <div class="brand">
+  <button data-tab="expense">
+    📤 Pengeluaran
+  </button>
 
-      <strong>
-        STREET OF STYLE
-      </strong>
+  <!-- NAMA MENU SUDAH DIUBAH -->
+  <button data-tab="requests">
+    💳 Pembayaran
+  </button>
 
-      <small>
-        KAS
-      </small>
+  <button data-tab="settings">
+    Pengaturan
+  </button>
 
-    </div>
+  <button id="logout" class="hidden">
+    Keluar
+  </button>
 
-    <button
-      class="toggle-sidebar"
-      id="toggleSidebar"
-      title="Buka/Tutup menu">
+</nav>
 
-      ‹
-
-    </button>
-
-  </div>
-
-
-  <div class="menu">
-
-    <button
-      class="active"
-      data-tab="dash">
-
-      <span class="menu-icon">🏠</span>
-
-      <span class="menu-text">
-        Dashboard
-      </span>
-
-    </button>
-
-
-    <button data-tab="members">
-
-      <span class="menu-icon">👥</span>
-
-      <span class="menu-text">
-        Anggota
-      </span>
-
-    </button>
-
-
-    <button data-tab="income">
-
-      <span class="menu-icon">📥</span>
-
-      <span class="menu-text">
-        Pemasukan
-      </span>
-
-    </button>
-
-
-    <button data-tab="expense">
-
-      <span class="menu-icon">📤</span>
-
-      <span class="menu-text">
-        Pengeluaran
-      </span>
-
-    </button>
-
-
-    <button data-tab="requests">
-
-      <span class="menu-icon">📝</span>
-
-      <span class="menu-text">
-        Pengajuan
-      </span>
-
-    </button>
-
-
-    <button data-tab="recap">
-
-      <span class="menu-icon">📊</span>
-
-      <span class="menu-text">
-        Rekap Kas
-      </span>
-
-    </button>
-
-
-    <button data-tab="settings">
-
-      <span class="menu-icon">⚙️</span>
-
-      <span class="menu-text">
-        Pengaturan
-      </span>
-
-    </button>
-
-  </div>
-
-
-  <div class="sidebar-bottom">
-
-    <button
-      id="logout"
-      class="hidden">
-
-      Keluar
-
-    </button>
-
-  </div>
-
-</aside>
-
-
-<div
-  class="overlay"
-  id="overlay">
-</div>
+<main class="wrap">
 
 
 <!-- =====================================================
-     MAIN
+     DASHBOARD
 ===================================================== -->
 
-<div class="main">
+<section id="dash" class="show">
+
+  <div class="grid">
+
+    <div class="card metric">
+      Saldo Kas
+      <b id="saldo">Rp 0</b>
+    </div>
+
+    <div class="card metric">
+      Anggota Wajib Kas
+      <b id="wajib">0</b>
+    </div>
+
+    <div class="card metric stat-income">
+      Total Pemasukan
+      <b id="totalIncome">Rp 0</b>
+    </div>
+
+    <div class="card metric stat-expense">
+      Total Pengeluaran
+      <b id="totalExpense">Rp 0</b>
+    </div>
+
+  </div>
+
+  <div class="grid" style="margin-top:12px">
+
+    <div class="card metric">
+      Total Tunggakan
+      <b id="tunggakan">Rp 0</b>
+    </div>
+
+    <div class="card metric">
+      ADM Belum Lunas
+      <b id="adm">Rp 0</b>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:14px">
+
+    <h2>📊 Rekap Kas</h2>
+
+    <div id="summary">
+      Memuat...
+    </div>
+
+  </div>
+
+</section>
 
 
-  <!-- TOPBAR -->
+<!-- =====================================================
+     ANGGOTA
+===================================================== -->
 
-  <header class="topbar">
+<section id="members">
 
-    <button
-      class="mobile-toggle"
-      id="mobileToggle">
+  <div class="toolbar">
 
-      ☰
+    <h2>👥 Anggota</h2>
 
+    <button class="primary" id="addBtn">
+      + Anggota
     </button>
 
+  </div>
 
-    <div class="top-title">
+  <div class="card">
 
-      <h1>
-        STREET OF STYLE KAS
-      </h1>
+    <div style="overflow:auto">
 
-      <small>
-        💰 Sistem Kas Realtime
-      </small>
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Nama</th>
+            <th>Saldo</th>
+            <th>NextPay</th>
+            <th>Tunggakan</th>
+            <th>ADM</th>
+            <th></th>
+          </tr>
+
+        </thead>
+
+        <tbody id="memberRows"></tbody>
+
+      </table>
 
     </div>
 
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PEMASUKAN
+===================================================== -->
+
+<section id="income">
+
+  <div class="toolbar">
+
+    <h2>📥 Pemasukan Kas</h2>
+
+    <button
+      class="success"
+      onclick="openTransactionModal('income')">
+      + Pemasukan
+    </button>
+
+  </div>
+
+  <div class="card">
+
+    <div class="notice">
+      Semua uang yang masuk ke kas dicatat di sini.
+    </div>
+
+    <div style="overflow:auto">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Tanggal</th>
+            <th>Jumlah</th>
+            <th>Keterangan</th>
+            <th>Aksi</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="incomeRows"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PENGELUARAN
+===================================================== -->
+
+<section id="expense">
+
+  <div class="toolbar">
+
+    <h2>📤 Pengeluaran Kas</h2>
+
+    <button
+      class="primary"
+      onclick="openTransactionModal('expense')">
+      + Pengeluaran
+    </button>
+
+  </div>
+
+  <div class="card">
+
+    <div class="notice">
+      Semua uang yang keluar dari kas dicatat di sini.
+    </div>
+
+    <div style="overflow:auto">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Tanggal</th>
+            <th>Jumlah</th>
+            <th>Keterangan</th>
+            <th>Aksi</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="expenseRows"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PEMBAYARAN
+===================================================== -->
+
+<section id="requests">
+
+  <div class="toolbar">
+
+    <h2>💳 Pembayaran</h2>
+
+  </div>
+
+
+  <!-- FORM MEMBER -->
+
+  <div id="memberSubmit" class="card hidden">
+
+    <h3>💳 Kirim Pembayaran</h3>
+
+    <div class="notice">
+      Cari nama karakter dari daftar anggota,
+      kemudian pilih nama yang sesuai.
+    </div>
+
+
+    <!-- SEARCH NAMA -->
+
+    <label>
+      🔎 Cari nama karakter
+    </label>
+
+    <input
+      id="memberSearchRequest"
+      type="search"
+      placeholder="Ketik nama karakter..."
+      autocomplete="off"
+      oninput="searchRequestMember()">
 
     <div
-      class="status"
-      id="rt">
+      id="memberSearchCount"
+      class="search-count">
+    </div>
 
-      🟢 Realtime aktif
+    <div
+      id="memberSearchResults"
+      class="member-search-results">
+    </div>
+
+
+    <!-- NAMA TERPILIH -->
+
+    <input
+      id="mname"
+      type="hidden">
+
+    <div
+      id="selectedMember"
+      class="selected-member hidden">
+    </div>
+
+
+    <label>
+      Jenis pembayaran
+    </label>
+
+    <select id="ptype">
+
+      <option value="KAS">
+        KAS
+      </option>
+
+      <option value="ADM">
+        ADM
+      </option>
+
+    </select>
+
+
+    <label>
+      Jumlah (Rp)
+    </label>
+
+    <input
+      id="pamount"
+      type="number"
+      min="1"
+      placeholder="Contoh: 7000">
+
+
+    <label>
+      Screenshot bukti
+    </label>
+
+    <input
+      id="proof"
+      type="file"
+      accept="image/*">
+
+
+    <label>
+      Catatan
+    </label>
+
+    <textarea
+      id="pnote"
+      placeholder="Catatan pembayaran (opsional)">
+    </textarea>
+
+    <br>
+
+    <button
+      class="primary"
+      onclick="submitPayment()">
+      💸 Kirim Pembayaran
+    </button>
+
+  </div>
+
+
+  <!-- DAFTAR PEMBAYARAN -->
+
+  <div class="card" style="margin-top:14px">
+
+    <h3>📋 Daftar Pembayaran</h3>
+
+    <div style="overflow:auto">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Waktu</th>
+            <th>Nama</th>
+            <th>Jenis</th>
+            <th>Jumlah</th>
+            <th>Status</th>
+            <th>Bukti</th>
+            <th>Aksi</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="reqRows"></tbody>
+
+      </table>
 
     </div>
 
-  </header>
+  </div>
 
+</section>
 
-  <main class="wrap">
 
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
 
-    <!-- =================================================
-         DASHBOARD
-    ================================================= -->
+<section id="settings">
 
-    <section
-      id="dash"
-      class="show">
+  <div class="card">
 
-      <div class="grid">
+    <h2>⚙️ Pengaturan Admin</h2>
 
-        <div class="card metric stat-balance">
+    <p>
+      Login admin diperlukan untuk mengubah data anggota,
+      pengaturan dan transaksi.
+    </p>
 
-          <span>
-            Saldo Kas
-          </span>
+    <div id="adminLogin">
 
-          <b id="saldo">
-            Rp 0
-          </b>
+      <label>
+        Password Admin
+      </label>
 
-        </div>
+      <input
+        id="adminpass"
+        type="password"
+        placeholder="Password admin">
 
+      <button
+        class="primary"
+        onclick="adminLogin()">
+        Masuk Admin
+      </button>
 
-        <div class="card metric">
+    </div>
 
-          <span>
-            Anggota Wajib Kas
-          </span>
 
-          <b id="wajib">
-            0
-          </b>
+    <div id="adminPanel" class="hidden">
 
-        </div>
+      <label>
+        Tanggal Rekap
+      </label>
 
+      <input
+        id="rdate"
+        type="date">
 
-        <div class="card metric stat-income">
 
-          <span>
-            Total Pemasukan
-          </span>
+      <label>
+        Iuran KAS / hari
+      </label>
 
-          <b id="totalIncome">
-            Rp 0
-          </b>
+      <input
+        id="kasdaily"
+        type="number">
 
-        </div>
 
+      <label>
+        ADM standar anggota baru
+      </label>
 
-        <div class="card metric stat-expense">
+      <input
+        id="admdefault"
+        type="number">
 
-          <span>
-            Total Pengeluaran
-          </span>
 
-          <b id="totalExpense">
-            Rp 0
-          </b>
+      <br><br>
 
-        </div>
+      <button
+        class="primary"
+        onclick="saveSettings()">
+        Simpan Pengaturan
+      </button>
 
-      </div>
+      <p id="adminmsg"></p>
 
+    </div>
 
-      <div
-        class="grid"
-        style="margin-top:14px">
+  </div>
 
-        <div class="card metric stat-arrears">
+</section>
 
-          <span>
-            Total Tunggakan
-          </span>
-
-          <b id="tunggakan">
-            Rp 0
-          </b>
-
-        </div>
-
-
-        <div class="card metric">
-
-          <span>
-            ADM Belum Lunas
-          </span>
-
-          <b id="adm">
-            Rp 0
-          </b>
-
-        </div>
-
-      </div>
-
-
-      <div
-        class="card"
-        style="margin-top:14px">
-
-        <h2>
-          📊 Rekap Kas
-        </h2>
-
-        <div id="summary">
-          Memuat...
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         ANGGOTA
-    ================================================= -->
-
-    <section id="members">
-
-      <div class="toolbar">
-
-        <h2>
-          👥 Anggota
-        </h2>
-
-
-        <div class="actions">
-
-          <button
-            class="share"
-            onclick="shareMemberRecap()">
-
-            📤 Share Rekap
-
-          </button>
-
-
-          <button
-            class="primary"
-            id="addBtn">
-
-            + Anggota
-
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="notice">
-
-          Data anggota diambil langsung dari
-          database kas.
-
-        </div>
-
-
-        <div class="table-wrap">
-
-          <table>
-
-            <thead>
-
-              <tr>
-
-                <th>
-                  #
-                </th>
-
-                <th>
-                  Nama
-                </th>
-
-                <th>
-                  Saldo
-                </th>
-
-                <th>
-                  NextPay
-                </th>
-
-                <th>
-                  Tunggakan
-                </th>
-
-                <th>
-                  ADM
-                </th>
-
-                <th>
-                  Aksi
-                </th>
-
-              </tr>
-
-            </thead>
-
-
-            <tbody
-              id="memberRows">
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         PEMASUKAN
-    ================================================= -->
-
-    <section id="income">
-
-      <div class="toolbar">
-
-        <h2>
-          📥 Pemasukan Kas
-        </h2>
-
-
-        <button
-          class="success"
-          onclick="openTransactionModal('income')">
-
-          + Pemasukan
-
-        </button>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="notice">
-
-          Semua uang yang masuk ke kas
-          dicatat di sini.
-
-        </div>
-
-
-        <div class="table-wrap">
-
-          <table>
-
-            <thead>
-
-              <tr>
-
-                <th>
-                  Tanggal
-                </th>
-
-                <th>
-                  Jumlah
-                </th>
-
-                <th>
-                  Keterangan
-                </th>
-
-                <th>
-                  Aksi
-                </th>
-
-              </tr>
-
-            </thead>
-
-
-            <tbody
-              id="incomeRows">
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         PENGELUARAN
-    ================================================= -->
-
-    <section id="expense">
-
-      <div class="toolbar">
-
-        <h2>
-          📤 Pengeluaran Kas
-        </h2>
-
-
-        <button
-          class="primary"
-          onclick="openTransactionModal('expense')">
-
-          + Pengeluaran
-
-        </button>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="notice">
-
-          Semua uang yang keluar dari kas
-          dicatat di sini.
-
-        </div>
-
-
-        <div class="table-wrap">
-
-          <table>
-
-            <thead>
-
-              <tr>
-
-                <th>
-                  Tanggal
-                </th>
-
-                <th>
-                  Jumlah
-                </th>
-
-                <th>
-                  Keterangan
-                </th>
-
-                <th>
-                  Aksi
-                </th>
-
-              </tr>
-
-            </thead>
-
-
-            <tbody
-              id="expenseRows">
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         PENGAJUAN
-    ================================================= -->
-
-    <section id="requests">
-
-      <div class="toolbar">
-
-        <h2>
-          📝 Pengajuan Pembayaran
-        </h2>
-
-      </div>
-
-
-      <div
-        id="memberSubmit"
-        class="card hidden">
-
-        <h3>
-          Ajukan Pembayaran
-        </h3>
-
-
-        <label>
-          Nama karakter
-        </label>
-
-        <input
-          id="mname"
-          placeholder="Nama karakter">
-
-
-        <label>
-          Jenis
-        </label>
-
-        <select id="ptype">
-
-          <option value="KAS">
-            KAS
-          </option>
-
-          <option value="ADM">
-            ADM
-          </option>
-
-        </select>
-
-
-        <label>
-          Jumlah (Rp)
-        </label>
-
-        <input
-          id="pamount"
-          type="number"
-          min="1"
-          placeholder="Contoh: 7000">
-
-
-        <label>
-          Screenshot bukti
-        </label>
-
-        <input
-          id="proof"
-          type="file"
-          accept="image/*">
-
-
-        <label>
-          Catatan
-        </label>
-
-        <textarea
-          id="pnote"
-          placeholder="Catatan pembayaran">
-        </textarea>
-
-
-        <br>
-
-
-        <button
-          class="primary"
-          onclick="submitPayment()">
-
-          Kirim Pengajuan
-
-        </button>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>
-          Daftar Pengajuan
-        </h3>
-
-
-        <div class="table-wrap">
-
-          <table>
-
-            <thead>
-
-              <tr>
-
-                <th>
-                  Waktu
-                </th>
-
-                <th>
-                  Nama
-                </th>
-
-                <th>
-                  Jenis
-                </th>
-
-                <th>
-                  Jumlah
-                </th>
-
-                <th>
-                  Status
-                </th>
-
-                <th>
-                  Bukti
-                </th>
-
-                <th>
-                  Aksi
-                </th>
-
-              </tr>
-
-            </thead>
-
-
-            <tbody
-              id="reqRows">
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         REKAP KAS
-    ================================================= -->
-
-    <section id="recap">
-
-      <div class="toolbar">
-
-        <h2>
-          📊 Rekap Kas
-        </h2>
-
-
-        <div class="actions">
-
-          <button
-            class="share"
-            onclick="shareMemberRecap()">
-
-            📤 Share Rekap
-
-          </button>
-
-
-          <button
-            class="secondary"
-            onclick="copyRecap()">
-
-            📋 Salin
-
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="notice">
-
-          Rekap ini dibuat otomatis dari data
-          anggota yang tersimpan di database.
-
-          <br>
-
-          🟢 = saldo tidak minus
-
-          <br>
-
-          🔴 = masih memiliki tunggakan
-
-        </div>
-
-
-        <div class="share-preview-title">
-
-          <strong>
-            Preview Rekap
-          </strong>
-
-          <span
-            class="pill"
-            id="recapCount">
-
-            0 anggota
-
-          </span>
-
-        </div>
-
-
-        <div
-          id="recapText"
-          class="share-box">
-
-          Memuat rekap...
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         SETTINGS
-    ================================================= -->
-
-    <section id="settings">
-
-      <div class="card">
-
-        <h2>
-          ⚙️ Pengaturan Admin
-        </h2>
-
-
-        <p class="muted">
-
-          Login admin diperlukan untuk
-          mengubah data anggota, pengaturan,
-          dan transaksi.
-
-        </p>
-
-
-        <div id="adminLogin">
-
-          <label>
-            Password Admin
-          </label>
-
-          <input
-            id="adminpass"
-            type="password"
-            placeholder="Password admin">
-
-
-          <br>
-
-
-          <button
-            class="primary"
-            onclick="adminLogin()">
-
-            Masuk Admin
-
-          </button>
-
-        </div>
-
-
-        <div
-          id="adminPanel"
-          class="hidden">
-
-          <label>
-            Tanggal Rekap
-          </label>
-
-          <input
-            id="rdate"
-            type="date">
-
-
-          <label>
-            Iuran KAS / hari
-          </label>
-
-          <input
-            id="kasdaily"
-            type="number">
-
-
-          <label>
-            ADM standar anggota baru
-          </label>
-
-          <input
-            id="admdefault"
-            type="number">
-
-
-          <br><br>
-
-
-          <button
-            class="primary"
-            onclick="saveSettings()">
-
-            Simpan Pengaturan
-
-          </button>
-
-
-          <p id="adminmsg"></p>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-</div>
+</main>
 
 
 <!-- =====================================================
      MODAL
 ===================================================== -->
 
-<div
-  id="modal"
-  class="modal">
+<div id="modal" class="modal">
 
-  <div
-    id="modalBody">
-  </div>
+  <div id="modalBody"></div>
 
 </div>
 
@@ -1949,16 +844,16 @@ hr{
 ===================================================== */
 
 const SUPABASE_URL =
-  "https://jjnmaylxjzgixnrqopro.supabase.co";
+"https://jjnmaylxjzgixnrqopro.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_lkURZKFsysGqqerO53RP_Q_h8COOyLr";
+"sb_publishable_lkURZKFsysGqqerO53RP_Q_h8COOyLr";
 
 const sb =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 
 /* =====================================================
@@ -1966,10 +861,10 @@ const sb =
 ===================================================== */
 
 let adminPass =
-  sessionStorage.getItem("kas_admin") || "";
+sessionStorage.getItem("kas_admin") || "";
 
 let isAdmin =
-  !!adminPass;
+!!adminPass;
 
 let members = [];
 
@@ -1984,29 +879,9 @@ let expenses = [];
    HELPER
 ===================================================== */
 
-function money(n){
-
-  return "Rp " +
-    Number(n || 0)
-      .toLocaleString("id-ID");
-
-}
-
-
-function shortMoney(n){
-
-  const num =
-    Number(n || 0);
-
-  const sign =
-    num >= 0 ? "+" : "-";
-
-  return sign +
-    Math.abs(num / 1000)
-      .toLocaleString("id-ID")
-      .replace(",",".");
-
-}
+const money = n =>
+"Rp " +
+Number(n || 0).toLocaleString("id-ID");
 
 
 function escapeHTML(value){
@@ -2021,112 +896,6 @@ function escapeHTML(value){
 }
 
 
-function formatDate(date){
-
-  if(!date)
-    return "-";
-
-  return new Date(date)
-    .toLocaleString(
-      "id-ID"
-    );
-
-}
-
-
-function formatShortDate(date){
-
-  if(!date)
-    return "-";
-
-  const d =
-    new Date(
-      date + "T00:00:00"
-    );
-
-  return String(
-    d.getDate()
-  ).padStart(2,"0")
-  + "/" +
-  String(
-    d.getMonth()+1
-  ).padStart(2,"0")
-  + "/" +
-  String(
-    d.getFullYear()
-  ).slice(-2);
-
-}
-
-
-/* =====================================================
-   SIDEBAR
-===================================================== */
-
-const toggleSidebar =
-  document.getElementById(
-    "toggleSidebar"
-  );
-
-
-toggleSidebar.onclick =
-  () => {
-
-    if(window.innerWidth <= 700){
-
-      document.body
-        .classList.toggle(
-          "mobile-menu"
-        );
-
-      return;
-
-    }
-
-
-    document.body
-      .classList.toggle(
-        "sidebar-mini"
-      );
-
-
-    toggleSidebar.textContent =
-      document.body
-        .classList.contains(
-          "sidebar-mini"
-        )
-        ? "›"
-        : "‹";
-
-  };
-
-
-document.getElementById(
-  "mobileToggle"
-).onclick =
-  () => {
-
-    document.body
-      .classList.add(
-        "mobile-menu"
-      );
-
-  };
-
-
-document.getElementById(
-  "overlay"
-).onclick =
-  () => {
-
-    document.body
-      .classList.remove(
-        "mobile-menu"
-      );
-
-  };
-
-
 /* =====================================================
    TAB
 ===================================================== */
@@ -2135,82 +904,71 @@ function tab(id){
 
   document
     .querySelectorAll("section")
-    .forEach(
-      x =>
-        x.classList.remove(
-          "show"
-        )
+    .forEach(x =>
+      x.classList.remove("show")
     );
 
-
-  const section =
+  const target =
     document.getElementById(id);
 
-
-  if(section)
-    section.classList.add("show");
+  if(target)
+    target.classList.add("show");
 
 
   document
-    .querySelectorAll(
-      ".menu button[data-tab]"
-    )
-    .forEach(
-      x =>
-        x.classList.toggle(
-          "active",
-          x.dataset.tab === id
-        )
+    .querySelectorAll("nav button[data-tab]")
+    .forEach(x =>
+      x.classList.toggle(
+        "active",
+        x.dataset.tab === id
+      )
     );
 
 
   if(id === "requests")
     loadRequests();
 
-
-  if(
-    id === "income" ||
-    id === "expense"
-  )
+  if(id === "income")
     loadTransactions();
 
-
-  if(id === "recap")
-    renderRecap();
-
-
-  if(window.innerWidth <= 700){
-
-    document.body
-      .classList.remove(
-        "mobile-menu"
-      );
-
-  }
+  if(id === "expense")
+    loadTransactions();
 
 }
 
 
 document
-  .querySelectorAll(
-    ".menu button[data-tab]"
-  )
-  .forEach(
-    b => {
+  .querySelectorAll("nav button[data-tab]")
+  .forEach(b => {
 
-      b.onclick =
-        () =>
-          tab(
-            b.dataset.tab
-          );
+    b.onclick = () =>
+      tab(b.dataset.tab);
 
-    }
-  );
+  });
 
 
 /* =====================================================
-   AUTH UI
+   AUTH
 ===================================================== */
+
+document
+  .getElementById("logout")
+  .onclick = () => {
+
+    sessionStorage.removeItem("kas_admin");
+
+    adminPass = "";
+
+    isAdmin = false;
+
+    renderAuth();
+
+    tab("dash");
+
+    load();
+
+  };
+
 
 function renderAuth(){
 
@@ -2248,28 +1006,6 @@ function renderAuth(){
 }
 
 
-document
-  .getElementById("logout")
-  .onclick =
-  () => {
-
-    sessionStorage.removeItem(
-      "kas_admin"
-    );
-
-    adminPass = "";
-
-    isAdmin = false;
-
-    renderAuth();
-
-    tab("dash");
-
-    load();
-
-  };
-
-
 /* =====================================================
    LOAD UTAMA
 ===================================================== */
@@ -2280,10 +1016,10 @@ async function load(){
 
     const a =
       await sb
-        .from("app_settings")
-        .select("*")
-        .eq("id",1)
-        .single();
+      .from("app_settings")
+      .select("*")
+      .eq("id",1)
+      .single();
 
 
     if(a.data)
@@ -2292,15 +1028,15 @@ async function load(){
 
     const m =
       await sb
-        .from("members")
-        .select("*")
-        .order("name");
+      .from("members")
+      .select("*")
+      .order("name");
 
 
     if(m.error){
 
       console.error(
-        "Gagal load members:",
+        "Gagal mengambil members:",
         m.error
       );
 
@@ -2312,20 +1048,22 @@ async function load(){
     }
 
 
-    await loadTransactions();
+    /*
+      Penting:
+      Setiap kali members berhasil dimuat,
+      daftar pencarian pembayaran ikut diperbarui.
+    */
 
+    searchRequestMember();
+
+
+    await loadTransactions();
 
     render();
 
-    renderRecap();
-
-
   }catch(err){
 
-    console.error(
-      "Load error:",
-      err
-    );
+    console.error(err);
 
   }
 
@@ -2333,15 +1071,14 @@ async function load(){
 
 
 /* =====================================================
-   DASHBOARD
+   RENDER DASHBOARD
 ===================================================== */
 
 function render(){
 
   const wajib =
     members.filter(
-      m =>
-        !m.exempt_kas
+      m => !m.exempt_kas
     ).length;
 
 
@@ -2351,9 +1088,7 @@ function render(){
         s +
         Math.max(
           0,
-          Number(
-            m.arrears || 0
-          )
+          Number(m.arrears || 0)
         ),
       0
     );
@@ -2363,9 +1098,7 @@ function render(){
     members.reduce(
       (s,m) =>
         s +
-        Number(
-          m.adm_due || 0
-        ),
+        Number(m.adm_due || 0),
       0
     );
 
@@ -2374,9 +1107,7 @@ function render(){
     incomes.reduce(
       (s,x) =>
         s +
-        Number(
-          x.amount || 0
-        ),
+        Number(x.amount || 0),
       0
     );
 
@@ -2385,9 +1116,7 @@ function render(){
     expenses.reduce(
       (s,x) =>
         s +
-        Number(
-          x.amount || 0
-        ),
+        Number(x.amount || 0),
       0
     );
 
@@ -2397,93 +1126,89 @@ function render(){
     totalExpense;
 
 
-  document.getElementById(
-    "saldo"
-  ).textContent =
+  document
+    .getElementById("saldo")
+    .textContent =
     money(saldo);
 
 
-  document.getElementById(
-    "wajib"
-  ).textContent =
+  document
+    .getElementById("wajib")
+    .textContent =
     wajib;
 
 
-  document.getElementById(
-    "tunggakan"
-  ).textContent =
+  document
+    .getElementById("tunggakan")
+    .textContent =
     money(tung);
 
 
-  document.getElementById(
-    "adm"
-  ).textContent =
+  document
+    .getElementById("adm")
+    .textContent =
     money(adm);
 
 
-  document.getElementById(
-    "totalIncome"
-  ).textContent =
+  document
+    .getElementById("totalIncome")
+    .textContent =
     money(totalIncome);
 
 
-  document.getElementById(
-    "totalExpense"
-  ).textContent =
+  document
+    .getElementById("totalExpense")
+    .textContent =
     money(totalExpense);
 
 
-  document.getElementById(
-    "summary"
-  ).innerHTML = `
+  document
+    .getElementById("summary")
+    .innerHTML = `
 
-    Tanggal rekap:
-    <b>
-      ${escapeHTML(
-        settings.report_date || "-"
-      )}
-    </b>
+      Tanggal rekap:
+      <b>
+        ${escapeHTML(
+          settings.report_date || "-"
+        )}
+      </b>
 
-    <br>
+      <br>
 
-    Iuran harian:
-    <b>
-      ${money(
-        settings.kas_daily
-      )}
-    </b>
+      Iuran harian:
+      <b>
+        ${money(settings.kas_daily)}
+      </b>
 
-    <br>
+      <br>
 
-    ADM standar:
-    <b>
-      ${money(
-        settings.adm_default
-      )}
-    </b>
+      ADM standar:
+      <b>
+        ${money(settings.adm_default)}
+      </b>
 
-    <br><br>
+      <br><br>
 
-    Total pemasukan:
-    <b class="green">
-      ${money(totalIncome)}
-    </b>
+      Total pemasukan:
+      <b class="green">
+        ${money(totalIncome)}
+      </b>
 
-    <br>
+      <br>
 
-    Total pengeluaran:
-    <b class="red">
-      ${money(totalExpense)}
-    </b>
+      Total pengeluaran:
+      <b class="red">
+        ${money(totalExpense)}
+      </b>
 
-    <br>
+      <br>
 
-    Saldo kas:
-    <b>
-      ${money(saldo)}
-    </b>
+      Saldo kas:
+      <b>
+        ${money(saldo)}
+      </b>
 
-  `;
+    `;
 
 
   renderMembers();
@@ -2507,17 +1232,12 @@ function renderMembers(){
 
   if(!members.length){
 
-    body.innerHTML = `
-      <tr>
-        <td
-          colspan="7"
-          class="empty">
-
+    body.innerHTML =
+      `<tr>
+        <td colspan="6" class="empty">
           Belum ada anggota.
-
         </td>
-      </tr>
-    `;
+      </tr>`;
 
     return;
 
@@ -2525,173 +1245,107 @@ function renderMembers(){
 
 
   body.innerHTML =
-    members.map(
-      (m,index) => {
+    members.map(m => `
 
-        const balance =
-          Number(
-            m.balance || 0
-          );
+      <tr>
 
+        <td>
+          ${escapeHTML(m.name)}
+        </td>
 
-        const arrears =
-          Number(
-            m.arrears || 0
-          );
+        <td
+          class="${
+            Number(m.balance) < 0
+            ? "bad"
+            : "ok"
+          }">
 
+          ${money(m.balance)}
 
-        return `
+        </td>
 
-          <tr>
+        <td>
+          ${escapeHTML(
+            m.next_pay || "-"
+          )}
+        </td>
 
-            <td>
-              ${index + 1}
-            </td>
+        <td
+          class="${
+            Number(m.arrears) > 0
+            ? "bad"
+            : "ok"
+          }">
 
-            <td>
-              <strong>
-                ${escapeHTML(
-                  m.name
-                )}
-              </strong>
-            </td>
+          ${money(m.arrears)}
 
-            <td
-              class="${
-                balance < 0
-                  ? "bad"
-                  : "ok"
-              }">
+        </td>
 
-              ${money(balance)}
+        <td>
+          ${money(m.adm_due)}
+        </td>
 
-            </td>
+        <td>
 
-            <td>
+          ${
+            isAdmin
+            ?
+            `<button
+              class="secondary"
+              onclick="editMember('${m.id}')">
+              Edit
+            </button>`
+            :
+            "-"
+          }
 
-              ${
-                m.next_pay
-                  ? formatShortDate(
-                      m.next_pay
-                    )
-                  : "-"
-              }
+        </td>
 
-            </td>
+      </tr>
 
-            <td
-              class="${
-                arrears > 0
-                  ? "bad"
-                  : "ok"
-              }">
-
-              ${money(
-                arrears
-              )}
-
-            </td>
-
-            <td>
-
-              ${money(
-                m.adm_due
-              )}
-
-            </td>
-
-            <td>
-
-              ${
-                isAdmin
-                  ?
-                  `
-                  <button
-                    class="secondary"
-                    onclick="editMember('${m.id}')">
-
-                    Edit
-
-                  </button>
-                  `
-                  :
-                  "-"
-              }
-
-            </td>
-
-          </tr>
-
-        `;
-
-      }
-    ).join("");
+    `).join("");
 
 }
 
 
 /* =====================================================
-   TRANSACTIONS
+   TRANSAKSI
 ===================================================== */
 
 async function loadTransactions(){
 
   const incomeResult =
     await sb
-      .from("cash_income")
-      .select("*")
-      .order(
-        "created_at",
-        {
-          ascending:false
-        }
-      );
-
-
-  if(
-    !incomeResult.error
-  ){
-
-    incomes =
-      incomeResult.data || [];
-
-  }else{
-
-    console.error(
-      "Income:",
-      incomeResult.error
+    .from("cash_income")
+    .select("*")
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
     );
 
-  }
+
+  if(!incomeResult.error)
+    incomes =
+      incomeResult.data || [];
 
 
   const expenseResult =
     await sb
-      .from("cash_expense")
-      .select("*")
-      .order(
-        "created_at",
-        {
-          ascending:false
-        }
-      );
-
-
-  if(
-    !expenseResult.error
-  ){
-
-    expenses =
-      expenseResult.data || [];
-
-  }else{
-
-    console.error(
-      "Expense:",
-      expenseResult.error
+    .from("cash_expense")
+    .select("*")
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
     );
 
-  }
+
+  if(!expenseResult.error)
+    expenses =
+      expenseResult.data || [];
 
 
   renderTransactions();
@@ -2701,13 +1355,16 @@ async function loadTransactions(){
 }
 
 
+/* =====================================================
+   RENDER TRANSAKSI
+===================================================== */
+
 function renderTransactions(){
 
   const incomeBody =
     document.getElementById(
       "incomeRows"
     );
-
 
   const expenseBody =
     document.getElementById(
@@ -2717,147 +1374,121 @@ function renderTransactions(){
 
   if(!incomes.length){
 
-    incomeBody.innerHTML = `
-      <tr>
-        <td
-          colspan="4"
-          class="empty">
-
+    incomeBody.innerHTML =
+      `<tr>
+        <td colspan="4" class="empty">
           Belum ada pemasukan.
-
         </td>
-      </tr>
-    `;
+      </tr>`;
 
   }else{
 
     incomeBody.innerHTML =
-      incomes.map(
-        x => `
+      incomes.map(x => `
 
-          <tr>
+        <tr>
 
-            <td>
-              ${formatDate(
-                x.created_at
-              )}
-            </td>
+          <td>
+            ${formatDate(x.created_at)}
+          </td>
 
-            <td class="green">
-              + ${money(
-                x.amount
-              )}
-            </td>
+          <td class="green">
+            + ${money(x.amount)}
+          </td>
 
-            <td>
-              ${escapeHTML(
-                x.description
-              )}
-            </td>
+          <td>
+            ${escapeHTML(
+              x.description
+            )}
+          </td>
 
-            <td>
+          <td>
 
-              ${
-                isAdmin
-                  ?
-                  `
-                  <button
-                    class="danger"
-                    onclick="deleteTransaction(
-                      'income',
-                      '${x.id}'
-                    )">
+            ${
+              isAdmin
+              ?
+              `<button
+                class="danger"
+                onclick="deleteTransaction(
+                  'income',
+                  '${x.id}'
+                )">
+                Hapus
+              </button>`
+              :
+              "-"
+            }
 
-                    Hapus
+          </td>
 
-                  </button>
-                  `
-                  :
-                  "-"
-              }
+        </tr>
 
-            </td>
-
-          </tr>
-
-        `
-      ).join("");
+      `).join("");
 
   }
 
 
   if(!expenses.length){
 
-    expenseBody.innerHTML = `
-      <tr>
-        <td
-          colspan="4"
-          class="empty">
-
+    expenseBody.innerHTML =
+      `<tr>
+        <td colspan="4" class="empty">
           Belum ada pengeluaran.
-
         </td>
-      </tr>
-    `;
+      </tr>`;
 
   }else{
 
     expenseBody.innerHTML =
-      expenses.map(
-        x => `
+      expenses.map(x => `
 
-          <tr>
+        <tr>
 
-            <td>
-              ${formatDate(
-                x.created_at
-              )}
-            </td>
+          <td>
+            ${formatDate(x.created_at)}
+          </td>
 
-            <td class="red">
-              - ${money(
-                x.amount
-              )}
-            </td>
+          <td class="red">
+            - ${money(x.amount)}
+          </td>
 
-            <td>
-              ${escapeHTML(
-                x.description
-              )}
-            </td>
+          <td>
+            ${escapeHTML(
+              x.description
+            )}
+          </td>
 
-            <td>
+          <td>
 
-              ${
-                isAdmin
-                  ?
-                  `
-                  <button
-                    class="danger"
-                    onclick="deleteTransaction(
-                      'expense',
-                      '${x.id}'
-                    )">
+            ${
+              isAdmin
+              ?
+              `<button
+                class="danger"
+                onclick="deleteTransaction(
+                  'expense',
+                  '${x.id}'
+                )">
+                Hapus
+              </button>`
+              :
+              "-"
+            }
 
-                    Hapus
+          </td>
 
-                  </button>
-                  `
-                  :
-                  "-"
-              }
+        </tr>
 
-            </td>
-
-          </tr>
-
-        `
-      ).join("");
+      `).join("");
 
   }
 
 }
 
+
+/* =====================================================
+   DASHBOARD TOTAL
+===================================================== */
 
 function updateDashboardTotals(){
 
@@ -2865,9 +1496,7 @@ function updateDashboardTotals(){
     incomes.reduce(
       (s,x) =>
         s +
-        Number(
-          x.amount || 0
-        ),
+        Number(x.amount || 0),
       0
     );
 
@@ -2876,28 +1505,26 @@ function updateDashboardTotals(){
     expenses.reduce(
       (s,x) =>
         s +
-        Number(
-          x.amount || 0
-        ),
+        Number(x.amount || 0),
       0
     );
 
 
-  document.getElementById(
-    "totalIncome"
-  ).textContent =
+  document
+    .getElementById("totalIncome")
+    .textContent =
     money(totalIncome);
 
 
-  document.getElementById(
-    "totalExpense"
-  ).textContent =
+  document
+    .getElementById("totalExpense")
+    .textContent =
     money(totalExpense);
 
 
-  document.getElementById(
-    "saldo"
-  ).textContent =
+  document
+    .getElementById("saldo")
+    .textContent =
     money(
       totalIncome -
       totalExpense
@@ -2907,12 +1534,25 @@ function updateDashboardTotals(){
 
 
 /* =====================================================
-   TRANSACTION MODAL
+   FORMAT DATE
 ===================================================== */
 
-function openTransactionModal(
-  type
-){
+function formatDate(date){
+
+  if(!date)
+    return "-";
+
+  return new Date(date)
+    .toLocaleString("id-ID");
+
+}
+
+
+/* =====================================================
+   MODAL TRANSAKSI
+===================================================== */
+
+function openTransactionModal(type){
 
   if(!isAdmin){
 
@@ -2929,80 +1569,70 @@ function openTransactionModal(
     type === "income";
 
 
-  document.getElementById(
-    "modal"
-  ).style.display =
+  document
+    .getElementById("modal")
+    .style.display =
     "flex";
 
 
-  document.getElementById(
-    "modalBody"
-  ).innerHTML = `
+  document
+    .getElementById("modalBody")
+    .innerHTML = `
 
-    <h2>
-
-      ${
-        isIncome
+      <h2>
+        ${
+          isIncome
           ? "📥 Tambah Pemasukan"
           : "📤 Tambah Pengeluaran"
-      }
+        }
+      </h2>
 
-    </h2>
+      <label>
+        Jumlah (Rp)
+      </label>
 
+      <input
+        id="t_amount"
+        type="number"
+        min="1"
+        placeholder="Contoh: 50000">
 
-    <label>
-      Jumlah (Rp)
-    </label>
+      <label>
+        Keterangan
+      </label>
 
-    <input
-      id="t_amount"
-      type="number"
-      min="1"
-      placeholder="Contoh: 50000">
-
-
-    <label>
-      Keterangan
-    </label>
-
-    <textarea
-      id="t_description"
-      placeholder="${
-        isIncome
+      <textarea
+        id="t_description"
+        placeholder="${
+          isIncome
           ? "Contoh: Iuran kas anggota"
           : "Contoh: Beli perlengkapan"
-      }">
-    </textarea>
+        }"></textarea>
 
+      <br>
 
-    <br>
+      <button
+        class="primary"
+        onclick="saveTransaction('${type}')">
+        Simpan
+      </button>
 
+      <button
+        class="secondary"
+        onclick="closeModal()">
+        Batal
+      </button>
 
-    <button
-      class="primary"
-      onclick="saveTransaction('${type}')">
-
-      Simpan
-
-    </button>
-
-
-    <button
-      class="secondary"
-      onclick="closeModal()">
-
-      Batal
-
-    </button>
-
-  `;
+    `;
 
 }
 
 
-async function saveTransaction(
-  type
-){
+/* =====================================================
+   SAVE TRANSAKSI
+===================================================== */
+
+async function saveTransaction(type){
 
   if(!isAdmin){
 
@@ -3017,22 +1647,22 @@ async function saveTransaction(
 
   const amount =
     Number(
-      document.getElementById(
-        "t_amount"
-      ).value
+      document
+        .getElementById("t_amount")
+        .value
     );
 
 
   const description =
-    document.getElementById(
-      "t_description"
-    ).value.trim();
+    document
+      .getElementById(
+        "t_description"
+      )
+      .value
+      .trim();
 
 
-  if(
-    !amount ||
-    amount <= 0
-  ){
+  if(!amount || amount <= 0){
 
     alert(
       "Jumlah harus lebih dari 0."
@@ -3056,17 +1686,20 @@ async function saveTransaction(
 
   const table =
     type === "income"
-      ? "cash_income"
-      : "cash_expense";
+    ? "cash_income"
+    : "cash_expense";
 
 
   const result =
     await sb
-      .from(table)
-      .insert({
-        amount:amount,
-        description:description
-      });
+    .from(table)
+    .insert({
+
+      amount:amount,
+
+      description:description
+
+    });
 
 
   if(result.error){
@@ -3087,11 +1720,10 @@ async function saveTransaction(
 
   closeModal();
 
-
   alert(
     type === "income"
-      ? "Pemasukan berhasil disimpan."
-      : "Pengeluaran berhasil disimpan."
+    ? "Pemasukan berhasil disimpan."
+    : "Pengeluaran berhasil disimpan."
   );
 
 
@@ -3101,6 +1733,10 @@ async function saveTransaction(
 
 }
 
+
+/* =====================================================
+   DELETE TRANSAKSI
+===================================================== */
 
 async function deleteTransaction(
   type,
@@ -3118,25 +1754,22 @@ async function deleteTransaction(
   }
 
 
-  if(
-    !confirm(
-      "Yakin ingin menghapus transaksi ini?"
-    )
-  )
-    return;
+  if(!confirm(
+    "Yakin ingin menghapus transaksi ini?"
+  )) return;
 
 
   const table =
     type === "income"
-      ? "cash_income"
-      : "cash_expense";
+    ? "cash_income"
+    : "cash_expense";
 
 
   const result =
     await sb
-      .from(table)
-      .delete()
-      .eq("id",id);
+    .from(table)
+    .delete()
+    .eq("id",id);
 
 
   if(result.error){
@@ -3165,9 +1798,12 @@ async function deleteTransaction(
 async function adminLogin(){
 
   const p =
-    document.getElementById(
-      "adminpass"
-    ).value.trim();
+    document
+      .getElementById(
+        "adminpass"
+      )
+      .value
+      .trim();
 
 
   if(!p){
@@ -3193,10 +1829,7 @@ async function adminLogin(){
     );
 
 
-  if(
-    error ||
-    !data
-  ){
+  if(error || !data){
 
     alert(
       "Password admin salah."
@@ -3218,11 +1851,9 @@ async function adminLogin(){
 
   renderAuth();
 
-
   alert(
     "Login admin berhasil."
   );
-
 
   load();
 
@@ -3237,42 +1868,39 @@ async function adminLogin(){
 
 async function saveSettings(){
 
-  if(!isAdmin){
-
-    alert(
-      "Login admin dulu."
-    );
-
-    return;
-
-  }
-
-
   const result =
     await sb.rpc(
       "admin_set_settings",
       {
+
         p_password:
           adminPass,
 
         p_report_date:
-          document.getElementById(
+          document
+          .getElementById(
             "rdate"
-          ).value,
+          )
+          .value,
 
         p_kas_daily:
           Number(
-            document.getElementById(
-              "kasdaily"
-            ).value
+            document
+              .getElementById(
+                "kasdaily"
+              )
+              .value
           ),
 
         p_adm_default:
           Number(
-            document.getElementById(
-              "admdefault"
-            ).value
+            document
+              .getElementById(
+                "admdefault"
+              )
+              .value
           )
+
       }
     );
 
@@ -3292,33 +1920,203 @@ async function saveSettings(){
     "Pengaturan tersimpan."
   );
 
-
   load();
 
 }
 
 
 /* =====================================================
-   REQUESTS
+   SEARCH MEMBER UNTUK PEMBAYARAN
+===================================================== */
+
+function searchRequestMember(){
+
+  const input =
+    document.getElementById(
+      "memberSearchRequest"
+    );
+
+  const results =
+    document.getElementById(
+      "memberSearchResults"
+    );
+
+  const count =
+    document.getElementById(
+      "memberSearchCount"
+    );
+
+
+  if(!input || !results)
+    return;
+
+
+  const keyword =
+    input.value
+      .trim()
+      .toLowerCase();
+
+
+  /*
+    Kalau belum mengetik,
+    jangan tampilkan semua anggota.
+  */
+
+  if(!keyword){
+
+    results.innerHTML = "";
+
+    if(count)
+      count.textContent = "";
+
+    return;
+
+  }
+
+
+  const found =
+    members.filter(m =>
+      String(m.name || "")
+        .toLowerCase()
+        .includes(keyword)
+    );
+
+
+  if(count){
+
+    count.textContent =
+      `${found.length} anggota ditemukan`;
+
+  }
+
+
+  if(!found.length){
+
+    results.innerHTML = `
+      <div class="notice">
+        ❌ Nama anggota tidak ditemukan.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  results.innerHTML =
+    found
+      .slice(0,20)
+      .map(m => `
+
+        <button
+          type="button"
+          class="member-result"
+          onclick="selectRequestMember(
+            '${escapeJS(m.name)}'
+          )">
+
+          👤 ${escapeHTML(m.name)}
+
+        </button>
+
+      `)
+      .join("");
+
+}
+
+
+/* =====================================================
+   ESCAPE UNTUK JAVASCRIPT
+===================================================== */
+
+function escapeJS(value){
+
+  return String(value ?? "")
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'")
+    .replace(/"/g,'\\"')
+    .replace(/\r/g,"\\r")
+    .replace(/\n/g,"\\n");
+
+}
+
+
+/* =====================================================
+   PILIH MEMBER PEMBAYARAN
+===================================================== */
+
+function selectRequestMember(name){
+
+  document
+    .getElementById("mname")
+    .value =
+    name;
+
+
+  document
+    .getElementById(
+      "memberSearchRequest"
+    )
+    .value =
+    name;
+
+
+  document
+    .getElementById(
+      "memberSearchResults"
+    )
+    .innerHTML =
+    "";
+
+
+  document
+    .getElementById(
+      "memberSearchCount"
+    )
+    .textContent =
+    "";
+
+
+  const selected =
+    document.getElementById(
+      "selectedMember"
+    );
+
+
+  selected.classList.remove(
+    "hidden"
+  );
+
+
+  selected.innerHTML =
+    `✅ Anggota dipilih:
+     <b>${escapeHTML(name)}</b>`;
+
+}
+
+
+/* =====================================================
+   LOAD PEMBAYARAN
 ===================================================== */
 
 async function loadRequests(){
 
   const q =
     await sb
-      .from("payment_requests")
-      .select("*")
-      .order(
-        "created_at",
-        {
-          ascending:false
-        }
-      );
+    .from("payment_requests")
+    .select("*")
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
 
 
   if(q.error){
 
     console.error(
+      "Gagal mengambil pembayaran:",
       q.error
     );
 
@@ -3330,24 +2128,24 @@ async function loadRequests(){
 
 
   const body =
-    document.getElementById(
-      "reqRows"
-    );
+    document
+      .getElementById(
+        "reqRows"
+      );
 
 
   if(!rows.length){
 
-    body.innerHTML = `
-      <tr>
+    body.innerHTML =
+      `<tr>
         <td
           colspan="7"
           class="empty">
 
-          Belum ada pengajuan.
+          Belum ada pembayaran.
 
         </td>
-      </tr>
-    `;
+      </tr>`;
 
     return;
 
@@ -3355,115 +2153,120 @@ async function loadRequests(){
 
 
   body.innerHTML =
-    rows.map(
-      r => `
+    rows.map(r => `
 
-        <tr>
+      <tr>
 
-          <td>
-            ${formatDate(
-              r.created_at
-            )}
-          </td>
+        <td>
+          ${formatDate(
+            r.created_at
+          )}
+        </td>
 
-          <td>
+        <td>
+          ${escapeHTML(
+            r.member_name
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            r.payment_type
+          )}
+        </td>
+
+        <td>
+          ${money(
+            r.amount
+          )}
+        </td>
+
+        <td>
+
+          <span class="pill">
+
             ${escapeHTML(
-              r.member_name
+              r.status
             )}
-          </td>
 
-          <td>
-            ${escapeHTML(
-              r.payment_type
-            )}
-          </td>
+          </span>
 
-          <td>
-            ${money(
-              r.amount
-            )}
-          </td>
+        </td>
 
-          <td>
+        <td>
 
-            <span class="pill">
-              ${escapeHTML(
-                r.status
-              )}
-            </span>
+          ${
+            r.screenshot_url
 
-          </td>
+            ?
 
-          <td>
+            `<a
+              target="_blank"
+              rel="noopener"
+              href="${escapeHTML(
+                r.screenshot_url
+              )}">
 
-            ${
-              r.screenshot_url
-                ?
-                `
-                <a
-                  target="_blank"
-                  rel="noopener"
-                  href="${escapeHTML(
-                    r.screenshot_url
-                  )}">
+              📷 Lihat
 
-                  Lihat
+            </a>`
 
-                </a>
-                `
-                :
-                "-"
-            }
+            :
 
-          </td>
+            "-"
 
-          <td>
+          }
 
-            ${
-              isAdmin &&
-              r.status === "PENDING"
+        </td>
 
-                ?
+        <td>
 
-                `
-                <button
-                  class="success"
-                  onclick="review(
-                    '${r.id}',
-                    'APPROVED'
-                  )">
+          ${
+            isAdmin &&
+            r.status === "PENDING"
 
-                  Terima
+            ?
 
-                </button>
+            `<button
+              class="success"
+              onclick="review(
+                '${r.id}',
+                'APPROVED'
+              )">
 
+              Terima
 
-                <button
-                  class="danger"
-                  onclick="review(
-                    '${r.id}',
-                    'REJECTED'
-                  )">
+            </button>
 
-                  Tolak
+            <button
+              class="danger"
+              onclick="review(
+                '${r.id}',
+                'REJECTED'
+              )">
 
-                </button>
-                `
+              Tolak
 
-                :
+            </button>`
 
-                "-"
-            }
+            :
 
-          </td>
+            "-"
 
-        </tr>
+          }
 
-      `
-    ).join("");
+        </td>
+
+      </tr>
+
+    `).join("");
 
 }
 
+
+/* =====================================================
+   REVIEW PEMBAYARAN
+===================================================== */
 
 async function review(
   id,
@@ -3481,20 +2284,18 @@ async function review(
   }
 
 
-  if(
-    !confirm(
-      action === "APPROVED"
-        ? "Terima pengajuan ini?"
-        : "Tolak pengajuan ini?"
-    )
-  )
-    return;
+  if(!confirm(
+    action === "APPROVED"
+    ? "Terima pembayaran ini?"
+    : "Tolak pembayaran ini?"
+  )) return;
 
 
   const result =
     await sb.rpc(
       "admin_review_payment",
       {
+
         p_password:
           adminPass,
 
@@ -3503,6 +2304,7 @@ async function review(
 
         p_action:
           action
+
       }
     );
 
@@ -3520,14 +2322,14 @@ async function review(
 
   alert(
     action === "APPROVED"
-      ? "Pengajuan diterima."
-      : "Pengajuan ditolak."
+    ? "Pembayaran diterima."
+    : "Pembayaran ditolak."
   );
 
 
-  load();
+  await load();
 
-  loadRequests();
+  await loadRequests();
 
 }
 
@@ -3539,44 +2341,94 @@ async function review(
 async function submitPayment(){
 
   const name =
-    document.getElementById(
-      "mname"
-    ).value.trim();
+    document
+      .getElementById(
+        "mname"
+      )
+      .value
+      .trim();
 
 
   const type =
-    document.getElementById(
-      "ptype"
-    ).value;
+    document
+      .getElementById(
+        "ptype"
+      )
+      .value;
 
 
   const amount =
     Number(
-      document.getElementById(
-        "pamount"
-      ).value
+      document
+        .getElementById(
+          "pamount"
+        )
+        .value
     );
 
 
   const file =
-    document.getElementById(
-      "proof"
-    ).files[0];
+    document
+      .getElementById(
+        "proof"
+      )
+      .files[0];
 
 
   const note =
-    document.getElementById(
-      "pnote"
-    ).value.trim();
+    document
+      .getElementById(
+        "pnote"
+      )
+      .value
+      .trim();
 
 
-  if(
-    !name ||
-    !amount
-  ){
+  /* =========================
+     VALIDASI NAMA
+  ========================= */
+
+  if(!name){
 
     alert(
-      "Nama dan jumlah wajib diisi."
+      "Silakan cari dan pilih nama karakter terlebih dahulu."
+    );
+
+    return;
+
+  }
+
+
+  /* Pastikan nama memang ada di members */
+
+  const memberExists =
+    members.some(
+      m =>
+        String(m.name)
+          .toLowerCase() ===
+        name.toLowerCase()
+    );
+
+
+  if(!memberExists){
+
+    alert(
+      "Nama anggota tidak ditemukan di database."
+    );
+
+    return;
+
+  }
+
+
+  /* =========================
+     VALIDASI JUMLAH
+  ========================= */
+
+  if(!amount || amount <= 0){
+
+    alert(
+      "Jumlah pembayaran harus lebih dari 0."
     );
 
     return;
@@ -3587,27 +2439,18 @@ async function submitPayment(){
   let url = null;
 
 
+  /* =========================
+     UPLOAD BUKTI
+     BUCKET: payment-proofs
+  ========================= */
+
   if(file){
 
-    if(
-      !file.type.startsWith(
-        "image/"
-      )
-    ){
+    /*
+      Batasi ukuran 5 MB.
+    */
 
-      alert(
-        "Bukti harus berupa gambar."
-      );
-
-      return;
-
-    }
-
-
-    if(
-      file.size >
-      5 * 1024 * 1024
-    ){
+    if(file.size > 5 * 1024 * 1024){
 
       alert(
         "Ukuran gambar maksimal 5 MB."
@@ -3619,34 +2462,32 @@ async function submitPayment(){
 
 
     const safeName =
-      file.name.replace(
-        /[^a-zA-Z0-9._-]/g,
-        "_"
-      );
+      file.name
+        .replace(
+          /[^a-zA-Z0-9._-]/g,
+          "_"
+        );
 
 
     const path =
-      `${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2)}-${safeName}`;
+      `${Date.now()}-${
+        Math.random()
+          .toString(36)
+          .slice(2)
+      }-${safeName}`;
 
-
-    /*
-      BUCKET SESUAI POLICY ANDA:
-      payment-proofs
-    */
 
     const up =
       await sb
-        .storage
-        .from("payment-proofs")
-        .upload(
-          path,
-          file,
-          {
-            upsert:false
-          }
-        );
+      .storage
+      .from("payment-proofs")
+      .upload(
+        path,
+        file,
+        {
+          upsert:false
+        }
+      );
 
 
     if(up.error){
@@ -3667,19 +2508,24 @@ async function submitPayment(){
 
     url =
       sb
-        .storage
-        .from("payment-proofs")
-        .getPublicUrl(path)
-        .data
-        .publicUrl;
+      .storage
+      .from("payment-proofs")
+      .getPublicUrl(path)
+      .data
+      .publicUrl;
 
   }
 
+
+  /* =========================
+     KIRIM PAYMENT REQUEST
+  ========================= */
 
   const result =
     await sb.rpc(
       "submit_payment",
       {
+
         p_member_name:
           name,
 
@@ -3694,6 +2540,7 @@ async function submitPayment(){
 
         p_note:
           note
+
       }
     );
 
@@ -3701,7 +2548,12 @@ async function submitPayment(){
   if(result.error){
 
     alert(
+      "Gagal mengirim pembayaran: " +
       result.error.message
+    );
+
+    console.error(
+      result.error
     );
 
     return;
@@ -3710,26 +2562,85 @@ async function submitPayment(){
 
 
   alert(
-    "Pengajuan terkirim. Tunggu admin memeriksa."
+    "✅ Pembayaran berhasil dikirim. Tunggu admin memeriksa."
   );
 
 
-  document.getElementById(
-    "pamount"
-  ).value = "";
+  /* =========================
+     RESET FORM
+  ========================= */
+
+  document
+    .getElementById(
+      "memberSearchRequest"
+    )
+    .value =
+    "";
+
+  document
+    .getElementById(
+      "mname"
+    )
+    .value =
+    "";
 
 
-  document.getElementById(
-    "proof"
-  ).value = "";
+  document
+    .getElementById(
+      "pamount"
+    )
+    .value =
+    "";
 
 
-  document.getElementById(
-    "pnote"
-  ).value = "";
+  document
+    .getElementById(
+      "proof"
+    )
+    .value =
+    "";
 
 
-  loadRequests();
+  document
+    .getElementById(
+      "pnote"
+    )
+    .value =
+    "";
+
+
+  document
+    .getElementById(
+      "memberSearchResults"
+    )
+    .innerHTML =
+    "";
+
+
+  document
+    .getElementById(
+      "memberSearchCount"
+    )
+    .textContent =
+    "";
+
+
+  const selected =
+    document.getElementById(
+      "selectedMember"
+    );
+
+
+  selected.classList.add(
+    "hidden"
+  );
+
+
+  selected.innerHTML =
+    "";
+
+
+  await loadRequests();
 
 }
 
@@ -3753,7 +2664,8 @@ async function editMember(id){
 
   const m =
     members.find(
-      x => x.id === id
+      x =>
+        x.id === id
     );
 
 
@@ -3761,144 +2673,141 @@ async function editMember(id){
     return;
 
 
-  document.getElementById(
-    "modal"
-  ).style.display =
+  document
+    .getElementById(
+      "modal"
+    )
+    .style.display =
     "flex";
 
 
-  document.getElementById(
-    "modalBody"
-  ).innerHTML = `
+  document
+    .getElementById(
+      "modalBody"
+    )
+    .innerHTML = `
 
-    <h2>
-      Edit Anggota
-    </h2>
+      <h2>
+        Edit Anggota
+      </h2>
 
-
-    <label>
-      Nama
-    </label>
-
-    <input
-      id="e_name"
-      value="${escapeHTML(
-        m.name
-      )}">
-
-
-    <label>
-      Saldo
-    </label>
-
-    <input
-      id="e_bal"
-      type="number"
-      value="${m.balance || 0}">
-
-
-    <label>
-      NextPay
-    </label>
-
-    <input
-      id="e_next"
-      type="date"
-      value="${m.next_pay || ""}">
-
-
-    <label>
-      Tunggakan
-    </label>
-
-    <input
-      id="e_arr"
-      type="number"
-      value="${m.arrears || 0}">
-
-
-    <label>
-      Belum bayar dari
-    </label>
-
-    <input
-      id="e_from"
-      type="date"
-      value="${m.unpaid_from || ""}">
-
-
-    <label>
-      ADM belum lunas
-    </label>
-
-    <input
-      id="e_adm"
-      type="number"
-      value="${m.adm_due || 0}">
-
-
-    <label>
+      <label>
+        Nama
+      </label>
 
       <input
-        id="e_ex"
-        type="checkbox"
-        ${
-          m.exempt_kas
+        id="e_name"
+        value="${escapeHTML(
+          m.name
+        )}">
+
+
+      <label>
+        Saldo
+      </label>
+
+      <input
+        id="e_bal"
+        type="number"
+        value="${m.balance || 0}">
+
+
+      <label>
+        NextPay
+      </label>
+
+      <input
+        id="e_next"
+        type="date"
+        value="${
+          m.next_pay || ""
+        }">
+
+
+      <label>
+        Tunggakan
+      </label>
+
+      <input
+        id="e_arr"
+        type="number"
+        value="${m.arrears || 0}">
+
+
+      <label>
+        Belum bayar dari
+      </label>
+
+      <input
+        id="e_from"
+        type="date"
+        value="${
+          m.unpaid_from || ""
+        }">
+
+
+      <label>
+        ADM belum lunas
+      </label>
+
+      <input
+        id="e_adm"
+        type="number"
+        value="${m.adm_due || 0}">
+
+
+      <label>
+
+        <input
+          id="e_ex"
+          type="checkbox"
+          ${
+            m.exempt_kas
             ? "checked"
             : ""
-        }>
+          }>
 
-      Bebas KAS
+        Bebas KAS
 
-    </label>
+      </label>
 
+      <br>
 
-    <br>
+      <button
+        class="primary"
+        onclick="saveMember('${id}')">
 
+        Simpan
 
-    <button
-      class="primary"
-      onclick="saveMember('${id}')">
+      </button>
 
-      Simpan
+      <button
+        class="secondary"
+        onclick="closeModal()">
 
-    </button>
+        Batal
 
+      </button>
 
-    <button
-      class="secondary"
-      onclick="closeModal()">
-
-      Batal
-
-    </button>
-
-  `;
+    `;
 
 }
 
+
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
 
 function closeModal(){
 
-  document.getElementById(
-    "modal"
-  ).style.display =
+  document
+    .getElementById(
+      "modal"
+    )
+    .style.display =
     "none";
 
 }
-
-
-document.getElementById(
-  "modal"
-).addEventListener(
-  "click",
-  function(e){
-
-    if(e.target === this)
-      closeModal();
-
-  }
-);
 
 
 /* =====================================================
@@ -3907,10 +2816,22 @@ document.getElementById(
 
 async function saveMember(id){
 
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+
   const result =
     await sb.rpc(
       "admin_update_member",
       {
+
         p_password:
           adminPass,
 
@@ -3918,45 +2839,62 @@ async function saveMember(id){
           id,
 
         p_name:
-          document.getElementById(
+          document
+          .getElementById(
             "e_name"
-          ).value,
+          )
+          .value,
 
         p_balance:
           Number(
-            document.getElementById(
+            document
+            .getElementById(
               "e_bal"
-            ).value
+            )
+            .value
           ),
 
         p_next_pay:
-          document.getElementById(
+          document
+          .getElementById(
             "e_next"
-          ).value || null,
+          )
+          .value ||
+          null,
 
         p_arrears:
           Number(
-            document.getElementById(
+            document
+            .getElementById(
               "e_arr"
-            ).value
+            )
+            .value
           ),
 
         p_unpaid_from:
-          document.getElementById(
+          document
+          .getElementById(
             "e_from"
-          ).value || null,
+          )
+          .value ||
+          null,
 
         p_adm_due:
           Number(
-            document.getElementById(
+            document
+            .getElementById(
               "e_adm"
-            ).value
+            )
+            .value
           ),
 
         p_exempt:
-          document.getElementById(
+          document
+          .getElementById(
             "e_ex"
-          ).checked
+          )
+          .checked
+
       }
     );
 
@@ -3974,7 +2912,7 @@ async function saveMember(id){
 
   closeModal();
 
-  load();
+  await load();
 
 }
 
@@ -3983,10 +2921,11 @@ async function saveMember(id){
    ADD MEMBER
 ===================================================== */
 
-document.getElementById(
-  "addBtn"
-).onclick =
-  () => {
+document
+  .getElementById(
+    "addBtn"
+  )
+  .onclick = () => {
 
     if(!isAdmin){
 
@@ -3999,93 +2938,112 @@ document.getElementById(
     }
 
 
-    document.getElementById(
-      "modal"
-    ).style.display =
+    document
+      .getElementById(
+        "modal"
+      )
+      .style.display =
       "flex";
 
 
-    document.getElementById(
-      "modalBody"
-    ).innerHTML = `
+    document
+      .getElementById(
+        "modalBody"
+      )
+      .innerHTML = `
 
-      <h2>
-        Tambah Anggota
-      </h2>
+        <h2>
+          Tambah Anggota
+        </h2>
 
+        <label>
+          Nama
+        </label>
 
-      <label>
-        Nama
-      </label>
-
-      <input
-        id="a_name"
-        placeholder="Nama anggota">
-
-
-      <label>
-        Saldo awal
-      </label>
-
-      <input
-        id="a_bal"
-        type="number"
-        value="0">
+        <input
+          id="a_name"
+          placeholder="Nama anggota">
 
 
-      <label>
-        NextPay
-      </label>
+        <label>
+          Saldo awal
+        </label>
 
-      <input
-        id="a_next"
-        type="date">
-
-
-      <label>
-        ADM belum lunas
-      </label>
-
-      <input
-        id="a_adm"
-        type="number"
-        value="${
-          settings.adm_default ||
-          10000
-        }">
+        <input
+          id="a_bal"
+          type="number"
+          value="0">
 
 
-      <br>
+        <label>
+          NextPay
+        </label>
+
+        <input
+          id="a_next"
+          type="date">
 
 
-      <button
-        class="primary"
-        onclick="addMember()">
+        <label>
+          ADM belum lunas
+        </label>
 
-        Tambah
+        <input
+          id="a_adm"
+          type="number"
+          value="${
+            settings.adm_default ||
+            10000
+          }">
 
-      </button>
 
+        <br>
 
-      <button
-        class="secondary"
-        onclick="closeModal()">
+        <button
+          class="primary"
+          onclick="addMember()">
 
-        Batal
+          Tambah
 
-      </button>
+        </button>
 
-    `;
+        <button
+          class="secondary"
+          onclick="closeModal()">
+
+          Batal
+
+        </button>
+
+      `;
 
   };
 
 
+/* =====================================================
+   ADD MEMBER SAVE
+===================================================== */
+
 async function addMember(){
 
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+
   const name =
-    document.getElementById(
-      "a_name"
-    ).value.trim();
+    document
+      .getElementById(
+        "a_name"
+      )
+      .value
+      .trim();
 
 
   if(!name){
@@ -4103,6 +3061,7 @@ async function addMember(){
     await sb.rpc(
       "admin_add_member",
       {
+
         p_password:
           adminPass,
 
@@ -4111,25 +3070,33 @@ async function addMember(){
 
         p_balance:
           Number(
-            document.getElementById(
+            document
+            .getElementById(
               "a_bal"
-            ).value
+            )
+            .value
           ),
 
         p_next_pay:
-          document.getElementById(
+          document
+          .getElementById(
             "a_next"
-          ).value || null,
+          )
+          .value ||
+          null,
 
         p_adm_due:
           Number(
-            document.getElementById(
+            document
+            .getElementById(
               "a_adm"
-            ).value
+            )
+            .value
           ),
 
         p_exempt:
           false
+
       }
     );
 
@@ -4147,564 +3114,11 @@ async function addMember(){
 
   closeModal();
 
-
   alert(
     "Anggota berhasil ditambahkan."
   );
 
-
-  load();
-
-}
-
-
-/* =====================================================
-   REKAP SHARE
-===================================================== */
-
-function buildRecap(){
-
-  const now =
-    new Date();
-
-
-  const dateText =
-    now.toLocaleDateString(
-      "id-ID",
-      {
-        day:"2-digit",
-        month:"2-digit",
-        year:"2-digit"
-      }
-    );
-
-
-  /*
-    Anggota tetap mengikuti
-    urutan database.
-  */
-
-  const all =
-    [...members];
-
-
-  /*
-    Tunggakan dihitung dari
-    nilai arrears positif.
-
-    Jika data memakai balance
-    negatif tetapi arrears kosong,
-    tetap dianggap tunggakan.
-  */
-
-  const getArrears =
-    m => {
-
-      const arrears =
-        Number(
-          m.arrears || 0
-        );
-
-
-      if(arrears > 0)
-        return arrears;
-
-
-      const balance =
-        Number(
-          m.balance || 0
-        );
-
-
-      return balance < 0
-        ? Math.abs(balance)
-        : 0;
-
-    };
-
-
-  const tunggakan =
-    all.filter(
-      m =>
-        getArrears(m) > 0
-    );
-
-
-  const totalTunggakan =
-    tunggakan.reduce(
-      (s,m) =>
-        s +
-        getArrears(m),
-      0
-    );
-
-
-  /*
-    Tampilkan daftar tunggakan
-    7K ke atas di bagian atas.
-  */
-
-  const bigArrears =
-    tunggakan.filter(
-      m =>
-        getArrears(m) >= 7000
-    );
-
-
-  const lines = [];
-
-
-  lines.push(
-    "━━━━━━━━━━━━━━━━━━━━"
-  );
-
-
-  lines.push(
-    "📒 KAS"
-  );
-
-
-  lines.push(
-    dateText
-  );
-
-
-  lines.push(
-    "━━━━━━━━━━━━━━━━━━━━"
-  );
-
-
-  if(bigArrears.length){
-
-    lines.push(
-      ""
-    );
-
-
-    lines.push(
-      "⚠️ TUNGGAKAN KAS 7K+"
-    );
-
-
-    lines.push(
-      ""
-    );
-
-
-    bigArrears.forEach(
-      (m,index) => {
-
-        const a =
-          getArrears(m);
-
-
-        let from =
-          m.unpaid_from
-            ? formatShortDate(
-                m.unpaid_from
-              )
-            : null;
-
-
-        lines.push(
-          `${String(index+1)
-            .padStart(2,"0")}. 🔴 ${
-              m.name || "-"
-            } [-${Math.round(a/1000)}K]${
-              from
-                ? ` - Belum bayar dari ${from}`
-                : ""
-            }`
-        );
-
-      }
-    );
-
-
-    lines.push(
-      ""
-    );
-
-
-    lines.push(
-      "📊 Total Tunggakan Kas"
-    );
-
-
-    lines.push(
-      "• " +
-      Math.round(
-        totalTunggakan / 1000
-      ) +
-      "K"
-    );
-
-  }
-
-
-  lines.push(
-    ""
-  );
-
-
-  lines.push(
-    "━━━━━━━━━━━━━━━━━━━━"
-  );
-
-
-  lines.push(
-    "📋 DAFTAR ANGGOTA"
-  );
-
-
-  lines.push(
-    "━━━━━━━━━━━━━━━━━━━━"
-  );
-
-
-  if(!all.length){
-
-    lines.push(
-      "Belum ada data anggota."
-    );
-
-  }else{
-
-    all.forEach(
-      (m,index) => {
-
-        const balance =
-          Number(
-            m.balance || 0
-          );
-
-
-        const arrears =
-          getArrears(m);
-
-
-        /*
-          Jika tunggakan ada,
-          gunakan 🔴 dan nilai negatif.
-        */
-
-        if(arrears > 0){
-
-          const from =
-            m.unpaid_from
-              ? formatShortDate(
-                  m.unpaid_from
-                )
-              : null;
-
-
-          lines.push(
-            `${String(index+1)
-              .padStart(2,"0")}. 🔴 ${
-                m.name || "-"
-              } [-${Math.round(
-                arrears/1000
-              )}K]${
-                from
-                  ? ` - Belum bayar dari ${from}`
-                  : ""
-              }`
-          );
-
-        }else{
-
-          const next =
-            m.next_pay
-              ? formatShortDate(
-                  m.next_pay
-                )
-              : "-";
-
-
-          lines.push(
-            `${String(index+1)
-              .padStart(2,"0")}. 🟢 ${
-                m.name || "-"
-              } [+${Math.round(
-                Math.max(
-                  0,
-                  balance
-                ) / 1000
-              )}K] - NextPay ${next}`
-          );
-
-        }
-
-      }
-    );
-
-  }
-
-
-  /*
-    ADM belum lunas
-  */
-
-  const admMembers =
-    all.filter(
-      m =>
-        Number(
-          m.adm_due || 0
-        ) > 0
-    );
-
-
-  lines.push(
-    ""
-  );
-
-
-  lines.push(
-    "━━━━━━━━━━━━━━━━━━━━"
-  );
-
-
-  lines.push(
-    "❌ ADM BELUM LUNAS"
-  );
-
-
-  if(!admMembers.length){
-
-    lines.push(
-      "Tidak ada."
-    );
-
-  }else{
-
-    admMembers.forEach(
-      (m,index) => {
-
-        lines.push(
-          `${String(index+1)
-            .padStart(2,"0")}. ${
-              m.name || "-"
-            } [-${Math.round(
-              Number(
-                m.adm_due || 0
-              ) / 1000
-            )}K]`
-        );
-
-      }
-    );
-
-  }
-
-
-  lines.push(
-    "━━━━━━━━━━━━━━━━━━━━"
-  );
-
-
-  return lines.join("\n");
-
-}
-
-
-/* =====================================================
-   RENDER RECAP
-===================================================== */
-
-function renderRecap(){
-
-  const text =
-    buildRecap();
-
-
-  document.getElementById(
-    "recapText"
-  ).textContent =
-    text;
-
-
-  document.getElementById(
-    "recapCount"
-  ).textContent =
-    members.length +
-    " anggota";
-
-}
-
-
-/* =====================================================
-   SHARE RECAP
-===================================================== */
-
-async function shareMemberRecap(){
-
-  if(!members.length){
-
-    alert(
-      "Data anggota belum tersedia."
-    );
-
-    return;
-
-  }
-
-
-  const text =
-    buildRecap();
-
-
-  /*
-    Jika HP/browser mendukung
-    Web Share API, buka menu share.
-  */
-
-  if(
-    navigator.share
-  ){
-
-    try{
-
-      await navigator.share({
-        title:
-          "Rekap KAS Street Of Style",
-
-        text:
-          text
-      });
-
-
-      return;
-
-    }catch(err){
-
-      /*
-        User membatalkan share.
-        Tidak perlu dianggap error.
-      */
-
-      if(
-        err &&
-        err.name ===
-        "AbortError"
-      )
-        return;
-
-    }
-
-  }
-
-
-  /*
-    Jika Web Share tidak tersedia,
-    otomatis salin ke clipboard.
-  */
-
-  try{
-
-    await navigator.clipboard.writeText(
-      text
-    );
-
-
-    alert(
-      "Rekap sudah disalin. Tinggal paste ke WhatsApp/Discord."
-    );
-
-  }catch(err){
-
-    /*
-      Fallback lama.
-    */
-
-    const area =
-      document.createElement(
-        "textarea"
-      );
-
-
-    area.value =
-      text;
-
-
-    document.body.appendChild(
-      area
-    );
-
-
-    area.select();
-
-
-    document.execCommand(
-      "copy"
-    );
-
-
-    area.remove();
-
-
-    alert(
-      "Rekap sudah disalin."
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   COPY RECAP
-===================================================== */
-
-async function copyRecap(){
-
-  const text =
-    buildRecap();
-
-
-  try{
-
-    await navigator.clipboard.writeText(
-      text
-    );
-
-
-    alert(
-      "Rekap berhasil disalin."
-    );
-
-  }catch(err){
-
-    const area =
-      document.createElement(
-        "textarea"
-      );
-
-
-    area.value =
-      text;
-
-
-    document.body.appendChild(
-      area
-    );
-
-
-    area.select();
-
-
-    document.execCommand(
-      "copy"
-    );
-
-
-    area.remove();
-
-
-    alert(
-      "Rekap berhasil disalin."
-    );
-
-  }
+  await load();
 
 }
 
@@ -4724,142 +3138,80 @@ loadRequests();
    REALTIME
 ===================================================== */
 
-const liveChannel =
-  sb.channel(
-    "kas-live"
-  );
+sb
+.channel("kas-live")
 
-
-liveChannel
-
-  .on(
-    "postgres_changes",
-    {
-      event:"*",
-      schema:"public",
-      table:"members"
-    },
-    () => {
-
-      load();
-
-    }
-  )
-
-
-  .on(
-    "postgres_changes",
-    {
-      event:"*",
-      schema:"public",
-      table:"payment_requests"
-    },
-    () => {
-
-      loadRequests();
-
-    }
-  )
-
-
-  .on(
-    "postgres_changes",
-    {
-      event:"*",
-      schema:"public",
-      table:"app_settings"
-    },
-    () => {
-
-      load();
-
-    }
-  )
-
-
-  .on(
-    "postgres_changes",
-    {
-      event:"*",
-      schema:"public",
-      table:"cash_income"
-    },
-    () => {
-
-      loadTransactions();
-
-      render();
-
-    }
-  )
-
-
-  .on(
-    "postgres_changes",
-    {
-      event:"*",
-      schema:"public",
-      table:"cash_expense"
-    },
-    () => {
-
-      loadTransactions();
-
-      render();
-
-    }
-  )
-
-
-  .subscribe(
-    status => {
-
-      const el =
-        document.getElementById(
-          "rt"
-        );
-
-
-      if(
-        status === "SUBSCRIBED"
-      ){
-
-        el.textContent =
-          "🟢 Realtime aktif";
-
-      }else{
-
-        el.textContent =
-          "🟡 Realtime: " +
-          status;
-
-      }
-
-    }
-  );
-
-
-/* =====================================================
-   RESPONSIVE SIDEBAR
-===================================================== */
-
-window.addEventListener(
-  "resize",
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"members"
+  },
   () => {
 
-    if(
-      window.innerWidth > 700
-    ){
-
-      document.body
-        .classList.remove(
-          "mobile-menu"
-        );
-
-    }
+    load();
 
   }
-);
+)
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"payment_requests"
+  },
+  () => {
+
+    loadRequests();
+
+  }
+)
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"app_settings"
+  },
+  () => {
+
+    load();
+
+  }
+)
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"cash_income"
+  },
+  () => {
+
+    loadTransactions();
+
+  }
+)
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"cash_expense"
+  },
+  () => {
+
+    loadTransactions();
+
+  }
+)
+
+.subscribe();
 
 </script>
 
