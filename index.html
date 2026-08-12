@@ -1,102 +1,2343 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>KAS SOS — Realtime</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-:root{--bg:#b7ff00;--ink:#101a14;--card:#fff;--blue:#1976ff;--red:#e53935;--muted:#667085}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f3f6fb;color:var(--ink)}
-header{background:var(--bg);padding:18px 16px;position:sticky;top:0;z-index:5;border-bottom:1px solid #9bd600}
-header h1{margin:0;font-size:25px}header small{font-weight:700;color:#1d6b00}
-nav{display:flex;gap:8px;overflow:auto;padding:10px 12px;background:#fff;position:sticky;top:75px;z-index:4}
-nav button{border:0;background:#f0f2f5;padding:11px 16px;border-radius:13px;font-weight:800;white-space:nowrap}
-nav button.active{background:var(--blue);color:white}.wrap{max-width:1050px;margin:auto;padding:14px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--card);border-radius:18px;padding:17px;box-shadow:0 2px 10px #00000010}.metric b{display:block;font-size:25px;margin-top:5px}
-section{display:none}.show{display:block}.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:10px 0;flex-wrap:wrap}
-input,select,textarea{width:100%;padding:12px;border:1px solid #d0d5dd;border-radius:10px;font:inherit}label{font-weight:700;display:block;margin:9px 0 5px}
-button.primary{background:var(--blue);color:white;border:0;border-radius:11px;padding:12px 16px;font-weight:800}button.danger{background:#ffe8e8;color:#b42318;border:0;border-radius:11px;padding:12px 16px;font-weight:800}
-table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden}th,td{padding:10px;border-bottom:1px solid #eee;text-align:left;font-size:14px}.ok{color:#075fd6;font-weight:800}.bad{color:#d92d20;font-weight:800}
-.login{max-width:430px;margin:45px auto}.hidden{display:none}.pill{padding:4px 8px;border-radius:99px;background:#eef2ff}.modal{position:fixed;inset:0;background:#0007;display:none;align-items:center;justify-content:center;padding:15px;z-index:20}.modal>div{background:white;border-radius:18px;padding:20px;max-width:500px;width:100%;max-height:90vh;overflow:auto}
-@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}table{font-size:12px}th,td{padding:8px}}
-</style></head>
+:root{
+  --bg:#b7ff00;
+  --ink:#101a14;
+  --card:#fff;
+  --blue:#1976ff;
+  --red:#e53935;
+  --green:#16a34a;
+  --muted:#667085;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+  background:#f3f6fb;
+  color:var(--ink);
+}
+
+header{
+  background:var(--bg);
+  padding:18px 16px;
+  position:sticky;
+  top:0;
+  z-index:5;
+  border-bottom:1px solid #9bd600;
+}
+
+header h1{
+  margin:0;
+  font-size:25px;
+}
+
+header small{
+  font-weight:700;
+  color:#1d6b00;
+}
+
+nav{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding:10px 12px;
+  background:#fff;
+  position:sticky;
+  top:75px;
+  z-index:4;
+}
+
+nav button{
+  border:0;
+  background:#f0f2f5;
+  padding:11px 16px;
+  border-radius:13px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+nav button.active{
+  background:var(--blue);
+  color:white;
+}
+
+.wrap{
+  max-width:1100px;
+  margin:auto;
+  padding:14px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:18px;
+  padding:17px;
+  box-shadow:0 2px 10px #00000010;
+}
+
+.metric b{
+  display:block;
+  font-size:25px;
+  margin-top:5px;
+}
+
+section{
+  display:none;
+}
+
+.show{
+  display:block;
+}
+
+.toolbar{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  margin:10px 0;
+  flex-wrap:wrap;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid #d0d5dd;
+  border-radius:10px;
+  font:inherit;
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+label{
+  font-weight:700;
+  display:block;
+  margin:9px 0 5px;
+}
+
+button.primary{
+  background:var(--blue);
+  color:white;
+  border:0;
+  border-radius:11px;
+  padding:12px 16px;
+  font-weight:800;
+}
+
+button.success{
+  background:var(--green);
+  color:white;
+  border:0;
+  border-radius:11px;
+  padding:12px 16px;
+  font-weight:800;
+}
+
+button.danger{
+  background:#ffe8e8;
+  color:#b42318;
+  border:0;
+  border-radius:11px;
+  padding:10px 13px;
+  font-weight:800;
+}
+
+button.secondary{
+  background:#eef2f6;
+  color:#222;
+  border:0;
+  border-radius:11px;
+  padding:10px 13px;
+  font-weight:800;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+}
+
+th,td{
+  padding:10px;
+  border-bottom:1px solid #eee;
+  text-align:left;
+  font-size:14px;
+}
+
+th{
+  background:#f8fafc;
+}
+
+.ok{
+  color:#075fd6;
+  font-weight:800;
+}
+
+.bad{
+  color:#d92d20;
+  font-weight:800;
+}
+
+.green{
+  color:#16803c;
+  font-weight:800;
+}
+
+.red{
+  color:#d92d20;
+  font-weight:800;
+}
+
+.pill{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:99px;
+  background:#eef2ff;
+  font-size:12px;
+  font-weight:700;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:#0007;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  z-index:20;
+}
+
+.modal>div{
+  background:white;
+  border-radius:18px;
+  padding:20px;
+  max-width:500px;
+  width:100%;
+  max-height:90vh;
+  overflow:auto;
+}
+
+.notice{
+  padding:12px;
+  border-radius:12px;
+  background:#f0f7ff;
+  margin-bottom:12px;
+}
+
+.stat-income{
+  border-left:5px solid #16a34a;
+}
+
+.stat-expense{
+  border-left:5px solid #e53935;
+}
+
+.empty{
+  text-align:center;
+  padding:25px;
+  color:#667085;
+}
+
+@media(max-width:800px){
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  table{
+    font-size:12px;
+  }
+
+  th,td{
+    padding:8px;
+  }
+}
+
+@media(max-width:500px){
+  .grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .metric b{
+    font-size:20px;
+  }
+}
+</style>
+</head>
+
 <body>
-<header><h1>💰 KAS SOS</h1><small id="rt">🟢 Realtime aktif</small></header>
+
+<header>
+  <h1>💰 KAS SOS</h1>
+  <small id="rt">🟢 Realtime aktif</small>
+</header>
+
 <nav id="nav">
-<button class="active" data-tab="dash">Dashboard</button><button data-tab="members">Anggota</button>
-<button data-tab="requests">Pengajuan</button><button data-tab="settings">Pengaturan</button><button id="logout" class="hidden">Keluar</button>
+
+  <button class="active" data-tab="dash">
+    Dashboard
+  </button>
+
+  <button data-tab="members">
+    Anggota
+  </button>
+
+  <button data-tab="income">
+    📥 Pemasukan
+  </button>
+
+  <button data-tab="expense">
+    📤 Pengeluaran
+  </button>
+
+  <button data-tab="requests">
+    Pengajuan
+  </button>
+
+  <button data-tab="settings">
+    Pengaturan
+  </button>
+
+  <button id="logout" class="hidden">
+    Keluar
+  </button>
+
 </nav>
+
 <main class="wrap">
-<section id="dash" class="show"><div class="grid">
-<div class="card metric">Saldo Kas<b id="saldo">Rp 0</b></div><div class="card metric">Anggota Wajib Kas<b id="wajib">0</b></div>
-<div class="card metric">Total Tunggakan<b id="tunggakan">Rp 0</b></div><div class="card metric">ADM Belum Lunas<b id="adm">Rp 0</b></div>
-</div><div class="card" style="margin-top:14px"><h2>Rekap</h2><div id="summary"></div></div></section>
 
-<section id="members"><div class="toolbar"><h2>Anggota</h2><button class="primary" id="addBtn">+ Anggota</button></div><div class="card"><div style="overflow:auto"><table><thead><tr><th>Nama</th><th>Saldo</th><th>NextPay</th><th>Tunggakan</th><th>ADM</th><th></th></tr></thead><tbody id="memberRows"></tbody></table></div></div></section>
+<!-- ================= DASHBOARD ================= -->
 
-<section id="requests"><div class="toolbar"><h2>Pengajuan Pembayaran</h2></div><div id="memberSubmit" class="card hidden">
-<h3>Ajukan Pembayaran</h3><label>Nama karakter</label><input id="mname" placeholder="Nama karakter">
-<label>Jenis</label><select id="ptype"><option>KAS</option><option>ADM</option></select>
-<label>Jumlah (Rp)</label><input id="pamount" type="number" min="1">
-<label>Screenshot bukti</label><input id="proof" type="file" accept="image/*">
-<label>Catatan</label><textarea id="pnote"></textarea><button class="primary" onclick="submitPayment()">Kirim Pengajuan</button>
-</div>
-<div class="card"><h3>Daftar Pengajuan</h3><div style="overflow:auto"><table><thead><tr><th>Waktu</th><th>Nama</th><th>Jenis</th><th>Jumlah</th><th>Status</th><th>Bukti</th><th>Aksi</th></tr></thead><tbody id="reqRows"></tbody></table></div></div></section>
+<section id="dash" class="show">
 
-<section id="settings"><div class="card"><h2>Pengaturan Admin</h2><p>Login admin diperlukan untuk mengubah batas ADM/KAS dan data anggota.</p>
-<div id="adminLogin"><label>Password Admin</label><input id="adminpass" type="password"><button class="primary" onclick="adminLogin()">Masuk Admin</button></div>
-<div id="adminPanel" class="hidden"><label>Tanggal Rekap</label><input id="rdate" type="date"><label>Iuran KAS / hari</label><input id="kasdaily" type="number"><label>ADM standar anggota baru</label><input id="admdefault" type="number"><button class="primary" onclick="saveSettings()">Simpan Pengaturan</button><p id="adminmsg"></p></div>
-</div></section>
+  <div class="grid">
+
+    <div class="card metric">
+      Saldo Kas
+      <b id="saldo">Rp 0</b>
+    </div>
+
+    <div class="card metric">
+      Anggota Wajib Kas
+      <b id="wajib">0</b>
+    </div>
+
+    <div class="card metric stat-income">
+      Total Pemasukan
+      <b id="totalIncome">Rp 0</b>
+    </div>
+
+    <div class="card metric stat-expense">
+      Total Pengeluaran
+      <b id="totalExpense">Rp 0</b>
+    </div>
+
+  </div>
+
+  <div class="grid" style="margin-top:12px">
+
+    <div class="card metric">
+      Total Tunggakan
+      <b id="tunggakan">Rp 0</b>
+    </div>
+
+    <div class="card metric">
+      ADM Belum Lunas
+      <b id="adm">Rp 0</b>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:14px">
+
+    <h2>📊 Rekap Kas</h2>
+
+    <div id="summary">
+      Memuat...
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= ANGGOTA ================= -->
+
+<section id="members">
+
+  <div class="toolbar">
+
+    <h2>👥 Anggota</h2>
+
+    <button class="primary" id="addBtn">
+      + Anggota
+    </button>
+
+  </div>
+
+  <div class="card">
+
+    <div style="overflow:auto">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Nama</th>
+            <th>Saldo</th>
+            <th>NextPay</th>
+            <th>Tunggakan</th>
+            <th>ADM</th>
+            <th></th>
+          </tr>
+
+        </thead>
+
+        <tbody id="memberRows"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= PEMASUKAN ================= -->
+
+<section id="income">
+
+  <div class="toolbar">
+
+    <h2>📥 Pemasukan Kas</h2>
+
+    <button
+      class="success"
+      onclick="openTransactionModal('income')">
+      + Pemasukan
+    </button>
+
+  </div>
+
+  <div class="card">
+
+    <div class="notice">
+      Semua uang yang masuk ke kas dicatat di sini.
+    </div>
+
+    <div style="overflow:auto">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Tanggal</th>
+            <th>Jumlah</th>
+            <th>Keterangan</th>
+            <th>Aksi</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="incomeRows"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= PENGELUARAN ================= -->
+
+<section id="expense">
+
+  <div class="toolbar">
+
+    <h2>📤 Pengeluaran Kas</h2>
+
+    <button
+      class="primary"
+      onclick="openTransactionModal('expense')">
+      + Pengeluaran
+    </button>
+
+  </div>
+
+  <div class="card">
+
+    <div class="notice">
+      Semua uang yang keluar dari kas dicatat di sini.
+    </div>
+
+    <div style="overflow:auto">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Tanggal</th>
+            <th>Jumlah</th>
+            <th>Keterangan</th>
+            <th>Aksi</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="expenseRows"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= PENGAJUAN ================= -->
+
+<section id="requests">
+
+  <div class="toolbar">
+
+    <h2>📝 Pengajuan Pembayaran</h2>
+
+  </div>
+
+  <div id="memberSubmit" class="card hidden">
+
+    <h3>Ajukan Pembayaran</h3>
+
+    <label>Nama karakter</label>
+
+    <input
+      id="mname"
+      placeholder="Nama karakter">
+
+    <label>Jenis</label>
+
+    <select id="ptype">
+
+      <option>KAS</option>
+      <option>ADM</option>
+
+    </select>
+
+    <label>Jumlah (Rp)</label>
+
+    <input
+      id="pamount"
+      type="number"
+      min="1">
+
+    <label>Screenshot bukti</label>
+
+    <input
+      id="proof"
+      type="file"
+      accept="image/*">
+
+    <label>Catatan</label>
+
+    <textarea id="pnote"></textarea>
+
+    <button
+      class="primary"
+      onclick="submitPayment()">
+      Kirim Pengajuan
+    </button>
+
+  </div>
+
+  <div class="card">
+
+    <h3>Daftar Pengajuan</h3>
+
+    <div style="overflow:auto">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Waktu</th>
+            <th>Nama</th>
+            <th>Jenis</th>
+            <th>Jumlah</th>
+            <th>Status</th>
+            <th>Bukti</th>
+            <th>Aksi</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="reqRows"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= PENGATURAN ================= -->
+
+<section id="settings">
+
+  <div class="card">
+
+    <h2>⚙️ Pengaturan Admin</h2>
+
+    <p>
+      Login admin diperlukan untuk mengubah data anggota,
+      pengaturan dan transaksi.
+    </p>
+
+    <div id="adminLogin">
+
+      <label>Password Admin</label>
+
+      <input
+        id="adminpass"
+        type="password"
+        placeholder="Password admin">
+
+      <button
+        class="primary"
+        onclick="adminLogin()">
+        Masuk Admin
+      </button>
+
+    </div>
+
+    <div id="adminPanel" class="hidden">
+
+      <label>Tanggal Rekap</label>
+
+      <input
+        id="rdate"
+        type="date">
+
+      <label>Iuran KAS / hari</label>
+
+      <input
+        id="kasdaily"
+        type="number">
+
+      <label>ADM standar anggota baru</label>
+
+      <input
+        id="admdefault"
+        type="number">
+
+      <br><br>
+
+      <button
+        class="primary"
+        onclick="saveSettings()">
+        Simpan Pengaturan
+      </button>
+
+      <p id="adminmsg"></p>
+
+    </div>
+
+  </div>
+
+</section>
+
 </main>
-<div id="modal" class="modal"><div id="modalBody"></div></div>
+
+
+<!-- ================= MODAL ================= -->
+
+<div id="modal" class="modal">
+
+  <div id="modalBody"></div>
+
+</div>
+
+
 <script>
-const SUPABASE_URL="https://jjnmaylxjzgixnrqopro.supabase.co";
-const SUPABASE_KEY="sb_publishable_lkURZKFsysGqqerO53RP_Q_h8COOyLr";
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let adminPass=sessionStorage.getItem("kas_admin")||"", isAdmin=!!adminPass, members=[], settings={};
 
-const money=n=>"Rp "+Number(n||0).toLocaleString("id-ID");
-function tab(id){document.querySelectorAll("section").forEach(x=>x.classList.remove("show"));document.getElementById(id).classList.add("show");document.querySelectorAll("nav button[data-tab]").forEach(x=>x.classList.toggle("active",x.dataset.tab===id));}
-document.querySelectorAll("nav button[data-tab]").forEach(b=>b.onclick=()=>{tab(b.dataset.tab); if(b.dataset.tab==="requests")loadRequests()});
-document.getElementById("logout").onclick=()=>{sessionStorage.removeItem("kas_admin");adminPass="";isAdmin=false;renderAuth();tab("dash")};
+/* =====================================================
+   SUPABASE
+===================================================== */
 
-function renderAuth(){document.getElementById("logout").classList.toggle("hidden",!isAdmin);document.getElementById("memberSubmit").classList.toggle("hidden",isAdmin);document.getElementById("adminLogin").classList.toggle("hidden",isAdmin);document.getElementById("adminPanel").classList.toggle("hidden",!isAdmin)}
+const SUPABASE_URL =
+"https://jjnmaylxjzgixnrqopro.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_lkURZKFsysGqqerO53RP_Q_h8COOyLr";
+
+const sb =
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+/* =====================================================
+   DATA
+===================================================== */
+
+let adminPass =
+sessionStorage.getItem("kas_admin") || "";
+
+let isAdmin =
+!!adminPass;
+
+let members = [];
+
+let settings = {};
+
+let incomes = [];
+
+let expenses = [];
+
+
+/* =====================================================
+   HELPER
+===================================================== */
+
+const money = n =>
+"Rp " +
+Number(n || 0).toLocaleString("id-ID");
+
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   TAB
+===================================================== */
+
+function tab(id){
+
+  document
+    .querySelectorAll("section")
+    .forEach(x =>
+      x.classList.remove("show")
+    );
+
+  document
+    .getElementById(id)
+    .classList.add("show");
+
+  document
+    .querySelectorAll("nav button[data-tab]")
+    .forEach(x =>
+      x.classList.toggle(
+        "active",
+        x.dataset.tab === id
+      )
+    );
+
+  if(id === "requests")
+    loadRequests();
+
+  if(id === "income")
+    loadTransactions();
+
+  if(id === "expense")
+    loadTransactions();
+
+}
+
+
+document
+  .querySelectorAll("nav button[data-tab]")
+  .forEach(b => {
+
+    b.onclick = () =>
+      tab(b.dataset.tab);
+
+  });
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+document
+  .getElementById("logout")
+  .onclick = () => {
+
+    sessionStorage.removeItem("kas_admin");
+
+    adminPass = "";
+
+    isAdmin = false;
+
+    renderAuth();
+
+    tab("dash");
+
+    load();
+
+  };
+
+
+function renderAuth(){
+
+  document
+    .getElementById("logout")
+    .classList.toggle(
+      "hidden",
+      !isAdmin
+    );
+
+  document
+    .getElementById("memberSubmit")
+    .classList.toggle(
+      "hidden",
+      isAdmin
+    );
+
+  document
+    .getElementById("adminLogin")
+    .classList.toggle(
+      "hidden",
+      isAdmin
+    );
+
+  document
+    .getElementById("adminPanel")
+    .classList.toggle(
+      "hidden",
+      !isAdmin
+    );
+
+}
+
+
+/* =====================================================
+   LOAD UTAMA
+===================================================== */
+
 async function load(){
- let a=await sb.from("app_settings").select("*").eq("id",1).single(); if(a.data)settings=a.data;
- let m=await sb.from("members").select("*").order("name"); members=m.data||[];
- render();
+
+  try{
+
+    const a =
+      await sb
+      .from("app_settings")
+      .select("*")
+      .eq("id",1)
+      .single();
+
+    if(a.data)
+      settings = a.data;
+
+
+    const m =
+      await sb
+      .from("members")
+      .select("*")
+      .order("name");
+
+    if(m.error){
+
+      console.error(m.error);
+
+    }else{
+
+      members = m.data || [];
+
+    }
+
+
+    await loadTransactions();
+
+    render();
+
+  }catch(err){
+
+    console.error(err);
+
+  }
+
 }
+
+
+/* =====================================================
+   RENDER DASHBOARD
+===================================================== */
+
 function render(){
- let wajib=members.filter(m=>!m.exempt_kas).length, tung=members.reduce((s,m)=>s+Math.max(0,m.arrears),0), adm=members.reduce((s,m)=>s+(m.adm_due||0),0), saldo=members.reduce((s,m)=>s+(m.balance||0),0);
- document.getElementById("saldo").textContent=money(saldo);document.getElementById("wajib").textContent=wajib;document.getElementById("tunggakan").textContent=money(tung);document.getElementById("adm").textContent=money(adm);
- document.getElementById("summary").innerHTML=`Tanggal rekap: <b>${settings.report_date||"-"}</b><br>Iuran harian: <b>${money(settings.kas_daily)}</b><br>ADM standar: <b>${money(settings.adm_default)}</b>`;
- document.getElementById("memberRows").innerHTML=members.map(m=>`<tr><td>${m.name}</td><td class="${m.balance<0?'bad':'ok'}">${money(m.balance)}</td><td>${m.next_pay||"-"}</td><td class="${m.arrears>0?'bad':'ok'}">${money(m.arrears)}</td><td>${money(m.adm_due)}</td><td>${isAdmin?`<button onclick="editMember('${m.id}')">Edit</button>`:""}</td></tr>`).join("");
+
+  const wajib =
+    members.filter(
+      m => !m.exempt_kas
+    ).length;
+
+
+  const tung =
+    members.reduce(
+      (s,m) =>
+        s + Math.max(0,Number(m.arrears || 0)),
+      0
+    );
+
+
+  const adm =
+    members.reduce(
+      (s,m) =>
+        s + Number(m.adm_due || 0),
+      0
+    );
+
+
+  const totalIncome =
+    incomes.reduce(
+      (s,x) =>
+        s + Number(x.amount || 0),
+      0
+    );
+
+
+  const totalExpense =
+    expenses.reduce(
+      (s,x) =>
+        s + Number(x.amount || 0),
+      0
+    );
+
+
+  const saldo =
+    totalIncome - totalExpense;
+
+
+  document
+    .getElementById("saldo")
+    .textContent = money(saldo);
+
+
+  document
+    .getElementById("wajib")
+    .textContent = wajib;
+
+
+  document
+    .getElementById("tunggakan")
+    .textContent = money(tung);
+
+
+  document
+    .getElementById("adm")
+    .textContent = money(adm);
+
+
+  document
+    .getElementById("totalIncome")
+    .textContent = money(totalIncome);
+
+
+  document
+    .getElementById("totalExpense")
+    .textContent = money(totalExpense);
+
+
+  document
+    .getElementById("summary")
+    .innerHTML = `
+
+      Tanggal rekap:
+      <b>${escapeHTML(settings.report_date || "-")}</b>
+
+      <br>
+
+      Iuran harian:
+      <b>${money(settings.kas_daily)}</b>
+
+      <br>
+
+      ADM standar:
+      <b>${money(settings.adm_default)}</b>
+
+      <br><br>
+
+      Total pemasukan:
+      <b class="green">${money(totalIncome)}</b>
+
+      <br>
+
+      Total pengeluaran:
+      <b class="red">${money(totalExpense)}</b>
+
+      <br>
+
+      Saldo kas:
+      <b>${money(saldo)}</b>
+
+    `;
+
+
+  renderMembers();
+
+  renderTransactions();
+
 }
-async function adminLogin(){let p=document.getElementById("adminpass").value.trim();let {data,error}=await sb.rpc("admin_check",{p_password:p});if(error||!data)return alert("Password admin salah");adminPass=p;sessionStorage.setItem("kas_admin",p);isAdmin=true;renderAuth();alert("Login admin berhasil");loadRequests()}
-async function saveSettings(){let {error}=await sb.rpc("admin_set_settings",{p_password:adminPass,p_report_date:document.getElementById("rdate").value,p_kas_daily:+document.getElementById("kasdaily").value,p_adm_default:+document.getElementById("admdefault").value});if(error)return alert(error.message);alert("Pengaturan tersimpan");load()}
+
+
+/* =====================================================
+   MEMBER
+===================================================== */
+
+function renderMembers(){
+
+  const body =
+    document.getElementById("memberRows");
+
+
+  if(!members.length){
+
+    body.innerHTML =
+      `<tr>
+        <td colspan="6" class="empty">
+          Belum ada anggota.
+        </td>
+      </tr>`;
+
+    return;
+
+  }
+
+
+  body.innerHTML =
+    members.map(m => `
+
+      <tr>
+
+        <td>
+          ${escapeHTML(m.name)}
+        </td>
+
+        <td class="${Number(m.balance) < 0 ? "bad" : "ok"}">
+          ${money(m.balance)}
+        </td>
+
+        <td>
+          ${escapeHTML(m.next_pay || "-")}
+        </td>
+
+        <td class="${Number(m.arrears) > 0 ? "bad" : "ok"}">
+          ${money(m.arrears)}
+        </td>
+
+        <td>
+          ${money(m.adm_due)}
+        </td>
+
+        <td>
+
+          ${
+            isAdmin
+            ?
+            `<button
+              class="secondary"
+              onclick="editMember('${m.id}')">
+              Edit
+            </button>`
+            :
+            "-"
+          }
+
+        </td>
+
+      </tr>
+
+    `).join("");
+
+}
+
+
+/* =====================================================
+   TRANSAKSI
+===================================================== */
+
+async function loadTransactions(){
+
+  const incomeResult =
+    await sb
+    .from("cash_income")
+    .select("*")
+    .order("created_at", {
+      ascending:false
+    });
+
+
+  if(!incomeResult.error)
+    incomes =
+      incomeResult.data || [];
+
+
+  const expenseResult =
+    await sb
+    .from("cash_expense")
+    .select("*")
+    .order("created_at", {
+      ascending:false
+    });
+
+
+  if(!expenseResult.error)
+    expenses =
+      expenseResult.data || [];
+
+
+  renderTransactions();
+
+  updateDashboardTotals();
+
+}
+
+
+/* =====================================================
+   RENDER TRANSAKSI
+===================================================== */
+
+function renderTransactions(){
+
+  const incomeBody =
+    document.getElementById("incomeRows");
+
+  const expenseBody =
+    document.getElementById("expenseRows");
+
+
+  if(!incomes.length){
+
+    incomeBody.innerHTML =
+      `<tr>
+        <td colspan="4" class="empty">
+          Belum ada pemasukan.
+        </td>
+      </tr>`;
+
+  }else{
+
+    incomeBody.innerHTML =
+      incomes.map(x => `
+
+        <tr>
+
+          <td>
+            ${formatDate(x.created_at)}
+          </td>
+
+          <td class="green">
+            + ${money(x.amount)}
+          </td>
+
+          <td>
+            ${escapeHTML(x.description)}
+          </td>
+
+          <td>
+
+            ${
+              isAdmin
+              ?
+              `<button
+                class="danger"
+                onclick="deleteTransaction('income','${x.id}')">
+                Hapus
+              </button>`
+              :
+              "-"
+            }
+
+          </td>
+
+        </tr>
+
+      `).join("");
+
+  }
+
+
+  if(!expenses.length){
+
+    expenseBody.innerHTML =
+      `<tr>
+        <td colspan="4" class="empty">
+          Belum ada pengeluaran.
+        </td>
+      </tr>`;
+
+  }else{
+
+    expenseBody.innerHTML =
+      expenses.map(x => `
+
+        <tr>
+
+          <td>
+            ${formatDate(x.created_at)}
+          </td>
+
+          <td class="red">
+            - ${money(x.amount)}
+          </td>
+
+          <td>
+            ${escapeHTML(x.description)}
+          </td>
+
+          <td>
+
+            ${
+              isAdmin
+              ?
+              `<button
+                class="danger"
+                onclick="deleteTransaction('expense','${x.id}')">
+                Hapus
+              </button>`
+              :
+              "-"
+            }
+
+          </td>
+
+        </tr>
+
+      `).join("");
+
+  }
+
+}
+
+
+function updateDashboardTotals(){
+
+  const totalIncome =
+    incomes.reduce(
+      (s,x) =>
+        s + Number(x.amount || 0),
+      0
+    );
+
+
+  const totalExpense =
+    expenses.reduce(
+      (s,x) =>
+        s + Number(x.amount || 0),
+      0
+    );
+
+
+  document
+    .getElementById("totalIncome")
+    .textContent =
+    money(totalIncome);
+
+
+  document
+    .getElementById("totalExpense")
+    .textContent =
+    money(totalExpense);
+
+
+  document
+    .getElementById("saldo")
+    .textContent =
+    money(totalIncome - totalExpense);
+
+}
+
+
+function formatDate(date){
+
+  if(!date)
+    return "-";
+
+  return new Date(date)
+    .toLocaleString("id-ID");
+
+}
+
+
+/* =====================================================
+   MODAL TRANSAKSI
+===================================================== */
+
+function openTransactionModal(type){
+
+  if(!isAdmin){
+
+    alert("Login admin dulu.");
+
+    return;
+
+  }
+
+
+  const isIncome =
+    type === "income";
+
+
+  document
+    .getElementById("modal")
+    .style.display = "flex";
+
+
+  document
+    .getElementById("modalBody")
+    .innerHTML = `
+
+      <h2>
+        ${isIncome
+          ? "📥 Tambah Pemasukan"
+          : "📤 Tambah Pengeluaran"}
+      </h2>
+
+      <label>
+        Jumlah (Rp)
+      </label>
+
+      <input
+        id="t_amount"
+        type="number"
+        min="1"
+        placeholder="Contoh: 50000">
+
+      <label>
+        Keterangan
+      </label>
+
+      <textarea
+        id="t_description"
+        placeholder="${
+          isIncome
+          ? "Contoh: Iuran kas anggota"
+          : "Contoh: Beli perlengkapan"
+        }"></textarea>
+
+      <br>
+
+      <button
+        class="primary"
+        onclick="saveTransaction('${type}')">
+        Simpan
+      </button>
+
+      <button
+        class="secondary"
+        onclick="closeModal()">
+        Batal
+      </button>
+
+    `;
+
+}
+
+
+async function saveTransaction(type){
+
+  if(!isAdmin){
+
+    alert("Login admin dulu.");
+
+    return;
+
+  }
+
+
+  const amount =
+    Number(
+      document
+        .getElementById("t_amount")
+        .value
+    );
+
+
+  const description =
+    document
+      .getElementById("t_description")
+      .value
+      .trim();
+
+
+  if(!amount || amount <= 0){
+
+    alert("Jumlah harus lebih dari 0.");
+
+    return;
+
+  }
+
+
+  if(!description){
+
+    alert("Keterangan wajib diisi.");
+
+    return;
+
+  }
+
+
+  const table =
+    type === "income"
+    ? "cash_income"
+    : "cash_expense";
+
+
+  const result =
+    await sb
+    .from(table)
+    .insert({
+
+      amount:amount,
+
+      description:description
+
+    });
+
+
+  if(result.error){
+
+    alert(
+      "Gagal menyimpan transaksi: " +
+      result.error.message
+    );
+
+    console.error(result.error);
+
+    return;
+
+  }
+
+
+  closeModal();
+
+  alert(
+    type === "income"
+    ? "Pemasukan berhasil disimpan."
+    : "Pengeluaran berhasil disimpan."
+  );
+
+
+  await loadTransactions();
+
+  render();
+
+}
+
+
+/* =====================================================
+   HAPUS TRANSAKSI
+===================================================== */
+
+async function deleteTransaction(type,id){
+
+  if(!isAdmin){
+
+    alert("Login admin dulu.");
+
+    return;
+
+  }
+
+
+  if(!confirm(
+    "Yakin ingin menghapus transaksi ini?"
+  )) return;
+
+
+  const table =
+    type === "income"
+    ? "cash_income"
+    : "cash_expense";
+
+
+  const result =
+    await sb
+    .from(table)
+    .delete()
+    .eq("id",id);
+
+
+  if(result.error){
+
+    alert(
+      "Gagal menghapus: " +
+      result.error.message
+    );
+
+    return;
+
+  }
+
+
+  await loadTransactions();
+
+  render();
+
+}
+
+
+/* =====================================================
+   ADMIN LOGIN
+===================================================== */
+
+async function adminLogin(){
+
+  const p =
+    document
+      .getElementById("adminpass")
+      .value
+      .trim();
+
+
+  if(!p){
+
+    alert("Masukkan password admin.");
+
+    return;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await sb.rpc(
+      "admin_check",
+      {
+        p_password:p
+      }
+    );
+
+
+  if(error || !data){
+
+    alert("Password admin salah.");
+
+    return;
+
+  }
+
+
+  adminPass = p;
+
+  sessionStorage.setItem(
+    "kas_admin",
+    p
+  );
+
+  isAdmin = true;
+
+  renderAuth();
+
+  alert("Login admin berhasil.");
+
+  load();
+
+  loadRequests();
+
+}
+
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+async function saveSettings(){
+
+  const result =
+    await sb.rpc(
+      "admin_set_settings",
+      {
+        p_password:adminPass,
+
+        p_report_date:
+          document
+          .getElementById("rdate")
+          .value,
+
+        p_kas_daily:
+          Number(
+            document
+            .getElementById("kasdaily")
+            .value
+          ),
+
+        p_adm_default:
+          Number(
+            document
+            .getElementById("admdefault")
+            .value
+          )
+      }
+    );
+
+
+  if(result.error){
+
+    alert(result.error.message);
+
+    return;
+
+  }
+
+
+  alert("Pengaturan tersimpan.");
+
+  load();
+
+}
+
+
+/* =====================================================
+   PENGAJUAN PEMBAYARAN
+===================================================== */
+
 async function loadRequests(){
- let q=await sb.from("payment_requests").select("*").order("created_at",{ascending:false});let rows=q.data||[];
- document.getElementById("reqRows").innerHTML=rows.map(r=>`<tr><td>${new Date(r.created_at).toLocaleString("id-ID")}</td><td>${r.member_name}</td><td>${r.payment_type}</td><td>${money(r.amount)}</td><td>${r.status}</td><td>${r.screenshot_url?`<a target="_blank" href="${r.screenshot_url}">Lihat</a>`:"-"}</td><td>${isAdmin&&r.status==="PENDING"?`<button class="primary" onclick="review('${r.id}','APPROVED')">Terima</button> <button class="danger" onclick="review('${r.id}','REJECTED')">Tolak</button>`:"-"}</td></tr>`).join("");
+
+  const q =
+    await sb
+    .from("payment_requests")
+    .select("*")
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
+
+
+  const rows =
+    q.data || [];
+
+
+  const body =
+    document
+      .getElementById("reqRows");
+
+
+  if(!rows.length){
+
+    body.innerHTML =
+      `<tr>
+        <td colspan="7" class="empty">
+          Belum ada pengajuan.
+        </td>
+      </tr>`;
+
+    return;
+
+  }
+
+
+  body.innerHTML =
+    rows.map(r => `
+
+      <tr>
+
+        <td>
+          ${formatDate(r.created_at)}
+        </td>
+
+        <td>
+          ${escapeHTML(r.member_name)}
+        </td>
+
+        <td>
+          ${escapeHTML(r.payment_type)}
+        </td>
+
+        <td>
+          ${money(r.amount)}
+        </td>
+
+        <td>
+          <span class="pill">
+            ${escapeHTML(r.status)}
+          </span>
+        </td>
+
+        <td>
+
+          ${
+            r.screenshot_url
+            ?
+            `<a
+              target="_blank"
+              href="${r.screenshot_url}">
+              Lihat
+            </a>`
+            :
+            "-"
+          }
+
+        </td>
+
+        <td>
+
+          ${
+            isAdmin &&
+            r.status === "PENDING"
+
+            ?
+
+            `<button
+              class="success"
+              onclick="review('${r.id}','APPROVED')">
+              Terima
+            </button>
+
+            <button
+              class="danger"
+              onclick="review('${r.id}','REJECTED')">
+              Tolak
+            </button>`
+
+            :
+
+            "-"
+          }
+
+        </td>
+
+      </tr>
+
+    `).join("");
+
 }
-async function review(id,action){if(!confirm(action+" pengajuan ini?"))return;let {error}=await sb.rpc("admin_review_payment",{p_password:adminPass,p_request_id:id,p_action:action});if(error)return alert(error.message);load();loadRequests()}
+
+
+/* =====================================================
+   REVIEW PEMBAYARAN
+===================================================== */
+
+async function review(id,action){
+
+  if(!confirm(
+    action === "APPROVED"
+    ? "Terima pengajuan ini?"
+    : "Tolak pengajuan ini?"
+  )) return;
+
+
+  const result =
+    await sb.rpc(
+      "admin_review_payment",
+      {
+        p_password:adminPass,
+        p_request_id:id,
+        p_action:action
+      }
+    );
+
+
+  if(result.error){
+
+    alert(result.error.message);
+
+    return;
+
+  }
+
+
+  alert(
+    action === "APPROVED"
+    ? "Pengajuan diterima."
+    : "Pengajuan ditolak."
+  );
+
+
+  load();
+
+  loadRequests();
+
+}
+
+
+/* =====================================================
+   MEMBER SUBMIT PAYMENT
+===================================================== */
+
 async function submitPayment(){
- let name=document.getElementById("mname").value.trim(), type=document.getElementById("ptype").value, amount=+document.getElementById("pamount").value, file=document.getElementById("proof").files[0], note=document.getElementById("pnote").value;
- if(!name||!amount)return alert("Nama dan jumlah wajib diisi");
- let url=null;if(file){let path=`${Date.now()}-${Math.random().toString(36).slice(2)}-${file.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;let up=await sb.storage.from("payment-proof").upload(path,file,{upsert:false});if(up.error)return alert(up.error.message);url=sb.storage.from("payment-proof").getPublicUrl(path).data.publicUrl}
- let {error}=await sb.rpc("submit_payment",{p_member_name:name,p_type:type,p_amount:amount,p_screenshot_url:url,p_note:note});if(error)return alert(error.message);alert("Pengajuan terkirim. Tunggu admin memeriksa.");document.getElementById("pamount").value="";document.getElementById("proof").value="";loadRequests()
+
+  const name =
+    document
+      .getElementById("mname")
+      .value
+      .trim();
+
+
+  const type =
+    document
+      .getElementById("ptype")
+      .value;
+
+
+  const amount =
+    Number(
+      document
+      .getElementById("pamount")
+      .value
+    );
+
+
+  const file =
+    document
+      .getElementById("proof")
+      .files[0];
+
+
+  const note =
+    document
+      .getElementById("pnote")
+      .value;
+
+
+  if(!name || !amount){
+
+    alert(
+      "Nama dan jumlah wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  let url = null;
+
+
+  if(file){
+
+    const path =
+      `${Date.now()}-${Math.random()
+      .toString(36)
+      .slice(2)}-${file.name
+      .replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_"
+      )}`;
+
+
+    const up =
+      await sb
+      .storage
+      .from("payment-proof")
+      .upload(
+        path,
+        file,
+        {
+          upsert:false
+        }
+      );
+
+
+    if(up.error){
+
+      alert(up.error.message);
+
+      return;
+
+    }
+
+
+    url =
+      sb
+      .storage
+      .from("payment-proof")
+      .getPublicUrl(path)
+      .data
+      .publicUrl;
+
+  }
+
+
+  const result =
+    await sb.rpc(
+      "submit_payment",
+      {
+        p_member_name:name,
+        p_type:type,
+        p_amount:amount,
+        p_screenshot_url:url,
+        p_note:note
+      }
+    );
+
+
+  if(result.error){
+
+    alert(result.error.message);
+
+    return;
+
+  }
+
+
+  alert(
+    "Pengajuan terkirim. Tunggu admin memeriksa."
+  );
+
+
+  document
+    .getElementById("pamount")
+    .value = "";
+
+  document
+    .getElementById("proof")
+    .value = "";
+
+
+  loadRequests();
+
 }
+
+
+/* =====================================================
+   EDIT MEMBER
+===================================================== */
+
 async function editMember(id){
- let m=members.find(x=>x.id===id);if(!m)return;
- document.getElementById("modal").style.display="flex";document.getElementById("modalBody").innerHTML=`<h2>Edit Anggota</h2>
- <label>Nama</label><input id="e_name" value="${m.name}"><label>Saldo</label><input id="e_bal" type="number" value="${m.balance}">
- <label>NextPay</label><input id="e_next" type="date" value="${m.next_pay||""}"><label>Tunggakan</label><input id="e_arr" type="number" value="${m.arrears}">
- <label>Belum bayar dari</label><input id="e_from" type="date" value="${m.unpaid_from||""}"><label>ADM belum lunas</label><input id="e_adm" type="number" value="${m.adm_due}">
- <label><input id="e_ex" type="checkbox" ${m.exempt_kas?"checked":""}> Bebas KAS</label><button class="primary" onclick="saveMember('${id}')">Simpan</button> <button onclick="closeModal()">Batal</button>`;
+
+  const m =
+    members.find(
+      x => x.id === id
+    );
+
+
+  if(!m) return;
+
+
+  document
+    .getElementById("modal")
+    .style.display = "flex";
+
+
+  document
+    .getElementById("modalBody")
+    .innerHTML = `
+
+      <h2>Edit Anggota</h2>
+
+      <label>Nama</label>
+
+      <input
+        id="e_name"
+        value="${escapeHTML(m.name)}">
+
+      <label>Saldo</label>
+
+      <input
+        id="e_bal"
+        type="number"
+        value="${m.balance || 0}">
+
+      <label>NextPay</label>
+
+      <input
+        id="e_next"
+        type="date"
+        value="${m.next_pay || ""}">
+
+      <label>Tunggakan</label>
+
+      <input
+        id="e_arr"
+        type="number"
+        value="${m.arrears || 0}">
+
+      <label>Belum bayar dari</label>
+
+      <input
+        id="e_from"
+        type="date"
+        value="${m.unpaid_from || ""}">
+
+      <label>ADM belum lunas</label>
+
+      <input
+        id="e_adm"
+        type="number"
+        value="${m.adm_due || 0}">
+
+      <label>
+
+        <input
+          id="e_ex"
+          type="checkbox"
+          ${m.exempt_kas ? "checked" : ""}>
+
+        Bebas KAS
+
+      </label>
+
+      <br>
+
+      <button
+        class="primary"
+        onclick="saveMember('${id}')">
+        Simpan
+      </button>
+
+      <button
+        class="secondary"
+        onclick="closeModal()">
+        Batal
+      </button>
+
+    `;
+
 }
-function closeModal(){document.getElementById("modal").style.display="none"}
-async function saveMember(id){let {error}=await sb.rpc("admin_update_member",{p_password:adminPass,p_id:id,p_name:document.getElementById("e_name").value,p_balance:+document.getElementById("e_bal").value,p_next_pay:document.getElementById("e_next").value||null,p_arrears:+document.getElementById("e_arr").value,p_unpaid_from:document.getElementById("e_from").value||null,p_adm_due:+document.getElementById("e_adm").value,p_exempt:document.getElementById("e_ex").checked});if(error)return alert(error.message);closeModal();load()}
-document.getElementById("addBtn").onclick=()=>{if(!isAdmin)return alert("Login admin dulu");document.getElementById("modal").style.display="flex";document.getElementById("modalBody").innerHTML=`<h2>Tambah Anggota</h2><label>Nama</label><input id="a_name"><label>Saldo awal</label><input id="a_bal" type="number" value="0"><label>NextPay</label><input id="a_next" type="date"><label>ADM belum lunas</label><input id="a_adm" type="number" value="${settings.adm_default||10000}"><button class="primary" onclick="addMember()">Tambah</button> <button onclick="closeModal()">Batal</button>`}
-async function addMember(){let {error}=await sb.rpc("admin_add_member",{p_password:adminPass,p_name:document.getElementById("a_name").value,p_balance:+document.getElementById("a_bal").value,p_next_pay:document.getElementById("a_next").value||null,p_adm_due:+document.getElementById("a_adm").value,p_exempt:false});if(error)return alert(error.message);closeModal();load()}
-renderAuth();load();loadRequests();
-sb.channel("kas-live").on("postgres_changes",{event:"*",schema:"public",table:"members"},()=>load()).on("postgres_changes",{event:"*",schema:"public",table:"payment_requests"},()=>loadRequests()).on("postgres_changes",{event:"*",schema:"public",table:"app_settings"},()=>load()).subscribe();
-</script></body></html>
+
+
+function closeModal(){
+
+  document
+    .getElementById("modal")
+    .style.display = "none";
+
+}
+
+
+/* =====================================================
+   SAVE MEMBER
+===================================================== */
+
+async function saveMember(id){
+
+  const result =
+    await sb.rpc(
+      "admin_update_member",
+      {
+        p_password:adminPass,
+
+        p_id:id,
+
+        p_name:
+          document
+          .getElementById("e_name")
+          .value,
+
+        p_balance:
+          Number(
+            document
+            .getElementById("e_bal")
+            .value
+          ),
+
+        p_next_pay:
+          document
+          .getElementById("e_next")
+          .value || null,
+
+        p_arrears:
+          Number(
+            document
+            .getElementById("e_arr")
+            .value
+          ),
+
+        p_unpaid_from:
+          document
+          .getElementById("e_from")
+          .value || null,
+
+        p_adm_due:
+          Number(
+            document
+            .getElementById("e_adm")
+            .value
+          ),
+
+        p_exempt:
+          document
+          .getElementById("e_ex")
+          .checked
+      }
+    );
+
+
+  if(result.error){
+
+    alert(result.error.message);
+
+    return;
+
+  }
+
+
+  closeModal();
+
+  load();
+
+}
+
+
+/* =====================================================
+   ADD MEMBER
+===================================================== */
+
+document
+  .getElementById("addBtn")
+  .onclick = () => {
+
+    if(!isAdmin){
+
+      alert(
+        "Login admin dulu."
+      );
+
+      return;
+
+    }
+
+
+    document
+      .getElementById("modal")
+      .style.display = "flex";
+
+
+    document
+      .getElementById("modalBody")
+      .innerHTML = `
+
+        <h2>Tambah Anggota</h2>
+
+        <label>Nama</label>
+
+        <input
+          id="a_name"
+          placeholder="Nama anggota">
+
+        <label>Saldo awal</label>
+
+        <input
+          id="a_bal"
+          type="number"
+          value="0">
+
+        <label>NextPay</label>
+
+        <input
+          id="a_next"
+          type="date">
+
+        <label>ADM belum lunas</label>
+
+        <input
+          id="a_adm"
+          type="number"
+          value="${settings.adm_default || 10000}">
+
+        <br>
+
+        <button
+          class="primary"
+          onclick="addMember()">
+          Tambah
+        </button>
+
+        <button
+          class="secondary"
+          onclick="closeModal()">
+          Batal
+        </button>
+
+      `;
+
+  };
+
+
+/* =====================================================
+   ADD MEMBER SAVE
+===================================================== */
+
+async function addMember(){
+
+  const name =
+    document
+      .getElementById("a_name")
+      .value
+      .trim();
+
+
+  if(!name){
+
+    alert(
+      "Nama anggota wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  const result =
+    await sb.rpc(
+      "admin_add_member",
+      {
+        p_password:adminPass,
+
+        p_name:name,
+
+        p_balance:
+          Number(
+            document
+            .getElementById("a_bal")
+            .value
+          ),
+
+        p_next_pay:
+          document
+          .getElementById("a_next")
+          .value || null,
+
+        p_adm_due:
+          Number(
+            document
+            .getElementById("a_adm")
+            .value
+          ),
+
+        p_exempt:false
+      }
+    );
+
+
+  if(result.error){
+
+    alert(result.error.message);
+
+    return;
+
+  }
+
+
+  closeModal();
+
+  alert(
+    "Anggota berhasil ditambahkan."
+  );
+
+  load();
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+renderAuth();
+
+load();
+
+loadRequests();
+
+
+/* =====================================================
+   REALTIME
+===================================================== */
+
+sb
+.channel("kas-live")
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"members"
+  },
+  () => load()
+)
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"payment_requests"
+  },
+  () => loadRequests()
+)
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"app_settings"
+  },
+  () => load()
+)
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"cash_income"
+  },
+  () => loadTransactions()
+)
+
+.on(
+  "postgres_changes",
+  {
+    event:"*",
+    schema:"public",
+    table:"cash_expense"
+  },
+  () => loadTransactions()
+)
+
+.subscribe();
+
+</script>
+
+</body>
+</html>
