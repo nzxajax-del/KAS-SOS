@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAS SOS — Manajemen Kas</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#6b7280;--line:#e5e7eb;--primary:#2563eb;--danger:#dc2626;--success:#16a34a;--warning:#d97706}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
+header{background:#111827;color:white;padding:18px 20px;position:sticky;top:0;z-index:5;box-shadow:0 2px 12px #0002}
+.header{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-weight:800;font-size:20px}.sub{font-size:12px;color:#cbd5e1}
+.container{max-width:1200px;margin:auto;padding:20px}.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:18px}.tab{border:0;background:white;padding:11px 15px;border-radius:10px;cursor:pointer;color:#374151;font-weight:600;white-space:nowrap}.tab.active{background:var(--primary);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px;box-shadow:0 1px 4px #00000008}.stat{font-size:27px;font-weight:800;margin-top:7px}.label{font-size:13px;color:var(--muted)}
+.section{margin-top:18px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.section h2{font-size:18px;margin:0}.btn{border:0;border-radius:9px;padding:10px 13px;cursor:pointer;font-weight:700}.primary{background:var(--primary);color:white}.danger{background:#fee2e2;color:#991b1b}.ghost{background:#f3f4f6;color:#374151}.success{background:#dcfce7;color:#166534}
+table{width:100%;border-collapse:collapse;background:white}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;white-space:nowrap}th{background:#f8fafc;color:#475569}tr:last-child td{border-bottom:0}
+.badge{display:inline-block;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}.paid{background:#dcfce7;color:#166534}.due{background:#fef3c7;color:#92400e}.arrears{background:#fee2e2;color:#991b1b}.leader{background:#e0e7ff;color:#3730a3}
+input,select{width:100%;padding:10px 11px;border:1px solid #d1d5db;border-radius:9px;background:white;outline:none}input:focus,select:focus{border-color:var(--primary)}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.full{grid-column:1/-1}.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal.show{display:flex}.modal-box{background:white;border-radius:15px;width:min(560px,100%);max-height:90vh;overflow:auto;padding:20px}.actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}.hidden{display:none}.empty{text-align:center;color:var(--muted);padding:28px}.notice{padding:12px;border-radius:10px;background:#eff6ff;color:#1e40af;font-size:13px;margin-bottom:12px}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.container{padding:12px}.grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.stat{font-size:22px}th,td{padding:9px;font-size:12px}}
+</style>
+</head>
+<body>
+<header><div class="header"><div><div class="brand">💰 KAS SOS</div><div class="sub">Manajemen kas anggota</div></div><button class="btn ghost" onclick="exportData()">Backup JSON</button></div></header>
+<main class="container">
+<nav class="tabs">
+<button class="tab active" data-page="dashboard">Dashboard</button><button class="tab" data-page="anggota">Anggota</button><button class="tab" data-page="transaksi">Transaksi</button><button class="tab" data-page="pengeluaran">Pengeluaran</button><button class="tab" data-page="laporan">Laporan</button>
+</nav>
+<section id="dashboard" class="page">
+<div class="grid">
+<div class="card"><div class="label">Saldo Kas</div><div class="stat" id="statSaldo">Rp0</div></div>
+<div class="card"><div class="label">Anggota Wajib Kas</div><div class="stat" id="statMember">0</div></div>
+<div class="card"><div class="label">Tunggakan Kas</div><div class="stat" id="statArrears">Rp0</div></div>
+<div class="card"><div class="label">ADM Belum Lunas</div><div class="stat" id="statAdm">Rp0</div></div>
+</div>
+<div class="section card"><div class="section-head"><h2>Status Anggota</h2><button class="btn primary" onclick="openMember()">+ Anggota</button></div><div class="table-wrap"><table><thead><tr><th>Nama</th><th>Status</th><th>Saldo Iuran</th><th>NextPay</th><th>ADM</th></tr></thead><tbody id="dashTable"></tbody></table></div></div>
+</section>
+
+<section id="anggota" class="page hidden">
+<div class="card"><div class="section-head"><h2>Daftar Anggota</h2><button class="btn primary" onclick="openMember()">+ Tambah Anggota</button></div><div class="notice">ADM standar 10K. Iuran harian 1K. Leader dapat ditandai sebagai tidak wajib kas.</div><div class="table-wrap"><table><thead><tr><th>Nama</th><th>Jabatan</th><th>NextPay</th><th>Saldo Iuran</th><th>ADM</th><th>Aksi</th></tr></thead><tbody id="memberTable"></tbody></table></div></div>
+</section>
+
+<section id="transaksi" class="page hidden">
+<div class="card"><div class="section-head"><h2>Pembayaran Kas / ADM</h2><button class="btn primary" onclick="openTransaction()">+ Catat Pembayaran</button></div><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Nama</th><th>Kas</th><th>ADM</th><th>Total</th><th>Catatan</th></tr></thead><tbody id="txTable"></tbody></table></div></div>
+</section>
+
+<section id="pengeluaran" class="page hidden">
+<div class="card"><div class="section-head"><h2>Pengeluaran</h2><button class="btn primary" onclick="openExpense()">+ Pengeluaran</button></div><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Nominal</th><th>Aksi</th></tr></thead><tbody id="expenseTable"></tbody></table></div></div>
+</section>
+
+<section id="laporan" class="page hidden">
+<div class="card"><div class="section-head"><h2>Ringkasan</h2><button class="btn ghost" onclick="window.print()">Cetak</button></div><div id="report"></div></div>
+</section>
+</main>
+
+<div class="modal" id="memberModal"><div class="modal-box"><h2 id="memberTitle">Tambah Anggota</h2><form id="memberForm"><input type="hidden" id="memberId"><div class="form-grid"><label>Nama<input id="mName" required></label><label>Jabatan<select id="mRole"><option>Member</option><option>OG</option><option>Wakil</option><option>Manager</option><option>Orang Kepercayaan</option><option>Pemula</option></select></label><label>NextPay<input id="mNext" type="date" required></label><label>Saldo Iuran (hari)<input id="mBalance" type="number" min="0" value="0"></label><label>ADM Belum Lunas<input id="mAdm" type="number" min="0" value="10000"></label><label class="full"><input id="mExempt" type="checkbox"> Tidak wajib kas (leader)</label></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal()">Batal</button><button class="btn primary">Simpan</button></div></form></div></div>
+
+<div class="modal" id="txModal"><div class="modal-box"><h2>Catat Pembayaran</h2><form id="txForm"><div class="form-grid"><label>Anggota<select id="txMember" required></select></label><label>Tanggal<input id="txDate" type="date" required></label><label>Kas (K)<input id="txKas" type="number" min="0" value="0"></label><label>ADM<input id="txAdm" type="number" min="0" value="0"></label><label class="full">Catatan<input id="txNote"></label></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal()">Batal</button><button class="btn primary">Simpan</button></div></form></div></div>
+
+<div class="modal" id="expenseModal"><div class="modal-box"><h2>Tambah Pengeluaran</h2><form id="expenseForm"><div class="form-grid"><label>Tanggal<input id="exDate" type="date" required></label><label>Nominal<input id="exAmount" type="number" min="1" required></label><label class="full">Keterangan<input id="exNote" required></label></div><div class="actions"><button type="button" class="btn ghost" onclick="closeModal()">Batal</button><button class="btn primary">Simpan</button></div></form></div></div>
+
+<script>
+const KEY='kas_sos_v1';
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||{members:[],transactions:[],expenses:[]};
+const fmt=n=>new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(n||0);
+const today=()=>new Date().toISOString().slice(0,10);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+function save(){localStorage.setItem(KEY,JSON.stringify(db));render()}
+function dateID(d){if(!d)return '-';let x=new Date(d+'T00:00:00');return x.toLocaleDateString('id-ID',{day:'2-digit',month:'2-digit',year:'2-digit'})}
+function daysBetween(a,b){return Math.floor((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000)}
+function status(m){
+ if(m.exempt)return ['leader','Leader'];
+ let due=Math.max(0,daysBetween(m.nextPay,today()));
+ if(due>0)return ['arrears','Tunggakan '+due+'K'];
+ return ['paid','Lunas'];
+}
+function openModal(id){document.getElementById(id).classList.add('show')}
+function closeModal(){document.querySelectorAll('.modal').forEach(x=>x.classList.remove('show'))}
+function openMember(id=null){
+ document.getElementById('memberTitle').textContent=id?'Edit Anggota':'Tambah Anggota';
+ let m=id?db.members.find(x=>x.id===id):{name:'',role:'Member',nextPay:today(),balance:0,admDue:10000,exempt:false};
+ document.getElementById('memberId').value=id||'';mName.value=m.name;mRole.value=m.role;mNext.value=m.nextPay;mBalance.value=m.balance;mAdm.value=m.admDue;mExempt.checked=!!m.exempt;openModal('memberModal')
+}
+memberForm.onsubmit=e=>{e.preventDefault();let id=memberId.value,m=db.members.find(x=>x.id===id);if(m){Object.assign(m,{name:mName.value.trim(),role:mRole.value,nextPay:mNext.value,balance:+mBalance.value,admDue:+mAdm.value,exempt:mExempt.checked})}else db.members.push({id:crypto.randomUUID(),name:mName.value.trim(),role:mRole.value,nextPay:mNext.value,balance:+mBalance.value,admDue:+mAdm.value,exempt:mExempt.checked});save();closeModal()}
+function delMember(id){if(confirm('Hapus anggota ini?')){db.members=db.members.filter(x=>x.id!==id);save()}}
+function openTransaction(){txMember.innerHTML=db.members.map(m=>`<option value="${m.id}">${esc(m.name)}</option>`).join('');txDate.value=today();txKas.value=0;txAdm.value=0;txNote.value='';openModal('txModal')}
+txForm.onsubmit=e=>{e.preventDefault();let m=db.members.find(x=>x.id===txMember.value),kas=+txKas.value,adm=+txAdm.value;if(!m)return;
+ m.balance=(m.balance||0)+kas;
+ m.admDue=Math.max(0,(m.admDue||0)-adm);
+ if(!m.exempt && kas>0){m.nextPay=new Date(new Date(m.nextPay+'T00:00:00').getTime()+kas*86400000).toISOString().slice(0,10)}
+ db.transactions.unshift({id:crypto.randomUUID(),date:txDate.value,memberId:m.id,kas,adm,note:txNote.value});
+ save();closeModal()}
+function openExpense(){exDate.value=today();exAmount.value='';exNote.value='';openModal('expenseModal')}
+expenseForm.onsubmit=e=>{e.preventDefault();db.expenses.unshift({id:crypto.randomUUID(),date:exDate.value,amount:+exAmount.value,note:exNote.value});save();closeModal()}
+function delExpense(id){if(confirm('Hapus pengeluaran?')){db.expenses=db.expenses.filter(x=>x.id!==id);save()}}
+function render(){
+ let required=db.members.filter(m=>!m.exempt), arrears=required.reduce((s,m)=>s+Math.max(0,daysBetween(m.nextPay,today())),0)*1000;
+ let adm=required.reduce((s,m)=>s+(m.admDue||0),0);
+ let income=db.transactions.reduce((s,t)=>s+(t.kas||0)*1000+(t.adm||0),0),out=db.expenses.reduce((s,x)=>s+x.amount,0);
+ statSaldo.textContent=fmt(income-out);statMember.textContent=required.length;statArrears.textContent=fmt(arrears);statAdm.textContent=fmt(adm);
+ dashTable.innerHTML=db.members.length?db.members.map(m=>{let [c,s]=status(m);return `<tr><td>${esc(m.name)}</td><td><span class="badge ${c}">${s}</span></td><td>${m.exempt?'—':(m.balance||0)+'K'}</td><td>${m.exempt?'—':dateID(m.nextPay)}</td><td>${fmt(m.admDue||0)}</td></tr>`}).join(''):`<tr><td colspan="5" class="empty">Belum ada anggota.</td></tr>`;
+ memberTable.innerHTML=db.members.length?db.members.map(m=>`<tr><td><b>${esc(m.name)}</b></td><td>${esc(m.role)} ${m.exempt?'<span class="badge leader">Leader</span>':''}</td><td>${m.exempt?'—':dateID(m.nextPay)}</td><td>${m.exempt?'—':(m.balance||0)+'K'}</td><td>${fmt(m.admDue||0)}</td><td><button class="btn ghost" onclick="openMember('${m.id}')">Edit</button> <button class="btn danger" onclick="delMember('${m.id}')">Hapus</button></td></tr>`).join(''):`<tr><td colspan="6" class="empty">Belum ada anggota.</td></tr>`;
+ txTable.innerHTML=db.transactions.length?db.transactions.map(t=>{let m=db.members.find(x=>x.id===t.memberId);return `<tr><td>${dateID(t.date)}</td><td>${esc(m?.name||'Anggota dihapus')}</td><td>${t.kas||0}K</td><td>${fmt(t.adm||0)}</td><td>${fmt((t.kas||0)*1000+(t.adm||0))}</td><td>${esc(t.note||'-')}</td></tr>`}).join(''):`<tr><td colspan="6" class="empty">Belum ada transaksi.</td></tr>`;
+ expenseTable.innerHTML=db.expenses.length?db.expenses.map(x=>`<tr><td>${dateID(x.date)}</td><td>${esc(x.note)}</td><td>${fmt(x.amount)}</td><td><button class="btn danger" onclick="delExpense('${x.id}')">Hapus</button></td></tr>`).join(''):`<tr><td colspan="4" class="empty">Belum ada pengeluaran.</td></tr>`;
+ report.innerHTML=`<p><b>Total anggota:</b> ${db.members.length}</p><p><b>Wajib kas:</b> ${required.length}</p><p><b>Leader/tidak wajib:</b> ${db.members.length-required.length}</p><p><b>Total pemasukan:</b> ${fmt(income)}</p><p><b>Total pengeluaran:</b> ${fmt(out)}</p><p><b>Saldo:</b> ${fmt(income-out)}</p><p><b>Estimasi tunggakan saat ini:</b> ${fmt(arrears)}</p><p><b>ADM belum lunas:</b> ${fmt(adm)}</p>`;
+}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));b.classList.add('active');document.getElementById(b.dataset.page).classList.remove('hidden')});
+function exportData(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='kas-sos-backup-'+today()+'.json';a.click()}
+render();
+</script>
+</body>
+</html>
