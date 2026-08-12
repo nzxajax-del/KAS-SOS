@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAS SOS — Realtime</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#b7ff00;--ink:#101a14;--card:#fff;--blue:#1976ff;--red:#e53935;--muted:#667085}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f3f6fb;color:var(--ink)}
+header{background:var(--bg);padding:18px 16px;position:sticky;top:0;z-index:5;border-bottom:1px solid #9bd600}
+header h1{margin:0;font-size:25px}header small{font-weight:700;color:#1d6b00}
+nav{display:flex;gap:8px;overflow:auto;padding:10px 12px;background:#fff;position:sticky;top:75px;z-index:4}
+nav button{border:0;background:#f0f2f5;padding:11px 16px;border-radius:13px;font-weight:800;white-space:nowrap}
+nav button.active{background:var(--blue);color:white}.wrap{max-width:1050px;margin:auto;padding:14px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--card);border-radius:18px;padding:17px;box-shadow:0 2px 10px #00000010}.metric b{display:block;font-size:25px;margin-top:5px}
+section{display:none}.show{display:block}.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:10px 0;flex-wrap:wrap}
+input,select,textarea{width:100%;padding:12px;border:1px solid #d0d5dd;border-radius:10px;font:inherit}label{font-weight:700;display:block;margin:9px 0 5px}
+button.primary{background:var(--blue);color:white;border:0;border-radius:11px;padding:12px 16px;font-weight:800}button.danger{background:#ffe8e8;color:#b42318;border:0;border-radius:11px;padding:12px 16px;font-weight:800}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden}th,td{padding:10px;border-bottom:1px solid #eee;text-align:left;font-size:14px}.ok{color:#075fd6;font-weight:800}.bad{color:#d92d20;font-weight:800}
+.login{max-width:430px;margin:45px auto}.hidden{display:none}.pill{padding:4px 8px;border-radius:99px;background:#eef2ff}.modal{position:fixed;inset:0;background:#0007;display:none;align-items:center;justify-content:center;padding:15px;z-index:20}.modal>div{background:white;border-radius:18px;padding:20px;max-width:500px;width:100%;max-height:90vh;overflow:auto}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}table{font-size:12px}th,td{padding:8px}}
+</style></head>
+<body>
+<header><h1>💰 KAS SOS</h1><small id="rt">🟢 Realtime aktif</small></header>
+<nav id="nav">
+<button class="active" data-tab="dash">Dashboard</button><button data-tab="members">Anggota</button>
+<button data-tab="requests">Pengajuan</button><button data-tab="settings">Pengaturan</button><button id="logout" class="hidden">Keluar</button>
+</nav>
+<main class="wrap">
+<section id="dash" class="show"><div class="grid">
+<div class="card metric">Saldo Kas<b id="saldo">Rp 0</b></div><div class="card metric">Anggota Wajib Kas<b id="wajib">0</b></div>
+<div class="card metric">Total Tunggakan<b id="tunggakan">Rp 0</b></div><div class="card metric">ADM Belum Lunas<b id="adm">Rp 0</b></div>
+</div><div class="card" style="margin-top:14px"><h2>Rekap</h2><div id="summary"></div></div></section>
+
+<section id="members"><div class="toolbar"><h2>Anggota</h2><button class="primary" id="addBtn">+ Anggota</button></div><div class="card"><div style="overflow:auto"><table><thead><tr><th>Nama</th><th>Saldo</th><th>NextPay</th><th>Tunggakan</th><th>ADM</th><th></th></tr></thead><tbody id="memberRows"></tbody></table></div></div></section>
+
+<section id="requests"><div class="toolbar"><h2>Pengajuan Pembayaran</h2></div><div id="memberSubmit" class="card hidden">
+<h3>Ajukan Pembayaran</h3><label>Nama karakter</label><input id="mname" placeholder="Nama karakter">
+<label>Jenis</label><select id="ptype"><option>KAS</option><option>ADM</option></select>
+<label>Jumlah (Rp)</label><input id="pamount" type="number" min="1">
+<label>Screenshot bukti</label><input id="proof" type="file" accept="image/*">
+<label>Catatan</label><textarea id="pnote"></textarea><button class="primary" onclick="submitPayment()">Kirim Pengajuan</button>
+</div>
+<div class="card"><h3>Daftar Pengajuan</h3><div style="overflow:auto"><table><thead><tr><th>Waktu</th><th>Nama</th><th>Jenis</th><th>Jumlah</th><th>Status</th><th>Bukti</th><th>Aksi</th></tr></thead><tbody id="reqRows"></tbody></table></div></div></section>
+
+<section id="settings"><div class="card"><h2>Pengaturan Admin</h2><p>Login admin diperlukan untuk mengubah batas ADM/KAS dan data anggota.</p>
+<div id="adminLogin"><label>Password Admin</label><input id="adminpass" type="password"><button class="primary" onclick="adminLogin()">Masuk Admin</button></div>
+<div id="adminPanel" class="hidden"><label>Tanggal Rekap</label><input id="rdate" type="date"><label>Iuran KAS / hari</label><input id="kasdaily" type="number"><label>ADM standar anggota baru</label><input id="admdefault" type="number"><button class="primary" onclick="saveSettings()">Simpan Pengaturan</button><p id="adminmsg"></p></div>
+</div></section>
+</main>
+<div id="modal" class="modal"><div id="modalBody"></div></div>
+<script>
+const SUPABASE_URL="https://jjnmaylxjzgixnrqopro.supabase.co";
+const SUPABASE_KEY="sb_publishable_lkURZKFsysGqqerO53RP_Q_h8COOyLr";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let adminPass=sessionStorage.getItem("kas_admin")||"", isAdmin=!!adminPass, members=[], settings={};
+
+const money=n=>"Rp "+Number(n||0).toLocaleString("id-ID");
+function tab(id){document.querySelectorAll("section").forEach(x=>x.classList.remove("show"));document.getElementById(id).classList.add("show");document.querySelectorAll("nav button[data-tab]").forEach(x=>x.classList.toggle("active",x.dataset.tab===id));}
+document.querySelectorAll("nav button[data-tab]").forEach(b=>b.onclick=()=>{tab(b.dataset.tab); if(b.dataset.tab==="requests")loadRequests()});
+document.getElementById("logout").onclick=()=>{sessionStorage.removeItem("kas_admin");adminPass="";isAdmin=false;renderAuth();tab("dash")};
+
+function renderAuth(){document.getElementById("logout").classList.toggle("hidden",!isAdmin);document.getElementById("memberSubmit").classList.toggle("hidden",isAdmin);document.getElementById("adminLogin").classList.toggle("hidden",isAdmin);document.getElementById("adminPanel").classList.toggle("hidden",!isAdmin)}
+async function load(){
+ let a=await sb.from("app_settings").select("*").eq("id",1).single(); if(a.data)settings=a.data;
+ let m=await sb.from("members").select("*").order("name"); members=m.data||[];
+ render();
+}
+function render(){
+ let wajib=members.filter(m=>!m.exempt_kas).length, tung=members.reduce((s,m)=>s+Math.max(0,m.arrears),0), adm=members.reduce((s,m)=>s+(m.adm_due||0),0), saldo=members.reduce((s,m)=>s+(m.balance||0),0);
+ document.getElementById("saldo").textContent=money(saldo);document.getElementById("wajib").textContent=wajib;document.getElementById("tunggakan").textContent=money(tung);document.getElementById("adm").textContent=money(adm);
+ document.getElementById("summary").innerHTML=`Tanggal rekap: <b>${settings.report_date||"-"}</b><br>Iuran harian: <b>${money(settings.kas_daily)}</b><br>ADM standar: <b>${money(settings.adm_default)}</b>`;
+ document.getElementById("memberRows").innerHTML=members.map(m=>`<tr><td>${m.name}</td><td class="${m.balance<0?'bad':'ok'}">${money(m.balance)}</td><td>${m.next_pay||"-"}</td><td class="${m.arrears>0?'bad':'ok'}">${money(m.arrears)}</td><td>${money(m.adm_due)}</td><td>${isAdmin?`<button onclick="editMember('${m.id}')">Edit</button>`:""}</td></tr>`).join("");
+}
+async function adminLogin(){let p=document.getElementById("adminpass").value.trim();let {data,error}=await sb.rpc("admin_check",{p_password:p});if(error||!data)return alert("Password admin salah");adminPass=p;sessionStorage.setItem("kas_admin",p);isAdmin=true;renderAuth();alert("Login admin berhasil");loadRequests()}
+async function saveSettings(){let {error}=await sb.rpc("admin_set_settings",{p_password:adminPass,p_report_date:document.getElementById("rdate").value,p_kas_daily:+document.getElementById("kasdaily").value,p_adm_default:+document.getElementById("admdefault").value});if(error)return alert(error.message);alert("Pengaturan tersimpan");load()}
+async function loadRequests(){
+ let q=await sb.from("payment_requests").select("*").order("created_at",{ascending:false});let rows=q.data||[];
+ document.getElementById("reqRows").innerHTML=rows.map(r=>`<tr><td>${new Date(r.created_at).toLocaleString("id-ID")}</td><td>${r.member_name}</td><td>${r.payment_type}</td><td>${money(r.amount)}</td><td>${r.status}</td><td>${r.screenshot_url?`<a target="_blank" href="${r.screenshot_url}">Lihat</a>`:"-"}</td><td>${isAdmin&&r.status==="PENDING"?`<button class="primary" onclick="review('${r.id}','APPROVED')">Terima</button> <button class="danger" onclick="review('${r.id}','REJECTED')">Tolak</button>`:"-"}</td></tr>`).join("");
+}
+async function review(id,action){if(!confirm(action+" pengajuan ini?"))return;let {error}=await sb.rpc("admin_review_payment",{p_password:adminPass,p_request_id:id,p_action:action});if(error)return alert(error.message);load();loadRequests()}
+async function submitPayment(){
+ let name=document.getElementById("mname").value.trim(), type=document.getElementById("ptype").value, amount=+document.getElementById("pamount").value, file=document.getElementById("proof").files[0], note=document.getElementById("pnote").value;
+ if(!name||!amount)return alert("Nama dan jumlah wajib diisi");
+ let url=null;if(file){let path=`${Date.now()}-${Math.random().toString(36).slice(2)}-${file.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;let up=await sb.storage.from("payment-proof").upload(path,file,{upsert:false});if(up.error)return alert(up.error.message);url=sb.storage.from("payment-proof").getPublicUrl(path).data.publicUrl}
+ let {error}=await sb.rpc("submit_payment",{p_member_name:name,p_type:type,p_amount:amount,p_screenshot_url:url,p_note:note});if(error)return alert(error.message);alert("Pengajuan terkirim. Tunggu admin memeriksa.");document.getElementById("pamount").value="";document.getElementById("proof").value="";loadRequests()
+}
+async function editMember(id){
+ let m=members.find(x=>x.id===id);if(!m)return;
+ document.getElementById("modal").style.display="flex";document.getElementById("modalBody").innerHTML=`<h2>Edit Anggota</h2>
+ <label>Nama</label><input id="e_name" value="${m.name}"><label>Saldo</label><input id="e_bal" type="number" value="${m.balance}">
+ <label>NextPay</label><input id="e_next" type="date" value="${m.next_pay||""}"><label>Tunggakan</label><input id="e_arr" type="number" value="${m.arrears}">
+ <label>Belum bayar dari</label><input id="e_from" type="date" value="${m.unpaid_from||""}"><label>ADM belum lunas</label><input id="e_adm" type="number" value="${m.adm_due}">
+ <label><input id="e_ex" type="checkbox" ${m.exempt_kas?"checked":""}> Bebas KAS</label><button class="primary" onclick="saveMember('${id}')">Simpan</button> <button onclick="closeModal()">Batal</button>`;
+}
+function closeModal(){document.getElementById("modal").style.display="none"}
+async function saveMember(id){let {error}=await sb.rpc("admin_update_member",{p_password:adminPass,p_id:id,p_name:document.getElementById("e_name").value,p_balance:+document.getElementById("e_bal").value,p_next_pay:document.getElementById("e_next").value||null,p_arrears:+document.getElementById("e_arr").value,p_unpaid_from:document.getElementById("e_from").value||null,p_adm_due:+document.getElementById("e_adm").value,p_exempt:document.getElementById("e_ex").checked});if(error)return alert(error.message);closeModal();load()}
+document.getElementById("addBtn").onclick=()=>{if(!isAdmin)return alert("Login admin dulu");document.getElementById("modal").style.display="flex";document.getElementById("modalBody").innerHTML=`<h2>Tambah Anggota</h2><label>Nama</label><input id="a_name"><label>Saldo awal</label><input id="a_bal" type="number" value="0"><label>NextPay</label><input id="a_next" type="date"><label>ADM belum lunas</label><input id="a_adm" type="number" value="${settings.adm_default||10000}"><button class="primary" onclick="addMember()">Tambah</button> <button onclick="closeModal()">Batal</button>`}
+async function addMember(){let {error}=await sb.rpc("admin_add_member",{p_password:adminPass,p_name:document.getElementById("a_name").value,p_balance:+document.getElementById("a_bal").value,p_next_pay:document.getElementById("a_next").value||null,p_adm_due:+document.getElementById("a_adm").value,p_exempt:false});if(error)return alert(error.message);closeModal();load()}
+renderAuth();load();loadRequests();
+sb.channel("kas-live").on("postgres_changes",{event:"*",schema:"public",table:"members"},()=>load()).on("postgres_changes",{event:"*",schema:"public",table:"payment_requests"},()=>loadRequests()).on("postgres_changes",{event:"*",schema:"public",table:"app_settings"},()=>load()).subscribe();
+</script></body></html>
