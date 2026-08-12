@@ -3,127 +3,574 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KAS SOS — Realtime</title>
+<title>Street Of Style KAS</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
-  --bg:#b7ff00;
-  --ink:#101a14;
-  --card:#fff;
+  --bg:#101010;
+  --panel:#171717;
+  --panel2:#202020;
+  --lime:#b7ff00;
+  --yellow:#ffe600;
+  --white:#f7f7f7;
+  --muted:#a5a5a5;
   --blue:#1976ff;
-  --red:#e53935;
-  --green:#16a34a;
-  --muted:#667085;
+  --red:#ff3b30;
+  --green:#24d26d;
+  --orange:#ff8a00;
+  --line:#333;
+  --shadow:0 8px 25px rgba(0,0,0,.35);
 }
 
 *{
   box-sizing:border-box;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
-  background:#f3f6fb;
-  color:var(--ink);
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%,#313131 0 2px,transparent 3px),
+    radial-gradient(circle at 80% 30%,#292929 0 1px,transparent 2px),
+    linear-gradient(135deg,#0d0d0d,#181818 50%,#0c0c0c);
+  background-size:38px 38px,27px 27px,auto;
+  color:var(--white);
+  min-height:100vh;
 }
 
-header{
-  background:var(--bg);
-  padding:18px 16px;
-  position:sticky;
-  top:0;
-  z-index:5;
-  border-bottom:1px solid #9bd600;
+
+/* =====================================================
+   GRAFFITI DECORATION
+===================================================== */
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.08;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0 18px,
+      #fff 19px 20px
+    );
+  z-index:-1;
 }
 
-header h1{
-  margin:0;
-  font-size:25px;
-}
 
-header small{
-  font-weight:700;
-  color:#1d6b00;
-}
+/* =====================================================
+   APP LAYOUT
+===================================================== */
 
-nav{
+.app{
+  min-height:100vh;
   display:flex;
-  gap:8px;
-  overflow:auto;
-  padding:10px 12px;
-  background:#fff;
-  position:sticky;
-  top:75px;
-  z-index:4;
 }
 
-nav button{
-  border:0;
-  background:#f0f2f5;
-  padding:11px 16px;
-  border-radius:13px;
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar{
+  width:270px;
+  background:
+    linear-gradient(
+      160deg,
+      #151515,
+      #090909
+    );
+  border-right:2px solid #2d2d2d;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  z-index:50;
+  overflow-y:auto;
+  padding:18px 14px;
+  box-shadow:10px 0 35px rgba(0,0,0,.35);
+  transition:.25s ease;
+}
+
+.brand{
+  position:relative;
+  padding:14px;
+  margin-bottom:18px;
+  border:2px solid var(--lime);
+  background:#111;
+  box-shadow:
+    5px 5px 0 var(--lime),
+    -3px -3px 0 #ff2d55;
+  transform:rotate(-1deg);
+}
+
+.brand h1{
+  margin:0;
+  font-size:27px;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-1px;
+  text-transform:uppercase;
+  color:var(--lime);
+  text-shadow:
+    2px 2px 0 #ff2d55,
+    4px 4px 0 #111;
+}
+
+.brand small{
+  display:block;
+  margin-top:9px;
   font-weight:800;
-  white-space:nowrap;
+  color:#fff;
+  letter-spacing:1px;
+}
+
+.sidebar-title{
+  color:#777;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:2px;
+  margin:18px 7px 8px;
+  text-transform:uppercase;
+}
+
+
+/* =====================================================
+   SIDEBAR BUTTON
+===================================================== */
+
+.side-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border:0;
+  background:transparent;
+  color:#ddd;
+  padding:13px 12px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:900;
+  text-align:left;
+  cursor:pointer;
+  margin-bottom:5px;
+  transition:.18s;
+}
+
+.side-btn:hover{
+  background:#252525;
+  color:var(--lime);
+  transform:translateX(3px);
+}
+
+.side-btn.active{
+  background:var(--lime);
+  color:#111;
+  box-shadow:4px 4px 0 #ff2d55;
+}
+
+.side-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.arrow{
+  font-size:16px;
+  transition:.2s;
+}
+
+.side-btn.active .arrow{
+  transform:rotate(90deg);
+}
+
+.submenu{
+  display:none;
+  padding-left:10px;
+  margin-bottom:6px;
+}
+
+.submenu.open{
+  display:block;
+}
+
+.sub-btn{
+  width:100%;
+  border:0;
+  background:#1d1d1d;
+  color:#aaa;
+  padding:10px 12px;
+  margin:3px 0;
+  border-radius:9px;
+  text-align:left;
+  font-weight:700;
   cursor:pointer;
 }
 
-nav button.active{
-  background:var(--blue);
-  color:white;
+.sub-btn:hover{
+  color:var(--lime);
+  background:#292929;
 }
 
-.wrap{
-  max-width:1100px;
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main{
+  margin-left:270px;
+  width:calc(100% - 270px);
+  min-height:100vh;
+}
+
+.topbar{
+  min-height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:15px 22px;
+  background:rgba(12,12,12,.94);
+  border-bottom:2px solid #292929;
+  position:sticky;
+  top:0;
+  z-index:30;
+  backdrop-filter:blur(10px);
+}
+
+.page-title{
+  font-size:24px;
+  font-weight:1000;
+  text-transform:uppercase;
+  letter-spacing:-1px;
+}
+
+.page-title span{
+  color:var(--lime);
+  text-shadow:2px 2px 0 #ff2d55;
+}
+
+.realtime{
+  font-size:12px;
+  font-weight:900;
+  color:var(--green);
+}
+
+.content{
+  max-width:1250px;
   margin:auto;
-  padding:14px;
+  padding:20px;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
+
+/* =====================================================
+   MOBILE SIDEBAR
+===================================================== */
+
+.mobile-menu{
+  display:none;
+  border:0;
+  background:var(--lime);
+  color:#111;
+  width:43px;
+  height:43px;
+  border-radius:10px;
+  font-size:22px;
+  font-weight:900;
+  cursor:pointer;
 }
 
-.card{
-  background:var(--card);
-  border-radius:18px;
-  padding:17px;
-  box-shadow:0 2px 10px #00000010;
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0009;
+  z-index:40;
 }
 
-.metric b{
+.overlay.show{
   display:block;
-  font-size:25px;
-  margin-top:5px;
 }
+
+
+/* =====================================================
+   SECTION
+===================================================== */
 
 section{
   display:none;
 }
 
-.show{
+section.show{
   display:block;
 }
 
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.card{
+  background:
+    linear-gradient(145deg,#202020,#151515);
+  border:1px solid #333;
+  border-radius:18px;
+  padding:18px;
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+
+.card:after{
+  content:"";
+  position:absolute;
+  right:-30px;
+  top:-30px;
+  width:80px;
+  height:80px;
+  border:8px solid #ffffff08;
+  transform:rotate(25deg);
+  pointer-events:none;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  margin-top:14px;
+}
+
+.metric{
+  min-height:125px;
+}
+
+.metric-label{
+  color:#aaa;
+  font-weight:800;
+  font-size:13px;
+  text-transform:uppercase;
+}
+
+.metric b{
+  display:block;
+  margin-top:10px;
+  font-size:27px;
+  color:#fff;
+}
+
+.metric.lime{
+  border-left:5px solid var(--lime);
+}
+
+.metric.green{
+  border-left:5px solid var(--green);
+}
+
+.metric.red{
+  border-left:5px solid var(--red);
+}
+
+.metric.blue{
+  border-left:5px solid var(--blue);
+}
+
+
+/* =====================================================
+   GRAFFITI HEADINGS
+===================================================== */
+
+h2{
+  margin-top:0;
+  font-size:25px;
+  font-weight:1000;
+  text-transform:uppercase;
+  letter-spacing:-1px;
+}
+
+h3{
+  margin-top:0;
+}
+
+.graffiti-title{
+  display:inline-block;
+  color:var(--lime);
+  text-shadow:
+    2px 2px 0 #ff2d55,
+    4px 4px 0 #000;
+  transform:rotate(-1deg);
+}
+
+
+/* =====================================================
+   TOOLBAR
+===================================================== */
+
 .toolbar{
   display:flex;
-  justify-content:space-between;
-  gap:10px;
   align-items:center;
-  margin:10px 0;
+  justify-content:space-between;
+  gap:12px;
   flex-wrap:wrap;
+  margin-bottom:14px;
+}
+
+
+/* =====================================================
+   BUTTON
+===================================================== */
+
+button{
+  font:inherit;
+  cursor:pointer;
+}
+
+.primary,
+.success,
+.danger,
+.secondary{
+  border:0;
+  border-radius:11px;
+  padding:11px 15px;
+  font-weight:900;
+  transition:.15s;
+}
+
+.primary{
+  background:var(--blue);
+  color:white;
+}
+
+.success{
+  background:var(--green);
+  color:#06140b;
+}
+
+.danger{
+  background:#39191a;
+  color:#ff7770;
+}
+
+.secondary{
+  background:#292929;
+  color:#ddd;
+}
+
+.primary:hover,
+.success:hover,
+.danger:hover,
+.secondary:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.1);
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table-wrap{
+  overflow:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:700px;
+}
+
+th,
+td{
+  padding:12px 10px;
+  border-bottom:1px solid #303030;
+  text-align:left;
+  font-size:13px;
+}
+
+th{
+  color:var(--lime);
+  background:#111;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+td{
+  color:#ddd;
+}
+
+tr:hover td{
+  background:#ffffff04;
+}
+
+.ok{
+  color:#4ba7ff;
+  font-weight:900;
+}
+
+.bad{
+  color:#ff625b;
+  font-weight:900;
+}
+
+.green-text{
+  color:var(--green);
+  font-weight:900;
+}
+
+.red-text{
+  color:#ff625b;
+  font-weight:900;
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+label{
+  display:block;
+  margin:10px 0 5px;
+  font-size:13px;
+  font-weight:900;
+  color:#ddd;
 }
 
 input,
 select,
 textarea{
   width:100%;
-  padding:12px;
-  border:1px solid #d0d5dd;
+  border:1px solid #3b3b3b;
+  background:#0f0f0f;
+  color:#fff;
   border-radius:10px;
+  padding:12px;
+  outline:none;
   font:inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:var(--lime);
+  box-shadow:0 0 0 2px #b7ff0022;
 }
 
 textarea{
@@ -131,212 +578,232 @@ textarea{
   resize:vertical;
 }
 
-label{
-  font-weight:700;
-  display:block;
-  margin:9px 0 5px;
+input[type="file"]{
+  padding:9px;
 }
 
-button{
-  cursor:pointer;
-}
 
-button.primary{
-  background:var(--blue);
-  color:white;
-  border:0;
+/* =====================================================
+   NOTICE
+===================================================== */
+
+.notice{
+  padding:12px;
+  background:#202a10;
+  border:1px solid #415c17;
   border-radius:11px;
-  padding:12px 16px;
-  font-weight:800;
+  color:#dfff9c;
+  margin-bottom:12px;
 }
 
-button.success{
-  background:var(--green);
-  color:white;
-  border:0;
-  border-radius:11px;
-  padding:12px 16px;
-  font-weight:800;
+.empty{
+  text-align:center;
+  padding:28px;
+  color:#777;
 }
 
-button.danger{
-  background:#ffe8e8;
-  color:#b42318;
-  border:0;
-  border-radius:11px;
-  padding:10px 13px;
-  font-weight:800;
+
+/* =====================================================
+   PAYMENT SEARCH
+===================================================== */
+
+.member-search-results{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-top:7px;
 }
 
-button.secondary{
-  background:#eef2f6;
-  color:#222;
-  border:0;
-  border-radius:11px;
-  padding:10px 13px;
-  font-weight:800;
-}
-
-table{
+.member-result{
   width:100%;
-  border-collapse:collapse;
-  background:#fff;
-  border-radius:14px;
-  overflow:hidden;
-}
-
-th,
-td{
-  padding:10px;
-  border-bottom:1px solid #eee;
+  border:1px solid #383838;
+  background:#191919;
+  color:#fff;
+  border-radius:11px;
+  padding:12px;
   text-align:left;
-  font-size:14px;
+  font-weight:900;
 }
 
-th{
-  background:#f8fafc;
+.member-result:hover{
+  background:#272727;
+  border-color:var(--lime);
+  color:var(--lime);
 }
 
-.ok{
-  color:#075fd6;
-  font-weight:800;
+.selected-member{
+  margin:8px 0;
+  padding:11px;
+  border-radius:11px;
+  background:#102818;
+  border:1px solid #1f743d;
+  color:#63e994;
+  font-weight:900;
 }
 
-.bad{
-  color:#d92d20;
-  font-weight:800;
+.search-count{
+  color:#888;
+  font-size:12px;
+  margin-top:6px;
 }
 
-.green{
-  color:#16803c;
-  font-weight:800;
-}
 
-.red{
-  color:#d92d20;
-  font-weight:800;
-}
+/* =====================================================
+   PILL
+===================================================== */
 
 .pill{
   display:inline-block;
-  padding:4px 8px;
+  padding:5px 9px;
   border-radius:99px;
-  background:#eef2ff;
-  font-size:12px;
-  font-weight:700;
+  background:#292929;
+  border:1px solid #444;
+  font-size:11px;
+  font-weight:900;
 }
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:#000b;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  z-index:100;
+}
+
+.modal>div{
+  width:100%;
+  max-width:520px;
+  max-height:90vh;
+  overflow:auto;
+  background:#171717;
+  border:2px solid var(--lime);
+  border-radius:18px;
+  padding:20px;
+  box-shadow:
+    7px 7px 0 #ff2d55,
+    0 20px 50px #000;
+}
+
+
+/* =====================================================
+   SHARE BOX
+===================================================== */
+
+.share-box{
+  background:#0e0e0e;
+  border:1px dashed #555;
+  border-radius:12px;
+  padding:14px;
+  white-space:pre-wrap;
+  font-family:monospace;
+  font-size:12px;
+  line-height:1.55;
+  max-height:500px;
+  overflow:auto;
+}
+
+
+/* =====================================================
+   UTIL
+===================================================== */
 
 .hidden{
   display:none!important;
 }
 
-.modal{
-  position:fixed;
-  inset:0;
-  background:#0007;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:15px;
-  z-index:20;
-}
-
-.modal>div{
-  background:white;
-  border-radius:18px;
-  padding:20px;
-  max-width:500px;
-  width:100%;
-  max-height:90vh;
-  overflow:auto;
-}
-
-.notice{
-  padding:12px;
-  border-radius:12px;
-  background:#f0f7ff;
-  margin-bottom:12px;
-}
-
-.stat-income{
-  border-left:5px solid #16a34a;
-}
-
-.stat-expense{
-  border-left:5px solid #e53935;
-}
-
-.empty{
-  text-align:center;
-  padding:25px;
-  color:#667085;
-}
-
-.member-search-results{
-  margin-top:7px;
+.flex{
   display:flex;
-  flex-direction:column;
-  gap:6px;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
 }
 
-.member-result{
-  width:100%;
-  text-align:left;
-  background:#f8fafc;
-  border:1px solid #e4e7ec;
-  border-radius:12px;
-  padding:12px;
-  font-weight:800;
+.mt{
+  margin-top:14px;
 }
 
-.member-result:hover{
-  background:#eef4ff;
-}
 
-.selected-member{
-  margin-top:8px;
-  padding:11px 12px;
-  border-radius:12px;
-  background:#ecfdf3;
-  color:#067647;
-  font-weight:800;
-}
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 
-.search-count{
-  font-size:13px;
-  color:var(--muted);
-  margin-top:6px;
-}
+@media(max-width:900px){
 
-@media(max-width:800px){
+  .sidebar{
+    transform:translateX(-100%);
+  }
+
+  .sidebar.open{
+    transform:translateX(0);
+  }
+
+  .main{
+    margin-left:0;
+    width:100%;
+  }
+
+  .mobile-menu{
+    display:block;
+  }
 
   .grid{
     grid-template-columns:repeat(2,1fr);
   }
 
-  table{
-    font-size:12px;
+}
+
+@media(max-width:600px){
+
+  .topbar{
+    padding:12px 14px;
   }
 
-  th,
-  td{
-    padding:8px;
+  .page-title{
+    font-size:18px;
+  }
+
+  .content{
+    padding:12px;
+  }
+
+  .grid,
+  .grid2{
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+  }
+
+  .metric{
+    min-height:105px;
+    padding:13px;
+  }
+
+  .metric b{
+    font-size:19px;
+  }
+
+  .card{
+    padding:14px;
   }
 
 }
 
-@media(max-width:500px){
+@media(max-width:430px){
 
-  .grid{
-    grid-template-columns:1fr 1fr;
+  .grid,
+  .grid2{
+    grid-template-columns:1fr;
   }
 
-  .metric b{
-    font-size:20px;
-  }
-
-  .toolbar h2{
-    width:100%;
+  .realtime{
+    display:none;
   }
 
 }
@@ -345,45 +812,186 @@ th{
 
 <body>
 
-<header>
-  <h1>💰 KAS SOS</h1>
-  <small id="rt">🟢 Realtime aktif</small>
-</header>
+<div class="app">
 
-<nav id="nav">
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
-  <button class="active" data-tab="dash">
-    Dashboard
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+    <h1>STREET<br>OF STYLE</h1>
+    <small>💰 KAS MANAGEMENT</small>
+  </div>
+
+  <div class="sidebar-title">
+    MENU UTAMA
+  </div>
+
+  <button
+    class="side-btn active"
+    data-tab="dash">
+
+    <span class="side-left">
+      <span>🏠</span>
+      <span>Dashboard</span>
+    </span>
+
+    <span class="arrow">›</span>
+
   </button>
 
-  <button data-tab="members">
-    Anggota
+
+  <button
+    class="side-btn"
+    data-tab="members">
+
+    <span class="side-left">
+      <span>👥</span>
+      <span>Anggota</span>
+    </span>
+
+    <span class="arrow">›</span>
+
   </button>
 
-  <button data-tab="income">
-    📥 Pemasukan
+
+  <button
+    class="side-btn"
+    data-tab="income">
+
+    <span class="side-left">
+      <span>📥</span>
+      <span>Pemasukan</span>
+    </span>
+
+    <span class="arrow">›</span>
+
   </button>
 
-  <button data-tab="expense">
-    📤 Pengeluaran
+
+  <button
+    class="side-btn"
+    data-tab="expense">
+
+    <span class="side-left">
+      <span>📤</span>
+      <span>Pengeluaran</span>
+    </span>
+
+    <span class="arrow">›</span>
+
   </button>
 
-  <!-- NAMA MENU SUDAH DIUBAH -->
-  <button data-tab="requests">
-    💳 Pembayaran
+
+  <button
+    class="side-btn"
+    data-tab="requests">
+
+    <span class="side-left">
+      <span>💳</span>
+      <span>Pembayaran</span>
+    </span>
+
+    <span class="arrow">›</span>
+
   </button>
 
-  <button data-tab="settings">
-    Pengaturan
+
+  <!-- ACCORDION PENGATURAN -->
+
+  <button
+    class="side-btn"
+    id="settingAccordion">
+
+    <span class="side-left">
+      <span>⚙️</span>
+      <span>Pengaturan</span>
+    </span>
+
+    <span
+      class="arrow"
+      id="settingArrow">
+      ›
+    </span>
+
   </button>
 
-  <button id="logout" class="hidden">
-    Keluar
+  <div
+    class="submenu"
+    id="settingSubmenu">
+
+    <button
+      class="sub-btn"
+      data-tab="settings">
+      🔐 Admin
+    </button>
+
+    <button
+      class="sub-btn"
+      onclick="openShareModal()">
+      📤 Share Rekap
+    </button>
+
+  </div>
+
+
+  <div class="sidebar-title">
+    AKSI
+  </div>
+
+  <button
+    class="side-btn hidden"
+    id="logout">
+
+    <span class="side-left">
+      <span>🚪</span>
+      <span>Keluar Admin</span>
+    </span>
+
+    <span>›</span>
+
   </button>
 
-</nav>
+</aside>
 
-<main class="wrap">
+
+<div
+  class="overlay"
+  id="overlay"
+  onclick="closeSidebar()">
+</div>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+  <header class="topbar">
+
+    <button
+      class="mobile-menu"
+      onclick="toggleSidebar()">
+      ☰
+    </button>
+
+    <div class="page-title">
+      <span>STREET OF STYLE</span> KAS
+    </div>
+
+    <div
+      class="realtime"
+      id="rt">
+      🟢 REALTIME AKTIF
+    </div>
+
+  </header>
+
+
+  <div class="content">
 
 
 <!-- =====================================================
@@ -392,47 +1000,112 @@ th{
 
 <section id="dash" class="show">
 
+  <div class="toolbar">
+
+    <h2 class="graffiti-title">
+      DASHBOARD
+    </h2>
+
+    <button
+      class="success"
+      onclick="openShareModal()">
+      📤 Share Rekap Anggota
+    </button>
+
+  </div>
+
+
   <div class="grid">
 
-    <div class="card metric">
-      Saldo Kas
-      <b id="saldo">Rp 0</b>
+    <div class="card metric lime">
+
+      <div class="metric-label">
+        Saldo Kas
+      </div>
+
+      <b id="saldo">
+        Rp 0
+      </b>
+
     </div>
 
-    <div class="card metric">
-      Anggota Wajib Kas
-      <b id="wajib">0</b>
+
+    <div class="card metric blue">
+
+      <div class="metric-label">
+        Anggota Wajib Kas
+      </div>
+
+      <b id="wajib">
+        0
+      </b>
+
     </div>
 
-    <div class="card metric stat-income">
-      Total Pemasukan
-      <b id="totalIncome">Rp 0</b>
+
+    <div class="card metric green">
+
+      <div class="metric-label">
+        Total Pemasukan
+      </div>
+
+      <b id="totalIncome">
+        Rp 0
+      </b>
+
     </div>
 
-    <div class="card metric stat-expense">
-      Total Pengeluaran
-      <b id="totalExpense">Rp 0</b>
+
+    <div class="card metric red">
+
+      <div class="metric-label">
+        Total Pengeluaran
+      </div>
+
+      <b id="totalExpense">
+        Rp 0
+      </b>
+
     </div>
 
   </div>
 
-  <div class="grid" style="margin-top:12px">
 
-    <div class="card metric">
-      Total Tunggakan
-      <b id="tunggakan">Rp 0</b>
+  <div class="grid2">
+
+    <div class="card metric red">
+
+      <div class="metric-label">
+        Total Tunggakan
+      </div>
+
+      <b id="tunggakan">
+        Rp 0
+      </b>
+
     </div>
 
+
     <div class="card metric">
-      ADM Belum Lunas
-      <b id="adm">Rp 0</b>
+
+      <div class="metric-label">
+        ADM Belum Lunas
+      </div>
+
+      <b id="adm">
+        Rp 0
+      </b>
+
     </div>
 
   </div>
 
-  <div class="card" style="margin-top:14px">
 
-    <h2>📊 Rekap Kas</h2>
+  <div class="card mt">
+
+    <h2 class="graffiti-title">
+      📊 REKAP KAS
+    </h2>
 
     <div id="summary">
       Memuat...
@@ -451,17 +1124,32 @@ th{
 
   <div class="toolbar">
 
-    <h2>👥 Anggota</h2>
+    <h2 class="graffiti-title">
+      👥 ANGGOTA
+    </h2>
 
-    <button class="primary" id="addBtn">
-      + Anggota
-    </button>
+    <div class="flex">
+
+      <button
+        class="success"
+        onclick="openShareModal()">
+        📤 Share Semua
+      </button>
+
+      <button
+        class="primary"
+        id="addBtn">
+        + Anggota
+      </button>
+
+    </div>
 
   </div>
 
+
   <div class="card">
 
-    <div style="overflow:auto">
+    <div class="table-wrap">
 
       <table>
 
@@ -497,7 +1185,9 @@ th{
 
   <div class="toolbar">
 
-    <h2>📥 Pemasukan Kas</h2>
+    <h2 class="graffiti-title">
+      📥 PEMASUKAN KAS
+    </h2>
 
     <button
       class="success"
@@ -507,13 +1197,14 @@ th{
 
   </div>
 
+
   <div class="card">
 
     <div class="notice">
       Semua uang yang masuk ke kas dicatat di sini.
     </div>
 
-    <div style="overflow:auto">
+    <div class="table-wrap">
 
       <table>
 
@@ -547,7 +1238,9 @@ th{
 
   <div class="toolbar">
 
-    <h2>📤 Pengeluaran Kas</h2>
+    <h2 class="graffiti-title">
+      📤 PENGELUARAN KAS
+    </h2>
 
     <button
       class="primary"
@@ -557,13 +1250,14 @@ th{
 
   </div>
 
+
   <div class="card">
 
     <div class="notice">
       Semua uang yang keluar dari kas dicatat di sini.
     </div>
 
-    <div style="overflow:auto">
+    <div class="table-wrap">
 
       <table>
 
@@ -597,24 +1291,28 @@ th{
 
   <div class="toolbar">
 
-    <h2>💳 Pembayaran</h2>
+    <h2 class="graffiti-title">
+      💳 PEMBAYARAN
+    </h2>
 
   </div>
 
 
   <!-- FORM MEMBER -->
 
-  <div id="memberSubmit" class="card hidden">
+  <div
+    id="memberSubmit"
+    class="card">
 
-    <h3>💳 Kirim Pembayaran</h3>
+    <h3>
+      💳 Kirim Pembayaran
+    </h3>
 
     <div class="notice">
       Cari nama karakter dari daftar anggota,
-      kemudian pilih nama yang sesuai.
+      lalu pilih nama yang sesuai.
     </div>
 
-
-    <!-- SEARCH NAMA -->
 
     <label>
       🔎 Cari nama karakter
@@ -627,10 +1325,12 @@ th{
       autocomplete="off"
       oninput="searchRequestMember()">
 
+
     <div
       id="memberSearchCount"
       class="search-count">
     </div>
+
 
     <div
       id="memberSearchResults"
@@ -638,11 +1338,10 @@ th{
     </div>
 
 
-    <!-- NAMA TERPILIH -->
-
     <input
       id="mname"
       type="hidden">
+
 
     <div
       id="selectedMember"
@@ -694,8 +1393,7 @@ th{
 
     <textarea
       id="pnote"
-      placeholder="Catatan pembayaran (opsional)">
-    </textarea>
+      placeholder="Catatan pembayaran (opsional)"></textarea>
 
     <br>
 
@@ -710,11 +1408,13 @@ th{
 
   <!-- DAFTAR PEMBAYARAN -->
 
-  <div class="card" style="margin-top:14px">
+  <div class="card mt">
 
-    <h3>📋 Daftar Pembayaran</h3>
+    <h3>
+      📋 Daftar Pembayaran
+    </h3>
 
-    <div style="overflow:auto">
+    <div class="table-wrap">
 
       <table>
 
@@ -751,12 +1451,15 @@ th{
 
   <div class="card">
 
-    <h2>⚙️ Pengaturan Admin</h2>
+    <h2 class="graffiti-title">
+      ⚙️ PENGATURAN ADMIN
+    </h2>
 
     <p>
-      Login admin diperlukan untuk mengubah data anggota,
-      pengaturan dan transaksi.
+      Login admin diperlukan untuk mengubah
+      data anggota, pengaturan dan transaksi.
     </p>
+
 
     <div id="adminLogin">
 
@@ -769,6 +1472,8 @@ th{
         type="password"
         placeholder="Password admin">
 
+      <br>
+
       <button
         class="primary"
         onclick="adminLogin()">
@@ -778,7 +1483,9 @@ th{
     </div>
 
 
-    <div id="adminPanel" class="hidden">
+    <div
+      id="adminPanel"
+      class="hidden">
 
       <label>
         Tanggal Rekap
@@ -806,7 +1513,6 @@ th{
         id="admdefault"
         type="number">
 
-
       <br><br>
 
       <button
@@ -823,14 +1529,20 @@ th{
 
 </section>
 
+
+  </div>
 </main>
+
+</div>
 
 
 <!-- =====================================================
      MODAL
 ===================================================== -->
 
-<div id="modal" class="modal">
+<div
+  id="modal"
+  class="modal">
 
   <div id="modalBody"></div>
 
@@ -867,11 +1579,8 @@ let isAdmin =
 !!adminPass;
 
 let members = [];
-
 let settings = {};
-
 let incomes = [];
-
 let expenses = [];
 
 
@@ -896,6 +1605,48 @@ function escapeHTML(value){
 }
 
 
+function escapeJS(value){
+
+  return String(value ?? "")
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'")
+    .replace(/"/g,'\\"')
+    .replace(/\r/g,"\\r")
+    .replace(/\n/g,"\\n");
+
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+function toggleSidebar(){
+
+  document
+    .getElementById("sidebar")
+    .classList.toggle("open");
+
+  document
+    .getElementById("overlay")
+    .classList.toggle("show");
+
+}
+
+
+function closeSidebar(){
+
+  document
+    .getElementById("sidebar")
+    .classList.remove("open");
+
+  document
+    .getElementById("overlay")
+    .classList.remove("show");
+
+}
+
+
 /* =====================================================
    TAB
 ===================================================== */
@@ -908,6 +1659,7 @@ function tab(id){
       x.classList.remove("show")
     );
 
+
   const target =
     document.getElementById(id);
 
@@ -916,7 +1668,7 @@ function tab(id){
 
 
   document
-    .querySelectorAll("nav button[data-tab]")
+    .querySelectorAll(".side-btn[data-tab]")
     .forEach(x =>
       x.classList.toggle(
         "active",
@@ -925,26 +1677,89 @@ function tab(id){
     );
 
 
+  const titles = {
+
+    dash:"DASHBOARD",
+
+    members:"ANGGOTA",
+
+    income:"PEMASUKAN",
+
+    expense:"PENGELUARAN",
+
+    requests:"PEMBAYARAN",
+
+    settings:"PENGATURAN"
+
+  };
+
+
+  document
+    .querySelector(".page-title")
+    .innerHTML =
+    `<span>STREET OF STYLE</span> ${
+      titles[id] || "KAS"
+    }`;
+
+
   if(id === "requests")
     loadRequests();
 
-  if(id === "income")
+  if(id === "income" || id === "expense")
     loadTransactions();
 
-  if(id === "expense")
-    loadTransactions();
+
+  closeSidebar();
 
 }
 
 
 document
-  .querySelectorAll("nav button[data-tab]")
-  .forEach(b => {
+  .querySelectorAll(".side-btn[data-tab]")
+  .forEach(btn => {
 
-    b.onclick = () =>
-      tab(b.dataset.tab);
+    btn.onclick = () =>
+      tab(btn.dataset.tab);
 
   });
+
+
+document
+  .querySelectorAll(".sub-btn[data-tab]")
+  .forEach(btn => {
+
+    btn.onclick = () =>
+      tab(btn.dataset.tab);
+
+  });
+
+
+/* =====================================================
+   ACCORDION SETTINGS
+===================================================== */
+
+document
+  .getElementById("settingAccordion")
+  .onclick = () => {
+
+    const submenu =
+      document.getElementById(
+        "settingSubmenu"
+      );
+
+    const arrow =
+      document.getElementById(
+        "settingArrow"
+      );
+
+    submenu.classList.toggle("open");
+
+    arrow.textContent =
+      submenu.classList.contains("open")
+      ? "⌄"
+      : "›";
+
+  };
 
 
 /* =====================================================
@@ -955,7 +1770,9 @@ document
   .getElementById("logout")
   .onclick = () => {
 
-    sessionStorage.removeItem("kas_admin");
+    sessionStorage.removeItem(
+      "kas_admin"
+    );
 
     adminPass = "";
 
@@ -982,10 +1799,7 @@ function renderAuth(){
 
   document
     .getElementById("memberSubmit")
-    .classList.toggle(
-      "hidden",
-      isAdmin
-    );
+    .classList.remove("hidden");
 
 
   document
@@ -1048,18 +1862,35 @@ async function load(){
     }
 
 
-    /*
-      Penting:
-      Setiap kali members berhasil dimuat,
-      daftar pencarian pembayaran ikut diperbarui.
-    */
-
     searchRequestMember();
-
 
     await loadTransactions();
 
     render();
+
+
+    if(
+      settings.report_date
+    ){
+
+      document
+        .getElementById("rdate")
+        .value =
+        settings.report_date;
+
+    }
+
+
+    document
+      .getElementById("kasdaily")
+      .value =
+      settings.kas_daily || 0;
+
+
+    document
+      .getElementById("admdefault")
+      .value =
+      settings.adm_default || 0;
 
   }catch(err){
 
@@ -1173,7 +2004,7 @@ function render(){
         )}
       </b>
 
-      <br>
+      <br><br>
 
       Iuran harian:
       <b>
@@ -1189,15 +2020,22 @@ function render(){
 
       <br><br>
 
+      Total anggota:
+      <b>
+        ${members.length}
+      </b>
+
+      <br>
+
       Total pemasukan:
-      <b class="green">
+      <b class="green-text">
         ${money(totalIncome)}
       </b>
 
       <br>
 
       Total pengeluaran:
-      <b class="red">
+      <b class="red-text">
         ${money(totalExpense)}
       </b>
 
@@ -1219,7 +2057,7 @@ function render(){
 
 
 /* =====================================================
-   MEMBER
+   RENDER MEMBERS
 ===================================================== */
 
 function renderMembers(){
@@ -1292,7 +2130,7 @@ function renderMembers(){
             ?
             `<button
               class="secondary"
-              onclick="editMember('${m.id}')">
+              onclick="editMember('${escapeJS(m.id)}')">
               Edit
             </button>`
             :
@@ -1309,7 +2147,7 @@ function renderMembers(){
 
 
 /* =====================================================
-   TRANSAKSI
+   TRANSACTIONS
 ===================================================== */
 
 async function loadTransactions(){
@@ -1356,7 +2194,7 @@ async function loadTransactions(){
 
 
 /* =====================================================
-   RENDER TRANSAKSI
+   RENDER TRANSACTIONS
 ===================================================== */
 
 function renderTransactions(){
@@ -1370,6 +2208,10 @@ function renderTransactions(){
     document.getElementById(
       "expenseRows"
     );
+
+
+  if(!incomeBody || !expenseBody)
+    return;
 
 
   if(!incomes.length){
@@ -1392,7 +2234,7 @@ function renderTransactions(){
             ${formatDate(x.created_at)}
           </td>
 
-          <td class="green">
+          <td class="green-text">
             + ${money(x.amount)}
           </td>
 
@@ -1411,7 +2253,7 @@ function renderTransactions(){
                 class="danger"
                 onclick="deleteTransaction(
                   'income',
-                  '${x.id}'
+                  '${escapeJS(x.id)}'
                 )">
                 Hapus
               </button>`
@@ -1448,7 +2290,7 @@ function renderTransactions(){
             ${formatDate(x.created_at)}
           </td>
 
-          <td class="red">
+          <td class="red-text">
             - ${money(x.amount)}
           </td>
 
@@ -1467,7 +2309,7 @@ function renderTransactions(){
                 class="danger"
                 onclick="deleteTransaction(
                   'expense',
-                  '${x.id}'
+                  '${escapeJS(x.id)}'
                 )">
                 Hapus
               </button>`
@@ -1510,31 +2352,42 @@ function updateDashboardTotals(){
     );
 
 
-  document
-    .getElementById("totalIncome")
-    .textContent =
-    money(totalIncome);
-
-
-  document
-    .getElementById("totalExpense")
-    .textContent =
-    money(totalExpense);
-
-
-  document
-    .getElementById("saldo")
-    .textContent =
-    money(
-      totalIncome -
-      totalExpense
+  const income =
+    document.getElementById(
+      "totalIncome"
     );
+
+  const expense =
+    document.getElementById(
+      "totalExpense"
+    );
+
+  const saldo =
+    document.getElementById(
+      "saldo"
+    );
+
+
+  if(income)
+    income.textContent =
+      money(totalIncome);
+
+  if(expense)
+    expense.textContent =
+      money(totalExpense);
+
+  if(saldo)
+    saldo.textContent =
+      money(
+        totalIncome -
+        totalExpense
+      );
 
 }
 
 
 /* =====================================================
-   FORMAT DATE
+   DATE
 ===================================================== */
 
 function formatDate(date){
@@ -1549,7 +2402,7 @@ function formatDate(date){
 
 
 /* =====================================================
-   MODAL TRANSAKSI
+   TRANSACTION MODAL
 ===================================================== */
 
 function openTransactionModal(type){
@@ -1579,12 +2432,14 @@ function openTransactionModal(type){
     .getElementById("modalBody")
     .innerHTML = `
 
-      <h2>
+      <h2 class="graffiti-title">
+
         ${
           isIncome
-          ? "📥 Tambah Pemasukan"
-          : "📤 Tambah Pengeluaran"
+          ? "📥 TAMBAH PEMASUKAN"
+          : "📤 TAMBAH PENGELUARAN"
         }
+
       </h2>
 
       <label>
@@ -1629,7 +2484,7 @@ function openTransactionModal(type){
 
 
 /* =====================================================
-   SAVE TRANSAKSI
+   SAVE TRANSACTION
 ===================================================== */
 
 async function saveTransaction(type){
@@ -1648,8 +2503,8 @@ async function saveTransaction(type){
   const amount =
     Number(
       document
-        .getElementById("t_amount")
-        .value
+      .getElementById("t_amount")
+      .value
     );
 
 
@@ -1696,7 +2551,6 @@ async function saveTransaction(type){
     .insert({
 
       amount:amount,
-
       description:description
 
     });
@@ -1707,10 +2561,6 @@ async function saveTransaction(type){
     alert(
       "Gagal menyimpan transaksi: " +
       result.error.message
-    );
-
-    console.error(
-      result.error
     );
 
     return;
@@ -1735,7 +2585,7 @@ async function saveTransaction(type){
 
 
 /* =====================================================
-   DELETE TRANSAKSI
+   DELETE TRANSACTION
 ===================================================== */
 
 async function deleteTransaction(
@@ -1868,6 +2718,17 @@ async function adminLogin(){
 
 async function saveSettings(){
 
+  if(!isAdmin){
+
+    alert(
+      "Login admin dulu."
+    );
+
+    return;
+
+  }
+
+
   const result =
     await sb.rpc(
       "admin_set_settings",
@@ -1878,27 +2739,21 @@ async function saveSettings(){
 
         p_report_date:
           document
-          .getElementById(
-            "rdate"
-          )
+          .getElementById("rdate")
           .value,
 
         p_kas_daily:
           Number(
             document
-              .getElementById(
-                "kasdaily"
-              )
-              .value
+            .getElementById("kasdaily")
+            .value
           ),
 
         p_adm_default:
           Number(
             document
-              .getElementById(
-                "admdefault"
-              )
-              .value
+            .getElementById("admdefault")
+            .value
           )
 
       }
@@ -1926,7 +2781,7 @@ async function saveSettings(){
 
 
 /* =====================================================
-   SEARCH MEMBER UNTUK PEMBAYARAN
+   SEARCH MEMBER
 ===================================================== */
 
 function searchRequestMember(){
@@ -1956,11 +2811,6 @@ function searchRequestMember(){
       .trim()
       .toLowerCase();
 
-
-  /*
-    Kalau belum mengetik,
-    jangan tampilkan semua anggota.
-  */
 
   if(!keyword){
 
@@ -2026,23 +2876,7 @@ function searchRequestMember(){
 
 
 /* =====================================================
-   ESCAPE UNTUK JAVASCRIPT
-===================================================== */
-
-function escapeJS(value){
-
-  return String(value ?? "")
-    .replace(/\\/g,"\\\\")
-    .replace(/'/g,"\\'")
-    .replace(/"/g,'\\"')
-    .replace(/\r/g,"\\r")
-    .replace(/\n/g,"\\n");
-
-}
-
-
-/* =====================================================
-   PILIH MEMBER PEMBAYARAN
+   SELECT MEMBER
 ===================================================== */
 
 function selectRequestMember(name){
@@ -2096,7 +2930,7 @@ function selectRequestMember(name){
 
 
 /* =====================================================
-   LOAD PEMBAYARAN
+   LOAD REQUESTS
 ===================================================== */
 
 async function loadRequests(){
@@ -2128,10 +2962,13 @@ async function loadRequests(){
 
 
   const body =
-    document
-      .getElementById(
-        "reqRows"
-      );
+    document.getElementById(
+      "reqRows"
+    );
+
+
+  if(!body)
+    return;
 
 
   if(!rows.length){
@@ -2141,9 +2978,7 @@ async function loadRequests(){
         <td
           colspan="7"
           class="empty">
-
           Belum ada pembayaran.
-
         </td>
       </tr>`;
 
@@ -2184,11 +3019,9 @@ async function loadRequests(){
         <td>
 
           <span class="pill">
-
             ${escapeHTML(
               r.status
             )}
-
           </span>
 
         </td>
@@ -2197,24 +3030,18 @@ async function loadRequests(){
 
           ${
             r.screenshot_url
-
             ?
-
             `<a
               target="_blank"
               rel="noopener"
               href="${escapeHTML(
                 r.screenshot_url
-              )}">
-
+              )}"
+              style="color:#b7ff00">
               📷 Lihat
-
             </a>`
-
             :
-
             "-"
-
           }
 
         </td>
@@ -2230,23 +3057,19 @@ async function loadRequests(){
             `<button
               class="success"
               onclick="review(
-                '${r.id}',
+                '${escapeJS(r.id)}',
                 'APPROVED'
               )">
-
               Terima
-
             </button>
 
             <button
               class="danger"
               onclick="review(
-                '${r.id}',
+                '${escapeJS(r.id)}',
                 'REJECTED'
               )">
-
               Tolak
-
             </button>`
 
             :
@@ -2265,7 +3088,7 @@ async function loadRequests(){
 
 
 /* =====================================================
-   REVIEW PEMBAYARAN
+   REVIEW PAYMENT
 ===================================================== */
 
 async function review(
@@ -2335,58 +3158,44 @@ async function review(
 
 
 /* =====================================================
-   MEMBER SUBMIT PAYMENT
+   SUBMIT PAYMENT
 ===================================================== */
 
 async function submitPayment(){
 
   const name =
     document
-      .getElementById(
-        "mname"
-      )
+      .getElementById("mname")
       .value
       .trim();
 
 
   const type =
     document
-      .getElementById(
-        "ptype"
-      )
+      .getElementById("ptype")
       .value;
 
 
   const amount =
     Number(
       document
-        .getElementById(
-          "pamount"
-        )
+        .getElementById("pamount")
         .value
     );
 
 
   const file =
     document
-      .getElementById(
-        "proof"
-      )
+      .getElementById("proof")
       .files[0];
 
 
   const note =
     document
-      .getElementById(
-        "pnote"
-      )
+      .getElementById("pnote")
       .value
       .trim();
 
-
-  /* =========================
-     VALIDASI NAMA
-  ========================= */
 
   if(!name){
 
@@ -2398,8 +3207,6 @@ async function submitPayment(){
 
   }
 
-
-  /* Pastikan nama memang ada di members */
 
   const memberExists =
     members.some(
@@ -2421,10 +3228,6 @@ async function submitPayment(){
   }
 
 
-  /* =========================
-     VALIDASI JUMLAH
-  ========================= */
-
   if(!amount || amount <= 0){
 
     alert(
@@ -2439,16 +3242,7 @@ async function submitPayment(){
   let url = null;
 
 
-  /* =========================
-     UPLOAD BUKTI
-     BUCKET: payment-proofs
-  ========================= */
-
   if(file){
-
-    /*
-      Batasi ukuran 5 MB.
-    */
 
     if(file.size > 5 * 1024 * 1024){
 
@@ -2497,10 +3291,6 @@ async function submitPayment(){
         up.error.message
       );
 
-      console.error(
-        up.error
-      );
-
       return;
 
     }
@@ -2516,10 +3306,6 @@ async function submitPayment(){
 
   }
 
-
-  /* =========================
-     KIRIM PAYMENT REQUEST
-  ========================= */
 
   const result =
     await sb.rpc(
@@ -2552,10 +3338,6 @@ async function submitPayment(){
       result.error.message
     );
 
-    console.error(
-      result.error
-    );
-
     return;
 
   }
@@ -2566,10 +3348,6 @@ async function submitPayment(){
   );
 
 
-  /* =========================
-     RESET FORM
-  ========================= */
-
   document
     .getElementById(
       "memberSearchRequest"
@@ -2577,34 +3355,27 @@ async function submitPayment(){
     .value =
     "";
 
+
   document
-    .getElementById(
-      "mname"
-    )
+    .getElementById("mname")
     .value =
     "";
 
 
   document
-    .getElementById(
-      "pamount"
-    )
+    .getElementById("pamount")
     .value =
     "";
 
 
   document
-    .getElementById(
-      "proof"
-    )
+    .getElementById("proof")
     .value =
     "";
 
 
   document
-    .getElementById(
-      "pnote"
-    )
+    .getElementById("pnote")
     .value =
     "";
 
@@ -2625,19 +3396,13 @@ async function submitPayment(){
     "";
 
 
-  const selected =
-    document.getElementById(
+  document
+    .getElementById(
       "selectedMember"
+    )
+    .classList.add(
+      "hidden"
     );
-
-
-  selected.classList.add(
-    "hidden"
-  );
-
-
-  selected.innerHTML =
-    "";
 
 
   await loadRequests();
@@ -2664,8 +3429,7 @@ async function editMember(id){
 
   const m =
     members.find(
-      x =>
-        x.id === id
+      x => x.id === id
     );
 
 
@@ -2674,21 +3438,17 @@ async function editMember(id){
 
 
   document
-    .getElementById(
-      "modal"
-    )
+    .getElementById("modal")
     .style.display =
     "flex";
 
 
   document
-    .getElementById(
-      "modalBody"
-    )
+    .getElementById("modalBody")
     .innerHTML = `
 
-      <h2>
-        Edit Anggota
+      <h2 class="graffiti-title">
+        EDIT ANGGOTA
       </h2>
 
       <label>
@@ -2697,9 +3457,7 @@ async function editMember(id){
 
       <input
         id="e_name"
-        value="${escapeHTML(
-          m.name
-        )}">
+        value="${escapeHTML(m.name)}">
 
 
       <label>
@@ -2719,9 +3477,7 @@ async function editMember(id){
       <input
         id="e_next"
         type="date"
-        value="${
-          m.next_pay || ""
-        }">
+        value="${m.next_pay || ""}">
 
 
       <label>
@@ -2741,9 +3497,7 @@ async function editMember(id){
       <input
         id="e_from"
         type="date"
-        value="${
-          m.unpaid_from || ""
-        }">
+        value="${m.unpaid_from || ""}">
 
 
       <label>
@@ -2775,18 +3529,14 @@ async function editMember(id){
 
       <button
         class="primary"
-        onclick="saveMember('${id}')">
-
+        onclick="saveMember('${escapeJS(id)}')">
         Simpan
-
       </button>
 
       <button
         class="secondary"
         onclick="closeModal()">
-
         Batal
-
       </button>
 
     `;
@@ -2801,9 +3551,7 @@ async function editMember(id){
 function closeModal(){
 
   document
-    .getElementById(
-      "modal"
-    )
+    .getElementById("modal")
     .style.display =
     "none";
 
@@ -2840,59 +3588,45 @@ async function saveMember(id){
 
         p_name:
           document
-          .getElementById(
-            "e_name"
-          )
+          .getElementById("e_name")
           .value,
 
         p_balance:
           Number(
             document
-            .getElementById(
-              "e_bal"
-            )
+            .getElementById("e_bal")
             .value
           ),
 
         p_next_pay:
           document
-          .getElementById(
-            "e_next"
-          )
+          .getElementById("e_next")
           .value ||
           null,
 
         p_arrears:
           Number(
             document
-            .getElementById(
-              "e_arr"
-            )
+            .getElementById("e_arr")
             .value
           ),
 
         p_unpaid_from:
           document
-          .getElementById(
-            "e_from"
-          )
+          .getElementById("e_from")
           .value ||
           null,
 
         p_adm_due:
           Number(
             document
-            .getElementById(
-              "e_adm"
-            )
+            .getElementById("e_adm")
             .value
           ),
 
         p_exempt:
           document
-          .getElementById(
-            "e_ex"
-          )
+          .getElementById("e_ex")
           .checked
 
       }
@@ -2922,9 +3656,7 @@ async function saveMember(id){
 ===================================================== */
 
 document
-  .getElementById(
-    "addBtn"
-  )
+  .getElementById("addBtn")
   .onclick = () => {
 
     if(!isAdmin){
@@ -2939,21 +3671,17 @@ document
 
 
     document
-      .getElementById(
-        "modal"
-      )
+      .getElementById("modal")
       .style.display =
       "flex";
 
 
     document
-      .getElementById(
-        "modalBody"
-      )
+      .getElementById("modalBody")
       .innerHTML = `
 
-        <h2>
-          Tambah Anggota
+        <h2 class="graffiti-title">
+          TAMBAH ANGGOTA
         </h2>
 
         <label>
@@ -3002,17 +3730,13 @@ document
         <button
           class="primary"
           onclick="addMember()">
-
           Tambah
-
         </button>
 
         <button
           class="secondary"
           onclick="closeModal()">
-
           Batal
-
         </button>
 
       `;
@@ -3039,9 +3763,7 @@ async function addMember(){
 
   const name =
     document
-      .getElementById(
-        "a_name"
-      )
+      .getElementById("a_name")
       .value
       .trim();
 
@@ -3071,26 +3793,20 @@ async function addMember(){
         p_balance:
           Number(
             document
-            .getElementById(
-              "a_bal"
-            )
+            .getElementById("a_bal")
             .value
           ),
 
         p_next_pay:
           document
-          .getElementById(
-            "a_next"
-          )
+          .getElementById("a_next")
           .value ||
           null,
 
         p_adm_due:
           Number(
             document
-            .getElementById(
-              "a_adm"
-            )
+            .getElementById("a_adm")
             .value
           ),
 
@@ -3119,6 +3835,345 @@ async function addMember(){
   );
 
   await load();
+
+}
+
+
+/* =====================================================
+   SHARE REKAP SEMUA ANGGOTA
+===================================================== */
+
+function buildShareText(){
+
+  const reportDate =
+    settings.report_date ||
+    new Date()
+      .toLocaleDateString("id-ID");
+
+
+  let text =
+`━━━━━━━━━━━━━━━━━━━━
+📒 KAS
+${reportDate}
+━━━━━━━━━━━━━━━━━━━━
+
+⚠️ TUNGGAKAN KAS
+`;
+
+  const overdue =
+    members.filter(
+      m =>
+        Number(m.arrears || 0) > 0
+    );
+
+
+  if(!overdue.length){
+
+    text +=
+`Tidak ada tunggakan.
+`;
+
+  }else{
+
+    overdue.forEach(
+      (m,index) => {
+
+        text +=
+`${String(index+1).padStart(2,"0")}. 🔴 ${m.name} [-${Number(m.arrears || 0).toLocaleString("id-ID")}K]`;
+
+        if(m.unpaid_from){
+
+          text +=
+          ` - Belum bayar dari ${m.unpaid_from}`;
+
+        }
+
+        text += "\n";
+
+      }
+    );
+
+  }
+
+
+  const totalTunggakan =
+    members.reduce(
+      (sum,m) =>
+        sum +
+        Math.max(
+          0,
+          Number(m.arrears || 0)
+        ),
+      0
+    );
+
+
+  text +=
+`
+📊 Total Tunggakan Kas
+• ${Math.round(
+    totalTunggakan / 1000
+  )}K
+
+━━━━━━━━━━━━━━━━━━━━
+📋 DAFTAR ANGGOTA
+━━━━━━━━━━━━━━━━━━━━
+`;
+
+
+  members.forEach(
+    (m,index) => {
+
+      const balance =
+        Number(m.balance || 0);
+
+      const symbol =
+        balance >= 0
+        ? "🟢"
+        : "🔴";
+
+
+      const amount =
+        Math.abs(
+          balance
+        );
+
+
+      const sign =
+        balance >= 0
+        ? "+"
+        : "-";
+
+
+      text +=
+`${String(index+1).padStart(2,"0")}. ${symbol} ${m.name} [${sign}${Math.round(amount/1000)}K]`;
+
+
+      if(
+        balance >= 0 &&
+        m.next_pay
+      ){
+
+        text +=
+        ` - NextPay ${m.next_pay}`;
+
+      }else if(
+        balance < 0 &&
+        m.unpaid_from
+      ){
+
+        text +=
+        ` - Belum bayar dari ${m.unpaid_from}`;
+
+      }
+
+
+      text += "\n";
+
+    }
+  );
+
+
+  const admMembers =
+    members.filter(
+      m =>
+        Number(m.adm_due || 0) > 0
+    );
+
+
+  text +=
+`
+━━━━━━━━━━━━━━━━━━━━
+❌ ADM BELUM LUNAS
+
+`;
+
+
+  if(!admMembers.length){
+
+    text +=
+    "Tidak ada ADM tertunggak.\n";
+
+  }else{
+
+    admMembers.forEach(
+      (m,index) => {
+
+        text +=
+`${String(index+1).padStart(2,"0")}. ${m.name} [-${Math.round(Number(m.adm_due || 0)/1000)}K]
+`;
+
+      }
+    );
+
+  }
+
+
+  text +=
+`━━━━━━━━━━━━━━━━━━━━`;
+
+
+  return text;
+
+}
+
+
+/* =====================================================
+   SHARE MODAL
+===================================================== */
+
+function openShareModal(){
+
+  const text =
+    buildShareText();
+
+
+  document
+    .getElementById("modal")
+    .style.display =
+    "flex";
+
+
+  document
+    .getElementById("modalBody")
+    .innerHTML = `
+
+      <h2 class="graffiti-title">
+        📤 SHARE REKAP ANGGOTA
+      </h2>
+
+      <p style="color:#aaa">
+        Rekap seluruh anggota akan dibagikan.
+      </p>
+
+      <div
+        id="sharePreview"
+        class="share-box">${escapeHTML(text)}</div>
+
+      <br>
+
+      <div class="flex">
+
+        <button
+          class="success"
+          onclick="shareRekap()">
+          📤 Bagikan
+        </button>
+
+        <button
+          class="primary"
+          onclick="copyRekap()">
+          📋 Salin
+        </button>
+
+        <button
+          class="secondary"
+          onclick="closeModal()">
+          Tutup
+        </button>
+
+      </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   SHARE
+===================================================== */
+
+async function shareRekap(){
+
+  const text =
+    buildShareText();
+
+
+  if(
+    navigator.share
+  ){
+
+    try{
+
+      await navigator.share({
+
+        title:
+          "Rekap KAS Street Of Style",
+
+        text:
+          text
+
+      });
+
+    }catch(err){
+
+      if(
+        err.name !==
+        "AbortError"
+      ){
+
+        console.error(err);
+
+      }
+
+    }
+
+  }else{
+
+    await copyRekap();
+
+    alert(
+      "Fitur share tidak tersedia di browser ini. Rekap sudah disalin."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   COPY
+===================================================== */
+
+async function copyRekap(){
+
+  const text =
+    buildShareText();
+
+
+  try{
+
+    await navigator.clipboard.writeText(
+      text
+    );
+
+    alert(
+      "✅ Rekap berhasil disalin."
+    );
+
+  }catch(err){
+
+    const temp =
+      document.createElement("textarea");
+
+    temp.value = text;
+
+    document
+      .body
+      .appendChild(temp);
+
+    temp.select();
+
+    document
+      .execCommand("copy");
+
+    temp.remove();
+
+    alert(
+      "✅ Rekap berhasil disalin."
+    );
+
+  }
 
 }
 
@@ -3194,6 +4249,8 @@ sb
 
     loadTransactions();
 
+    render();
+
   }
 )
 
@@ -3207,6 +4264,8 @@ sb
   () => {
 
     loadTransactions();
+
+    render();
 
   }
 )
