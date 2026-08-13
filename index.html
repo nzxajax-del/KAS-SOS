@@ -3532,7 +3532,13 @@ async function editMember(id){
         onclick="saveMember('${escapeJS(id)}')">
         Simpan
       </button>
-
+      
+      <button
+        class="secondary"
+        onclick="deleteMember('${escapeJS(m.id)}')">
+        Hapus
+      </button>
+      
       <button
         class="secondary"
         onclick="closeModal()">
@@ -3648,6 +3654,39 @@ async function saveMember(id){
 
   await load();
 
+}
+
+  async function deleteMember(id){
+  if(!isAdmin){
+    alert("Login admin dulu.");
+    return;
+  }
+
+const password = prompt("Masukkan password admin:");
+
+if(!password){
+  return;
+}
+
+if(!confirm("Yakin ingin menghapus member ini?")){
+  return;
+}
+
+const { error } = await sb.rpc(
+  "admin_delete_member",
+  {
+    p_password: password,
+    p_id: id
+  }
+);
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  closeModal();
+  await load();
 }
 
 
